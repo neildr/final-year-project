@@ -1,0 +1,48 @@
+{{#if summoner.exists}}
+<h1 class="testWhite">Summoner Stats </h1>
+<div class="testWhite">
+    Summoner: {{ summoner.name }}
+</div>
+<div class="testWhite">
+    Region: {{ summoner.region}}
+</div>
+<div class="testWhite">
+Exists?: {{summoner.exists}}
+</div>
+<div class="testWhite">
+    {{summoner.name}} has an id of {{summoner.id}}, an account id of {{ summoner.accountId }} and a level of {{summoner.summonerLevel}}
+</div>
+<div class="testWhite">
+    {{ summoner.name }} also uses icon id {{summoner.profileIconId}}
+</div>
+<img src="http://stelar7.no/cdragon/latest/profile-icons/{{ summoner.profileIconId }}.jpg" />
+<div class="testWhite">
+    {{summoner.name}} is mastery level {{ mastery.championLevel }} with {{mastery.championPoints}} on champion {{mastery.championId}}, {{mastery.championName}}, {{mastery.championTitle}}
+</div>
+<img src="http://stelar7.no/cdragon/latest/champion-icons/{{mastery.championId}}.png" />
+<div class = "testWhite">
+    {{summoner.name}} in the last {{matches.number}} matches has played Top {{matches.actualpositionCount.TOP}} times, Jungle {{matches.actualpositionCount.JUNGLE}} times, Mid {{matches.actualpositionCount.MID}} times, ADC {{matches.actualpositionCount.ADC}} times, Support {{matches.actualpositionCount.SUPPORT}} times.
+</div>
+<div class="testWhite">
+    {{summoner.name}} in the last {{matches.number}} matches has mainly played {{matches.modePosition}}, and has mainly played <img src="http://stelar7.no/cdragon/latest/champion-icons/{{matches.modeChampion}}.png" />
+</div>
+<div class="testWhite">
+    {{#if rankedInfo.tier}}
+    {{summoner.name}} is {{ rankedInfo.tier }} {{rankedInfo.rank}} with {{rankedInfo.leaguePoints}} LP in {{rankedInfo.leagueName}}, with {{rankedInfo.wins}} wins and {{rankedInfo.losses}} losses in {{rankedInfo.totalGamesRanked}} games, giving a {{rankedInfo.winRateRanked}}%
+    win ratio
+    {{else}}
+    {{summoner.name}} is Unranked on Summoner's rift
+    {{/if}}
+</div>
+<div>
+    {{#if rankedInfo.tier}}
+    <img src="/../../images/{{rankedInfo.tier}}_{{rankedInfo.rank}}.png"
+    {{else}}
+    <img src="/../../images/unranked.png"
+    {{/if}}
+</div>
+{{else}}
+<h1 class="testWhite">Summoner {{ summName }} not found on server {{ summRegion }}
+</br>
+Exists?: {{summoner.exists}}</h1>
+{{/if}}

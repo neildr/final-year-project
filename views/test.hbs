@@ -1,0 +1,14 @@
+<h1 class="testWhite">{{ title }}</h1>
+<p class="testWhite">
+     you are seeing some {{ content }}
+</p>
+<p class="testWhite">
+    {{summoner.name}} has an id of {{summoner.id}}, a level of {{summoner.summonerLevel}}
+</p>
+ <div class="testWhite">
+    {{ summoner.name }} also uses icon id {{summoner.profileIconId}}
+</div>
+<img src="http://ddragon.leagueoflegends.com/cdn/6.24.1/img/profileicon/{{ summoner.profileIconId }}.png" />
+<p class="testWhite">
+    {{summoner.name}} is mastery level {{ testMast.championLevel }} with {{testMast.championPoints}} on champion {{testMast.championId}}
+</p>
