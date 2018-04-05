@@ -85,7 +85,7 @@ var rankedReset = {
     leaguePoints: null
 };
 
-
+//for checking if a summoner exists
 var success;
 //more test stuff
 var testMatch = [];
