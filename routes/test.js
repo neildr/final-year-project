@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var TeemoJS = require('teemojs');
-
+var championTestJSON = ('./champion.json');
 var api = TeemoJS('RGAPI-218a2186-53a1-4b15-b46f-b95cba504312');
 
 let summoner;

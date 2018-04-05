@@ -1,3 +1,5 @@
+{
+  "data": {
     "Jax": {
       "id": 24,
       "key": "Jax",
@@ -638,7 +640,7 @@
       "id": 39,
       "key": "Irelia",
       "name": "Irelia",
-      "title": "the Will of the Blades"
+      "title": "the Blade Dancer"
     },
     "Ivern": {
       "id": 427,
@@ -838,4 +840,7 @@
       "name": "Gragas",
       "title": "the Rabble Rouser"
     }
-  }
+  },
+  "type": "champion",
+  "version": "8.7.1"
+}
