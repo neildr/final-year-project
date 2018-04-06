@@ -1,3 +1,4 @@
+{{#if summoner.name}}
 {{#if summoner.exists}}
 <h1 class="testWhite">Summoner Stats </h1>
 <div class="testWhite">
@@ -42,7 +43,10 @@ Exists?: {{summoner.exists}}
     {{/if}}
 </div>
 {{else}}
-<h1 class="testWhite">Summoner {{ summName }} not found on server {{ summRegion }}
+<h1 class="testWhite">Summoner {{ summoner.name }} not found on server {{ summoner.region }}
 </br>
 Exists?: {{summoner.exists}}</h1>
+{{/if}}
+{{else}}
+<h1 class="testWhite">DONT ACCESS BY URL</h1>
 {{/if}}

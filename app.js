@@ -8,7 +8,6 @@ var hbs = require('express-handlebars');
 
 //file paths to js files
 var index = require('./routes/index');
-var test = require('./routes/test');
 
 
 var app = express();
@@ -28,7 +27,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 //using routes
 app.use('/', index);
-app.use('/test', test);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

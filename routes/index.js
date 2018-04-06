@@ -5,6 +5,11 @@ var championJSON = require('./champions.json');
 var apiImport = require('./APIKEY');
 var api = TeemoJS(apiImport.key);
 
+
+//**********************//
+//      VARIABLES       //
+//**********************//
+
 //summoner information
 var summoner = {
     "profileIconId": null,
@@ -16,7 +21,7 @@ var summoner = {
     "exists": false,
     "region": null
 }
-
+var title = "no";
 //champion mastery
 var summonerMastery;
 
@@ -91,26 +96,91 @@ var success;
 //more test stuff
 var testMatch = [];
 var partID;
+var matchDataList = {
+    "match0": {
+        "kills": "",
+        "deaths": "",
+        "assists": ""
+    },
+    "match1": {
+        "kills": "",
+        "deaths": "",
+        "assists": ""
+    },
+    "match2": {
+        "kills": "",
+        "deaths": "",
+        "assists": ""
+    },
+    "match3": {
+        "kills": "",
+        "deaths": "",
+        "assists": ""
+    },
+    "match4": {
+        "kills": "",
+        "deaths": "",
+        "assists": ""
+    },
+    "match5": {
+        "kills": "",
+        "deaths": "",
+        "assists": ""
+    },
+    "match6": {
+        "kills": "",
+        "deaths": "",
+        "assists": ""
+    },
+    "match7": {
+        "kills": "",
+        "deaths": "",
+        "assists": ""
+    },
+    "match8": {
+        "kills": "",
+        "deaths": "",
+        "assists": ""
+    },
+    "match9": {
+        "kills": "",
+        "deaths": "",
+        "assists": ""
+    },
+}
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
-    res.render('index', {
-        title: "LOLSTATS.GG"
+var testFormIn = "";
+
+let promiseID = function(){
+    return new Promise(function(resolve, reject) {
+        resolve('promiseID done');
     });
-});
+};
 
-router.get('/summoner/lookup', function(req, res, next) {
-    res.render('summoner', {
-        summoner: summoner,
-        title: summoner.name + " on " + summoner.region + " - LOLSTATS.GG",
-        mastery: mastery,
-        rankedInfo: rankedInfo,
-        matches: matches
+let promiseMastery = function(){
+    return new Promise(function(resolve, reject) {
+        resolve('promiseMastery done');
     });
-});
+};
 
-function getsummonerID() {
-    api.get(summoner.region, 'summoner.getBySummonerName', summoner.name)
+let promiseMatchData = function(){
+    return new Promise(function(resolve, reject) {
+        setTimeout(function () {
+        resolve('promiseMatchData done');
+    }, 3000);
+    });
+};
+let promiseRankedData = function(){
+    return new Promise(function(resolve, reject) {
+        resolve('promiseRankedData done');
+    });
+};
+//**********************//
+//      FUNCTIONS       //
+//**********************//
+
+function getsummonerID(summonerRegion, summonerName) {
+    api.get(summonerRegion, 'summoner.getBySummonerName', summonerName)
         .then((data) => {
             //verifies that the summoner exists.
             if (data) {
@@ -120,33 +190,35 @@ function getsummonerID() {
                 summoner.profileIconId = data.profileIconId;
                 summoner.summonerLevel = data.summonerLevel;
                 summoner.exists = true;
-                //console.log(summoner.name + " has an id of " + summoner.accountId + ", a level of " + summoner.summonerLevel);
-                getRecentGames();
-                getHighestMastery();
+                getRecentGames(summoner.region, summoner.accountId, 10);
+                mastery = getHighestMastery(summoner.region, summoner.id);
                 getRankedInfo();
+                console.log("\n\ngetSummonerID complete and exists\n\n");
             } else {
                 summoner.exists = false;
                 console.log("summoner does not exist" + summoner.exists);
+                console.log("\n\ngetSummonerID complete and doesnt exist\n\n");
             }
         })
-        .then(console.log(".then test in getsummonerID"))
         .catch(error => console.log(error));
 }
 
-function getHighestMastery() {
-    api.get(summoner.region, 'championMastery.getAllChampionMasteries', summoner.id)
+function getHighestMastery(summonerRegion, summonerID) {
+    var dataMastery = {};
+    api.get(summonerRegion, 'championMastery.getAllChampionMasteries', summonerID)
         .then((data) => {
-            mastery.championId = data[0].championId;
-            mastery.championLevel = data[0].championLevel;
-            mastery.championPoints = data[0].championPoints;
-            for (var i = 0; i < Object.keys(championJSON.data).length; i++)
-                if ((mastery.championId) === (championJSON.data[Object.keys(championJSON.data)[i]].id)) {
-                    mastery.championName = championJSON.data[Object.keys(championJSON.data)[i]].name;
-                    mastery.championTitle = championJSON.data[Object.keys(championJSON.data)[i]].title;
-                }
+            dataMastery.championId = data[0].championId;
+            dataMastery.championLevel = data[0].championLevel;
+            dataMastery.championPoints = data[0].championPoints;
+                for (var i = 0; i < Object.keys(championJSON.data).length; i++)
+                    if ((dataMastery.championId) === (championJSON.data[Object.keys(championJSON.data)[i]].id)) {
+                        dataMastery.championName = championJSON.data[Object.keys(championJSON.data)[i]].name;
+                        dataMastery.championTitle = championJSON.data[Object.keys(championJSON.data)[i]].title;
+                    }
+                console.log("\n\ngetHighestMastery complete and valid\n\n");
         })
-        .then(console.log(".then test in getHighestMastery"))
         .catch(error => console.log(error));
+        return dataMastery;
 }
 
 function countValuesIn(array, defaultObject) {
@@ -177,10 +249,10 @@ function mostCommon(array) {
     return maxEl;
 }
 //gets players recent games
-function getRecentGames() {
-    api.get(summoner.region, 'match.getRecentMatchlist', summoner.accountId)
+function getRecentGames(summonerRegion, summonerAccID, noOfGames) {
+    api.get(summonerRegion, 'match.getRecentMatchlist', summonerAccID)
         .then((data) => {
-            for (i = 0; i < matches.number; i++) {
+            for (i = 0; i < noOfGames; i++) {
                 matches.ids[i] = data.matches[i].gameId;
                 matches.roles[i] = data.matches[i].role;
                 matches.lanes[i] = data.matches[i].lane;
@@ -188,12 +260,7 @@ function getRecentGames() {
                 matches.champions[i] = data.matches[i].champion;
 
             }
-            // console.log("recent matches are \n" + matches.ids);
-            // console.log("recent roles are \n" + matches.roles);
-            // console.log("recent lanes are \n" + matches.lanes);
-            // console.log("recent queue type are \n" + matches.queues);
-            // console.log("recent champions played are \n" + matches.champions);
-            for (i = 0; i < matches.number; i++) {
+            for (i = 0; i < noOfGames; i++) {
                 //console.log("role: " + matches.roles[i] + " lane: " + matches.lanes[i]);
                 if (matches.roles[i] === "SOLO" || matches.roles[i] === "DUO" || matches.roles[i] === "NONE") {
                     if (matches.lanes[i] === "TOP") {
@@ -216,16 +283,17 @@ function getRecentGames() {
             matches.championCount = countValuesIn(matches.champions, defaultChampionObj);
             //console.log(matches.championCount);
             getMatchData();
+            console.log("\n\ngetRecentGames complete and valid\n\n");
         })
 
         .catch(error => console.log(error));
 }
 
 function getMatchData() {
-    for (var z = 0; z < matches.number; z++) {
-        api.get(summoner.region, 'match.getMatch', matches.ids[z])
+    for (var i = 0; i < matches.number; i++) {
+        api.get(summoner.region, 'match.getMatch', matches.ids[i])
             .then((data) => {
-                console.log("for match " + data.gameId + "(game number " + z + ") we have the data:");
+                console.log("for match " + data.gameId + "(game number " + i + ") we have the data:");
                 for (var j = 0; j < Object.keys(data.participantIdentities).length; j++) {
                     if (data.participantIdentities[j].player.accountId === summoner.accountId) {
                         partID = data.participantIdentities[j].participantId;
@@ -243,6 +311,8 @@ function getMatchData() {
 
             })
     }
+    console.log("\n\ngetMatchData complete and valid\n\n");
+    console.log(matchDataList);
 }
 
 function getRankedInfo() {
@@ -269,13 +339,61 @@ function getRankedInfo() {
                 rankedInfo = rankedReset;
             }
         })
+        console.log("\n\ngetRankedInfo complete and valid\n\n");
 }
 
+
+//**********************//
+//       ROUTING        //
+//**********************//
+
+//HOMEPAGE
+router.get('/', function(req, res, next) {
+    res.render('index', {
+        title: "LOLSTATS.GG"
+    });
+});
+
+//GET DATA FROM FORM AND REDIRECT
 router.post('/summoner/submit', function(req, res, next) {
     summoner.region = req.body.summRegion;
     summoner.name = req.body.summName;
-    getsummonerID();
-    res.redirect('/summoner/lookup');
+    getsummonerID(summoner.region, summoner.name);
+    if (summoner.name) {
+        title = summoner.name + " on " + summoner.region + " - LOLSTATS.GG";
+    }
+    Promise.all([promiseID(), promiseMastery(), promiseMatchData(), promiseRankedData()]).then(function(){
+        console.log("all done!");
+        res.redirect('/summoner/lookup');
+    });
 });
-//easyrıder
+
+
+//DATA DISPLAY PAGE
+router.get('/summoner/lookup', function(req, res, next) {
+    res.render('summoner', {
+        summoner: summoner,
+        title,
+        mastery: mastery,
+        rankedInfo: rankedInfo,
+        matches: matches
+    });
+});
+
+router.get('/summoner/', function(req, res, next) {
+    res.redirect('/');
+});
+
+router.post('/test/submit', function(req, res, next) {
+    testFormIn = req.body.testIn;
+    res.redirect('/test/letsgo');
+});
+
+router.get('/test/letsgo', function(req, res, next) {
+    res.render('test', {
+        title: "test title",
+        testFormIn
+    });
+});
+
 module.exports = router;
