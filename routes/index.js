@@ -11,7 +11,19 @@ var api = TeemoJS(apiImport.key);
 //**********************//
 
 //summoner information
-var summoner = {
+ // var summoner = {
+ //    "profileIconId": null,
+ //    "name": "",
+ //    "summonerLevel": null,
+ //    "accountId": null,
+ //    "id": null,
+ //    "revisionDate": null,
+ //    "exists": false,
+ //    "region": null
+//}
+var summoner = {};
+
+var summonerAsyncTest = {
     "profileIconId": null,
     "name": "",
     "summonerLevel": null,
@@ -151,13 +163,13 @@ var matchDataList = {
 
 var testFormIn = "";
 
-let promiseID = function(){
+let promiseID = function() {
     return new Promise(function(resolve, reject) {
         resolve('promiseID done');
     });
 };
 
-let promiseMastery = function(){
+let promiseMastery = function() {
     return new Promise(function(resolve, reject) {
         resolve('promiseMastery done');
     });
@@ -170,38 +182,40 @@ let promiseMatchData = function(){
     }, 3000);
     });
 };
-let promiseRankedData = function(){
+let promiseRankedData = function() {
     return new Promise(function(resolve, reject) {
         resolve('promiseRankedData done');
     });
 };
+
+
 //**********************//
 //      FUNCTIONS       //
 //**********************//
 
-function getsummonerID(summonerRegion, summonerName) {
-    api.get(summonerRegion, 'summoner.getBySummonerName', summonerName)
-        .then((data) => {
-            //verifies that the summoner exists.
-            if (data) {
-                summoner.id = data.id;
-                summoner.accountId = data.accountId;
-                summoner.name = data.name;
-                summoner.profileIconId = data.profileIconId;
-                summoner.summonerLevel = data.summonerLevel;
-                summoner.exists = true;
-                getRecentGames(summoner.region, summoner.accountId, 10);
-                mastery = getHighestMastery(summoner.region, summoner.id);
-                getRankedInfo();
-                console.log("\n\ngetSummonerID complete and exists\n\n");
-            } else {
-                summoner.exists = false;
-                console.log("summoner does not exist" + summoner.exists);
-                console.log("\n\ngetSummonerID complete and doesnt exist\n\n");
-            }
-        })
-        .catch(error => console.log(error));
+async function getSummonerIDAsync(summonerRegion, summonerName) {
+    var data = await api.get(summonerRegion, 'summoner.getBySummonerName', summonerName);
+    var dataSummoner = {};
+    if (data) {
+        console.log("data stuff: name: " + data.name + " id: " + data.id + " accountId: " + data.accountId);
+        dataSummoner.id = data.id;
+        dataSummoner.accountId = data.accountId;
+        dataSummoner.name = data.name;
+        dataSummoner.profileIconId = data.profileIconId;
+        dataSummoner.summonerLevel = data.summonerLevel;
+        dataSummoner.exists = true
+        console.log("\n\ngetSummonerIDAsync complete and exists\n\n");
+    } else {
+        dataSummoner.exists = false;
+        console.log("summoner does not exist" + dataSummoner.exists);
+        console.log("\n\ngetSummonerID complete and doesnt exist\n\n");
+    }
+    console.log("dataSummoner");
+    console.log(dataSummoner);
+    return dataSummoner;
 }
+
+
 
 function getHighestMastery(summonerRegion, summonerID) {
     var dataMastery = {};
@@ -210,15 +224,15 @@ function getHighestMastery(summonerRegion, summonerID) {
             dataMastery.championId = data[0].championId;
             dataMastery.championLevel = data[0].championLevel;
             dataMastery.championPoints = data[0].championPoints;
-                for (var i = 0; i < Object.keys(championJSON.data).length; i++)
-                    if ((dataMastery.championId) === (championJSON.data[Object.keys(championJSON.data)[i]].id)) {
-                        dataMastery.championName = championJSON.data[Object.keys(championJSON.data)[i]].name;
-                        dataMastery.championTitle = championJSON.data[Object.keys(championJSON.data)[i]].title;
-                    }
-                console.log("\n\ngetHighestMastery complete and valid\n\n");
+            for (var i = 0; i < Object.keys(championJSON.data).length; i++)
+                if ((dataMastery.championId) === (championJSON.data[Object.keys(championJSON.data)[i]].id)) {
+                    dataMastery.championName = championJSON.data[Object.keys(championJSON.data)[i]].name;
+                    dataMastery.championTitle = championJSON.data[Object.keys(championJSON.data)[i]].title;
+                }
+            console.log("\n\ngetHighestMastery complete and valid\n\n");
         })
         .catch(error => console.log(error));
-        return dataMastery;
+    return dataMastery;
 }
 
 function countValuesIn(array, defaultObject) {
@@ -339,7 +353,7 @@ function getRankedInfo() {
                 rankedInfo = rankedReset;
             }
         })
-        console.log("\n\ngetRankedInfo complete and valid\n\n");
+    console.log("\n\ngetRankedInfo complete and valid\n\n");
 }
 
 
@@ -347,7 +361,7 @@ function getRankedInfo() {
 //       ROUTING        //
 //**********************//
 
-//HOMEPAGE
+//HOMEPAGEs
 router.get('/', function(req, res, next) {
     res.render('index', {
         title: "LOLSTATS.GG"
@@ -355,14 +369,16 @@ router.get('/', function(req, res, next) {
 });
 
 //GET DATA FROM FORM AND REDIRECT
-router.post('/summoner/submit', function(req, res, next) {
+router.post('/summoner/submit', async function(req, res, next) {
     summoner.region = req.body.summRegion;
     summoner.name = req.body.summName;
-    getsummonerID(summoner.region, summoner.name);
+    summoner = await getSummonerIDAsync(summoner.region, summoner.name);
+    console.log("summoner is");
+    console.log(summoner);
     if (summoner.name) {
         title = summoner.name + " on " + summoner.region + " - LOLSTATS.GG";
     }
-    Promise.all([promiseID(), promiseMastery(), promiseMatchData(), promiseRankedData()]).then(function(){
+    Promise.all([promiseID(), promiseMastery(), promiseMatchData(), promiseRankedData()]).then(function() {
         console.log("all done!");
         res.redirect('/summoner/lookup');
     });
