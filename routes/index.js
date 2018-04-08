@@ -227,9 +227,10 @@ function getSummonerID(summonerRegion, summonerName) {
 
 }
 
-function getHighestMastery(summonerRegion, summonerID) {
+
+async function getHighestMastery(summonerRegion, summonerID) {
     var dataMastery = {};
-    api.get(summonerRegion, 'championMastery.getAllChampionMasteries', summonerID)
+    var data = await api.get(summonerRegion, 'championMastery.getAllChampionMasteries', summonerID)
         .then((data) => {
             dataMastery.championId = data[0].championId;
             dataMastery.championLevel = data[0].championLevel;
@@ -247,7 +248,7 @@ function getHighestMastery(summonerRegion, summonerID) {
 
 
 //gets players recent games
-function getRecentGames(summonerRegion, summonerAccID, noOfGames) {
+async function getRecentGames(summonerRegion, summonerAccID, noOfGames) {
     var recentGamesData = {
         "ids": [], //ids of the matches
         "lanes": [], //lanes played
@@ -261,7 +262,7 @@ function getRecentGames(summonerRegion, summonerAccID, noOfGames) {
         "championCount": []
     };
     console.log("getRecentGames called with : " + summonerRegion + " " + summonerAccID + " " + noOfGames);
-    api.get(summonerRegion, 'match.getRecentMatchlist', summonerAccID)
+    var data = await api.get(summonerRegion, 'match.getRecentMatchlist', summonerAccID)
         .then((data) => {
             for (i = 0; i < noOfGames; i++) {
                 recentGamesData.ids[i] = data.matches[i].gameId;
@@ -300,9 +301,9 @@ function getRecentGames(summonerRegion, summonerAccID, noOfGames) {
     return recentGamesData;
 }
 
-function getMatchData(summonerRegion, matchIDs, noOfGames) {
+async function getMatchData(summonerRegion, matchIDs, noOfGames) {
     for (var i = 0; i < noOfGames; i++) {
-        api.get(summonerRegion, 'match.getMatch', matchIDs[i])
+        var data = await api.get(summonerRegion, 'match.getMatch', matchIDs[i])
             .then((data) => {
                 for (var j = 0; j < Object.keys(data.participantIdentities).length; j++) {
                     if (data.participantIdentities[j].player.accountId === summoner.accountId) {
@@ -316,13 +317,14 @@ function getMatchData(summonerRegion, matchIDs, noOfGames) {
                 }
 
             })
+            .catch(error => console.log(error));
     }
     console.log("\ngetMatchData complete\n");
 }
 
-function getRankedInfo(summonerRegion, summonerID) {
+async function getRankedInfo(summonerRegion, summonerID) {
     var dataRanked = {};
-    api.get(summonerRegion, 'league.getAllLeaguePositionsForSummoner', summonerID)
+    var data = await api.get(summonerRegion, 'league.getAllLeaguePositionsForSummoner', summonerID)
         .then((data) => {
             for (var i = 0; i < data.length; i++) {
                 if (data[i].queueType === "RANKED_SOLO_5x5") {
@@ -349,6 +351,7 @@ function getRankedInfo(summonerRegion, summonerID) {
 
 async function retreiveData(summonerRegion, summonerName) {
     summoner = await getSummonerID(summonerRegion, summonerName);
+    //summoner = await getSummonerIDTest(summonerRegion, summonerName);
     summoner.name = summonerName;
     summoner.region = summonerRegion;
     console.log("summoner");
@@ -408,7 +411,7 @@ router.get('/', function(req, res, next) {
 });
 
 //GET DATA FROM FORM AND REDIRECT
-router.post('/summoner/submit', function(req, res, next) {
+router.post('/summoner/submit', async function(req, res, next) {
     summoner.region = req.body.summRegion;
     summoner.name = req.body.summName;
     if (summoner.name) {
@@ -419,16 +422,16 @@ router.post('/summoner/submit', function(req, res, next) {
     console.log(x);
     x.then((testVar) => {
         console.log("test var: " + testVar);
-        setTimeout(function() {
-            console.log("summoner after 5s");
-            console.log(summoner);
-            console.log("mastery after 5s");
-            console.log(mastery);
-            console.log("matches after 5s");
-            console.log(matches);
-            console.log("rankedInfo after 5s");
-            console.log(rankedInfo);
-        }, 5000);
+        // setTimeout(function() {
+        //     console.log("summoner after 5s");
+        //     console.log(summoner);
+        //     console.log("mastery after 5s");
+        //     console.log(mastery);
+        //     console.log("matches after 5s");
+        //     console.log(matches);
+        //     console.log("rankedInfo after 5s");
+        //     console.log(rankedInfo);
+        // }, 5000);
         res.redirect('/summoner/lookup');
     })
 });
