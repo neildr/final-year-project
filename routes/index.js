@@ -32,13 +32,7 @@ var defaultChampionObj = {
 
 }
 
-var mastery = {
-    championId: "",
-    championLevel: "",
-    championPoints: "",
-    championName: "",
-    championTitle: ""
-};
+var mastery = {};
 
 var rankedInfo = {};
 
@@ -66,24 +60,23 @@ var testFormIn = "";
 
 function getSummonerID(summonerRegion, summonerName) {
     return new Promise((resolve, reject) => {
-        var dataSummoner = {};
+        var summonerData = {};
         api.get(summonerRegion, 'summoner.getBySummonerName', summonerName)
             .then((data) => {
                 if (data) {
-                    //console.log("data stuff: name: " + data.name + " id: " + data.id + " accountId: " + data.accountId);
-                    dataSummoner.id = data.id;
-                    dataSummoner.accountId = data.accountId;
-                    dataSummoner.name = data.name;
-                    dataSummoner.profileIconId = data.profileIconId;
-                    dataSummoner.summonerLevel = data.summonerLevel;
-                    dataSummoner.exists = true;
-                    dataSummoner.region = summonerRegion;
+                    summonerData.id = data.id;
+                    summonerData.accountId = data.accountId;
+                    summonerData.name = data.name;
+                    summonerData.profileIconId = data.profileIconId;
+                    summonerData.summonerLevel = data.summonerLevel;
+                    summonerData.exists = true;
+                    summonerData.region = summonerRegion;
                     console.log("\ngetSummonerID complete and exists\n");
                 } else {
-                    dataSummoner.exists = false;
+                    summonerData.exists = false;
                     console.log("\ngetSummonerID complete and doesnt exist\n");
                 }
-                resolve(dataSummoner);
+                resolve(summonerData);
             })
             .catch(error => console.log(error));
     })
@@ -105,7 +98,6 @@ async function getHighestMastery(summonerRegion, summonerID) {
                 }
         })
         .catch(error => console.log(error));
-    console.log("\ngetHighestMastery complete\n");
     return masteryData;
 }
 
@@ -123,10 +115,34 @@ async function getRecentGames(summonerRegion, summonerAccID, noOfGames) {
         "modePosition": "", //most common position
         "modeChampion": "", //most common champion
         "championCount": [],
-        "matchData": []
+        "matchData": [],
+        "averages": {
+            "kills": 0,
+            "deaths": 0,
+            "assists": 0,
+            "kdaRatio": 0,
+            "visionScore": 0,
+            "goldEarned": 0,
+            "totalDamageDealtToChampions": 0,
+            "magicDamageDealtToChampions": 0,
+            "physicalDamageDealtToChampions": 0,
+            "trueDamageDealtToChampions": 0,
+            "damageDealtToObjectives": 0,
+            "damageDealtToTurrets": 0,
+            "turretKills": 0,
+            "inhibitorKills": 0,
+            "totalMinionsKilled": 0,
+            "neutralMinionsKilled": 0,
+            "neutralMinionsKilledTeamJungle": 0,
+            "neutralMinionsKilledEnemyJungle": 0,
+            "csDiff": 0,
+            "csPerMin": 0,
+            "visionWardsBoughtInGame": 0,
+            "wardsPlaced": 0,
+            "wardsKilled": 0
+        }
     };
     var totalWins = 0;
-    console.log("getRecentGames called with : " + summonerRegion + " " + summonerAccID + " " + noOfGames);
     var data = await api.get(summonerRegion, 'match.getRecentMatchlist', summonerAccID)
         .then(async (data) => {
             for (i = 0; i < noOfGames; i++) {
@@ -160,6 +176,55 @@ async function getRecentGames(summonerRegion, summonerAccID, noOfGames) {
             recentGamesData.actualpositionCount = countValuesIn(recentGamesData.actualPosition, defaultPositionObj);
             recentGamesData.championCount = countValuesIn(recentGamesData.champions, defaultChampionObj);
             recentGamesData.winRatio = (totalWins / noOfGames).toFixed(2) * 100;
+            for (var i = 0; i < noOfGames; i++){
+                recentGamesData.averages.kills += ((recentGamesData.matchData[i].kills) / noOfGames);
+                recentGamesData.averages.deaths += ((recentGamesData.matchData[i].deaths) / noOfGames);
+                recentGamesData.averages.assists += ((recentGamesData.matchData[i].assists) / noOfGames);
+                recentGamesData.averages.kdaRatio += ((recentGamesData.matchData[i].kdaRatio) / noOfGames);
+                recentGamesData.averages.visionScore += ((recentGamesData.matchData[i].visionScore) / noOfGames);
+                recentGamesData.averages.goldEarned += ((recentGamesData.matchData[i].goldEarned) / noOfGames);
+                recentGamesData.averages.totalDamageDealtToChampions += ((recentGamesData.matchData[i].totalDamageDealtToChampions) / noOfGames);
+                recentGamesData.averages.magicDamageDealtToChampions += ((recentGamesData.matchData[i].magicDamageDealtToChampions) / noOfGames);
+                recentGamesData.averages.physicalDamageDealtToChampions += ((recentGamesData.matchData[i].physicalDamageDealtToChampions) / noOfGames);
+                recentGamesData.averages.trueDamageDealtToChampions += ((recentGamesData.matchData[i].trueDamageDealtToChampions) / noOfGames);
+                recentGamesData.averages.damageDealtToObjectives += ((recentGamesData.matchData[i].damageDealtToObjectives) / noOfGames);
+                recentGamesData.averages.damageDealtToTurrets += ((recentGamesData.matchData[i].damageDealtToTurrets) / noOfGames);
+                recentGamesData.averages.turretKills += ((recentGamesData.matchData[i].turretKills) / noOfGames);
+                recentGamesData.averages.inhibitorKills += ((recentGamesData.matchData[i].inhibitorKills) / noOfGames);
+                recentGamesData.averages.totalMinionsKilled += ((recentGamesData.matchData[i].totalMinionsKilled) / noOfGames);
+                recentGamesData.averages.neutralMinionsKilled += ((recentGamesData.matchData[i].neutralMinionsKilled) / noOfGames);
+                recentGamesData.averages.neutralMinionsKilledTeamJungle += ((recentGamesData.matchData[i].neutralMinionsKilledTeamJungle) / noOfGames);
+                recentGamesData.averages.neutralMinionsKilledEnemyJungle += ((recentGamesData.matchData[i].neutralMinionsKilledEnemyJungle) / noOfGames);
+                recentGamesData.averages.csDiff += ((recentGamesData.matchData[i].csDiff) / noOfGames);
+                recentGamesData.averages.csPerMin += ((recentGamesData.matchData[i].csPerMin) / noOfGames);
+                recentGamesData.averages.visionWardsBoughtInGame += ((recentGamesData.matchData[i].visionWardsBoughtInGame) / noOfGames);
+                recentGamesData.averages.wardsPlaced += ((recentGamesData.matchData[i].wardsPlaced) / noOfGames);
+                recentGamesData.averages.wardsKilled += ((recentGamesData.matchData[i].wardsKilled) / noOfGames);
+            }
+            recentGamesData.averages.kills = recentGamesData.averages.kills.toFixed(2);
+            recentGamesData.averages.deaths = recentGamesData.averages.deaths.toFixed(2);
+            recentGamesData.averages.assists = recentGamesData.averages.assists.toFixed(2);
+            recentGamesData.averages.kdaRatio = recentGamesData.averages.kdaRatio.toFixed(2);
+            recentGamesData.averages.visionScore = recentGamesData.averages.visionScore.toFixed(2);
+            recentGamesData.averages.goldEarned = recentGamesData.averages.goldEarned.toFixed(2);
+            recentGamesData.averages.totalDamageDealtToChampions = recentGamesData.averages.totalDamageDealtToChampions.toFixed(2);
+            recentGamesData.averages.magicDamageDealtToChampions = recentGamesData.averages.magicDamageDealtToChampions.toFixed(2);
+            recentGamesData.averages.physicalDamageDealtToChampions = recentGamesData.averages.physicalDamageDealtToChampions.toFixed(2);
+            recentGamesData.averages.trueDamageDealtToChampions = recentGamesData.averages.trueDamageDealtToChampions.toFixed(2);
+            recentGamesData.averages.damageDealtToObjectives = recentGamesData.averages.damageDealtToObjectives.toFixed(2);
+            recentGamesData.averages.damageDealtToTurrets = recentGamesData.averages.damageDealtToTurrets.toFixed(2);
+            recentGamesData.averages.turretKills = recentGamesData.averages.turretKills.toFixed(2);
+            recentGamesData.averages.inhibitorKills = recentGamesData.averages.inhibitorKills.toFixed(2);
+            recentGamesData.averages.totalMinionsKilled = recentGamesData.averages.totalMinionsKilled.toFixed(2);
+            recentGamesData.averages.neutralMinionsKilled = recentGamesData.averages.neutralMinionsKilled.toFixed(2);
+            recentGamesData.averages.neutralMinionsKilledTeamJungle = recentGamesData.averages.neutralMinionsKilledTeamJungle.toFixed(2);
+            recentGamesData.averages.neutralMinionsKilledEnemyJungle = recentGamesData.averages.neutralMinionsKilledEnemyJungle.toFixed(2);
+            recentGamesData.averages.csDiff = recentGamesData.averages.csDiff.toFixed(2);
+            recentGamesData.averages.csPerMin = recentGamesData.averages.csPerMin.toFixed(2);
+            recentGamesData.averages.visionWardsBoughtInGame = recentGamesData.averages.visionWardsBoughtInGame.toFixed(2);
+            recentGamesData.averages.wardsPlaced = recentGamesData.averages.wardsPlaced.toFixed(3);
+            recentGamesData.averages.wardsKilled = recentGamesData.averages.wardsKilled.toFixed(2);
+            console.log(Object.keys(recentGamesData.averages));
             console.log("win ratio is " + recentGamesData.winRatio);
             console.log("\ngetRecentGames complete\n");
         })
@@ -169,8 +234,7 @@ async function getRecentGames(summonerRegion, summonerAccID, noOfGames) {
 
 async function getMatchData(summonerRegion, matchID) {
     var participantIDExt;
-    var outputString;
-    var output = {
+    var matchData = {
         "matchLength": null,
         "kills": null,
         "deaths": null,
@@ -197,78 +261,75 @@ async function getMatchData(summonerRegion, matchID) {
         "wardsPlaced": null,
         "wardsKilled": null
     };
-    console.log("test boi");
     var data = await api.get(summonerRegion, 'match.getMatch', matchID)
         .then((data) => {
-            output.matchLength = data.gameDuration;
+            matchData.matchLength = data.gameDuration;
             for (var i = 0; i < Object.keys(data.participantIdentities).length; i++) {
                 if (data.participantIdentities[i].player.accountId === summoner.accountId) {
                     participantIDExt = data.participantIdentities[i].participantId;
                     for (var j = 0; j < Object.keys(data.participants).length; j++) {
                         if (data.participants[j].participantId === participantIDExt) {
-                            output.kills = data.participants[j].stats.kills;
-                            output.deaths = data.participants[j].stats.deaths;
+                            matchData.kills = data.participants[j].stats.kills;
+                            matchData.deaths = data.participants[j].stats.deaths;
                             var ratioDeaths = data.participants[j].stats.deaths;
-                            output.assists = data.participants[j].stats.assists;
+                            matchData.assists = data.participants[j].stats.assists;
                             if(ratioDeaths === 0){
                                 ratioDeaths = 1;
                             }
-                            output.kdaRatio = ((data.participants[j].stats.kills + data.participants[j].stats.assists) / ratioDeaths).toFixed(2);
+                            matchData.kdaRatio = ((data.participants[j].stats.kills + data.participants[j].stats.assists) / ratioDeaths).toFixed(2);
                             if (data.participants[j].stats.win === true) {
-                                output.outcome = "WIN";
+                                matchData.outcome = "WIN";
                             } else {
-                                output.outcome = "LOSE";
+                                matchData.outcome = "LOSE";
                             }
-                            output.visionScore = data.participants[j].stats.visionScore;
-                            output.goldEarned = data.participants[j].stats.goldEarned;
-                            output.totalDamageDealtToChampions = data.participants[j].stats.totalDamageDealtToChampions;
-                            output.magicDamageDealtToChampions = data.participants[j].stats.magicDamageDealtToChampions;
-                            output.physicalDamageDealtToChampions = data.participants[j].stats.physicalDamageDealtToChampions;
-                            output.trueDamageDealtToChampions = data.participants[j].stats.trueDamageDealtToChampions;
-                            output.damageDealtToObjectives = data.participants[j].stats.damageDealtToObjectives;
-                            output.damageDealtToTurrets = data.participants[j].stats.damageDealtToTurrets;
-                            output.turretKills = data.participants[j].stats.turretKills;
-                            output.inhibitorKills = data.participants[j].stats.inhibitorKills;
-                            output.totalMinionsKilled = data.participants[j].stats.totalMinionsKilled;
-                            output.neutralMinionsKilled = data.participants[j].stats.neutralMinionsKilled;
-                            output.neutralMinionsKilledTeamJungle = data.participants[j].stats.neutralMinionsKilledTeamJungle;
-                            output.neutralMinionsKilledEnemyJungle = data.participants[j].stats.neutralMinionsKilledEnemyJungle;
+                            matchData.visionScore = data.participants[j].stats.visionScore;
+                            matchData.goldEarned = data.participants[j].stats.goldEarned;
+                            matchData.totalDamageDealtToChampions = data.participants[j].stats.totalDamageDealtToChampions;
+                            matchData.magicDamageDealtToChampions = data.participants[j].stats.magicDamageDealtToChampions;
+                            matchData.physicalDamageDealtToChampions = data.participants[j].stats.physicalDamageDealtToChampions;
+                            matchData.trueDamageDealtToChampions = data.participants[j].stats.trueDamageDealtToChampions;
+                            matchData.damageDealtToObjectives = data.participants[j].stats.damageDealtToObjectives;
+                            matchData.damageDealtToTurrets = data.participants[j].stats.damageDealtToTurrets;
+                            matchData.turretKills = data.participants[j].stats.turretKills;
+                            matchData.inhibitorKills = data.participants[j].stats.inhibitorKills;
+                            matchData.totalMinionsKilled = data.participants[j].stats.totalMinionsKilled;
+                            matchData.neutralMinionsKilled = data.participants[j].stats.neutralMinionsKilled;
+                            matchData.neutralMinionsKilledTeamJungle = data.participants[j].stats.neutralMinionsKilledTeamJungle;
+                            matchData.neutralMinionsKilledEnemyJungle = data.participants[j].stats.neutralMinionsKilledEnemyJungle;
                             if (data.participants[j].timeline.csDiffPerMinDeltas){
-                                output.csDiff = (data.participants[j].timeline.csDiffPerMinDeltas["0-10"]).toFixed(2);
+                                matchData.csDiff = (data.participants[j].timeline.csDiffPerMinDeltas["0-10"]).toFixed(2);
                             } else {
-                                output.csDiff = (data.participants[j].timeline.creepsPerMinDeltas["0-10"]).toFixed(2);
+                                matchData.csDiff = (data.participants[j].timeline.creepsPerMinDeltas["0-10"]).toFixed(2);
                             }
-                            output.visionWardsBoughtInGame = data.participants[j].stats.visionWardsBoughtInGame;
-                            output.wardsPlaced = data.participants[j].stats.wardsPlaced;
-                            output.wardsKilled = data.participants[j].stats.wardsKilled;
-                            output.csPerMin = ((data.participants[j].stats.totalMinionsKilled / data.gameDuration) * 60).toFixed(2);
+                            matchData.visionWardsBoughtInGame = data.participants[j].stats.visionWardsBoughtInGame;
+                            matchData.wardsPlaced = data.participants[j].stats.wardsPlaced;
+                            matchData.wardsKilled = data.participants[j].stats.wardsKilled;
+                            matchData.csPerMin = ((data.participants[j].stats.totalMinionsKilled / data.gameDuration) * 60).toFixed(2);
                         }
                     }
                 }
             }
         })
         .catch(error => console.log(error));
-    return output;
-    return outputString;
-    //console.log("\ngetMatchData complete\n");
+    return matchData;
 }
 
 async function getRankedInfo(summonerRegion, summonerID) {
-    var dataRanked = {};
+    var rankedData = {};
     var data = await api.get(summonerRegion, 'league.getAllLeaguePositionsForSummoner', summonerID)
         .then((data) => {
             for (var i = 0; i < data.length; i++) {
                 if (data[i].queueType === "RANKED_SOLO_5x5") {
-                    dataRanked.wins = data[i].wins;
-                    dataRanked.losses = data[i].losses;
-                    dataRanked.leagueName = data[i].leagueName;
-                    dataRanked.rank = data[i].rank;
-                    dataRanked.tier = data[i].tier;
-                    dataRanked.leaguePoints = data[i].leaguePoints;
-                    dataRanked.totalGamesRanked = dataRanked.wins + dataRanked.losses;
-                    dataRanked.winRateRanked = ((dataRanked.wins / dataRanked.totalGamesRanked) * 100).toFixed(2);
+                    rankedData.wins = data[i].wins;
+                    rankedData.losses = data[i].losses;
+                    rankedData.leagueName = data[i].leagueName;
+                    rankedData.rank = data[i].rank;
+                    rankedData.tier = data[i].tier;
+                    rankedData.leaguePoints = data[i].leaguePoints;
+                    rankedData.totalGamesRanked = rankedData.wins + rankedData.losses;
+                    rankedData.winRateRanked = ((rankedData.wins / rankedData.totalGamesRanked) * 100).toFixed(2);
                     console.log("\n\ngetRankedInfo complete and valid\n\n");
-                    console.log(dataRanked);
+                    console.log(rankedData);
                 }
             }
             if (data.length === 0) {
@@ -277,7 +338,7 @@ async function getRankedInfo(summonerRegion, summonerID) {
         })
         .catch(error => console.log(error));
     console.log("\ngetRankedInfo complete\n");
-    return dataRanked;
+    return rankedData;
 }
 
 async function retreiveData(summonerRegion, summonerName) {
