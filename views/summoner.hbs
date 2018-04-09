@@ -29,13 +29,15 @@
             {{summoner.name}} in the last {{matches.ids.length}} matches has mainly played {{matches.modePosition}}, and has mainly played <img src="http://stelar7.no/cdragon/latest/champion-icons/{{matches.modeChampion}}.png" />
         </div>
         <div class="testWhite">
+            {{matches.averages.kills}}
+        </div>
+        <div class="testWhite">
             {{#if rankedInfo.tier}}
                 {{summoner.name}} is {{ rankedInfo.tier }} {{rankedInfo.rank}} with {{rankedInfo.leaguePoints}} LP in {{rankedInfo.leagueName}}, with {{rankedInfo.wins}} wins and {{rankedInfo.losses}} losses in {{rankedInfo.totalGamesRanked}} games, giving a {{rankedInfo.winRateRanked}}%
                 win ratio
             {{else}}
                 {{summoner.name}} is Unranked on Summoner's rift
             {{/if}}
-            {{testMastery}}
         </div>
         <div>
             {{#if rankedInfo.tier}}
