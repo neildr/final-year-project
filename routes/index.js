@@ -71,10 +71,8 @@ function getSummonerID(summonerRegion, summonerName) {
                     summonerData.summonerLevel = data.summonerLevel;
                     summonerData.exists = true;
                     summonerData.region = summonerRegion;
-                    console.log("\ngetSummonerID complete and exists\n");
                 } else {
                     summonerData.exists = false;
-                    console.log("\ngetSummonerID complete and doesnt exist\n");
                 }
                 resolve(summonerData);
             })
@@ -222,9 +220,9 @@ async function getRecentGames(summonerRegion, summonerAccID, noOfGames) {
             recentGamesData.averages.csDiff = recentGamesData.averages.csDiff.toFixed(2);
             recentGamesData.averages.csPerMin = recentGamesData.averages.csPerMin.toFixed(2);
             recentGamesData.averages.visionWardsBoughtInGame = recentGamesData.averages.visionWardsBoughtInGame.toFixed(2);
-            recentGamesData.averages.wardsPlaced = recentGamesData.averages.wardsPlaced.toFixed(3);
+            recentGamesData.averages.wardsPlaced = recentGamesData.averages.wardsPlaced.toFixed(2);
             recentGamesData.averages.wardsKilled = recentGamesData.averages.wardsKilled.toFixed(2);
-            console.log(Object.keys(recentGamesData.averages));
+            console.log((Object.keys(recentGamesData.averages)).length);
             console.log("win ratio is " + recentGamesData.winRatio);
             console.log("\ngetRecentGames complete\n");
         })
@@ -235,12 +233,10 @@ async function getRecentGames(summonerRegion, summonerAccID, noOfGames) {
 async function getMatchData(summonerRegion, matchID) {
     var participantIDExt;
     var matchData = {
-        "matchLength": null,
         "kills": null,
         "deaths": null,
         "assists": null,
         "kdaRatio": null,
-        "outcome": "",
         "visionScore": null,
         "goldEarned": null,
         "totalDamageDealtToChampions": null,
@@ -259,7 +255,9 @@ async function getMatchData(summonerRegion, matchID) {
         "csPerMin": null,
         "visionWardsBoughtInGame": null,
         "wardsPlaced": null,
-        "wardsKilled": null
+        "wardsKilled": null,
+        "matchLength": null,
+        "outcome": ""
     };
     var data = await api.get(summonerRegion, 'match.getMatch', matchID)
         .then((data) => {
@@ -328,7 +326,6 @@ async function getRankedInfo(summonerRegion, summonerID) {
                     rankedData.leaguePoints = data[i].leaguePoints;
                     rankedData.totalGamesRanked = rankedData.wins + rankedData.losses;
                     rankedData.winRateRanked = ((rankedData.wins / rankedData.totalGamesRanked) * 100).toFixed(2);
-                    console.log("\n\ngetRankedInfo complete and valid\n\n");
                     console.log(rankedData);
                 }
             }
