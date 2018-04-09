@@ -61,9 +61,8 @@ th.region {
     width: 100%;
     font-size: 24px;
     font-family: 'Nunito', sans-serif;
-    color: white;
-    background-color: transparent;
-    text-align: center;
+    color: black;
+    background-color: white;
     border-color: white;
     border-width: 1px;
     border-style: solid;

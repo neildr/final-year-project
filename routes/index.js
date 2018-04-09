@@ -10,64 +10,14 @@ var api = TeemoJS(apiImport.key);
 //      VARIABLES       //
 //**********************//
 
-//summoner information
-// var summoner = {
-//    "profileIconId": null,
-//    "name": "",
-//    "summonerLevel": null,
-//    "accountId": null,
-//    "id": null,
-//    "revisionDate": null,
-//    "exists": false,
-//    "region": null
-//}
 var summoner = {};
 
-var summonerAsyncTest = {
-    "profileIconId": null,
-    "name": "",
-    "summonerLevel": null,
-    "accountId": null,
-    "id": null,
-    "revisionDate": null,
-    "exists": false,
-    "region": null
-}
-var title = "no";
-//champion mastery
-var summonerMastery;
+var title = "Access Denied";
 
-//recent game information:
-//number of most recent matches to search
 
 //stores information about the last 10 matches
-var matches = {
-    "number": 10, //number of recent matches to go through
-    "ids": [], //ids of the matches
-    "lanes": [], //lanes played
-    "roles": [], //roles played
-    "queues": [], //queue type
-    "champions": [], //champions played
-    "actualPosition": [], //finding the actual position
-    "actualpositionCount": [], //counts actual position occurrences
-    "modePosition": "", //most common position
-    "modeChampion": "", //most common champion
-    "championCount": []
-}
+var matches = {};
 
-var testMatches = {
-    "number": 10, //number of recent matches to go through
-    "ids": [], //ids of the matches
-    "lanes": [], //lanes played
-    "roles": [], //roles played
-    "queues": [], //queue type
-    "champions": [], //champions played
-    "actualPosition": [], //finding the actual position
-    "actualpositionCount": [], //counts actual position occurrences
-    "modePosition": "", //most common position
-    "modeChampion": "", //most common champion
-    "championCount": []
-}
 
 //default positions object - stops errors
 var defaultPositionObj = {
@@ -81,11 +31,6 @@ var defaultPositionObj = {
 var defaultChampionObj = {
 
 }
-var matchData = {
-    "kills": "",
-    "deaths": "",
-    "assists": ""
-}
 
 var mastery = {
     championId: "",
@@ -95,32 +40,8 @@ var mastery = {
     championTitle: ""
 };
 
-var testMastery = {
-    championId: "",
-    championLevel: "",
-    championPoints: "",
-    championName: "",
-    championTitle: ""
-};
+var rankedInfo = {};
 
-var testMastery2 = {
-    championId: "",
-    championLevel: "",
-    championPoints: "",
-    championName: "",
-    championTitle: ""
-};
-
-var rankedInfo = {
-    wins: null,
-    losses: null,
-    totalGamesRanked: null,
-    winRateRanked: null,
-    leagueName: null,
-    rank: null,
-    tier: null,
-    leaguePoints: null
-};
 
 var rankedReset = {
     wins: null,
@@ -133,68 +54,10 @@ var rankedReset = {
     leaguePoints: null
 };
 
-//for checking if a summoner exists
-var success;
-//more test stuff
-var testMatch = [];
-var partID;
-var matchDataList = {
-    "match0": {
-        "kills": "",
-        "deaths": "",
-        "assists": ""
-    },
-    "match1": {
-        "kills": "",
-        "deaths": "",
-        "assists": ""
-    },
-    "match2": {
-        "kills": "",
-        "deaths": "",
-        "assists": ""
-    },
-    "match3": {
-        "kills": "",
-        "deaths": "",
-        "assists": ""
-    },
-    "match4": {
-        "kills": "",
-        "deaths": "",
-        "assists": ""
-    },
-    "match5": {
-        "kills": "",
-        "deaths": "",
-        "assists": ""
-    },
-    "match6": {
-        "kills": "",
-        "deaths": "",
-        "assists": ""
-    },
-    "match7": {
-        "kills": "",
-        "deaths": "",
-        "assists": ""
-    },
-    "match8": {
-        "kills": "",
-        "deaths": "",
-        "assists": ""
-    },
-    "match9": {
-        "kills": "",
-        "deaths": "",
-        "assists": ""
-    },
-}
+
 
 var testFormIn = "";
 
-
-let promiseTest;
 
 //**********************//
 //      FUNCTIONS       //
@@ -229,21 +92,21 @@ function getSummonerID(summonerRegion, summonerName) {
 
 
 async function getHighestMastery(summonerRegion, summonerID) {
-    var dataMastery = {};
+    var masteryData = {};
     var data = await api.get(summonerRegion, 'championMastery.getAllChampionMasteries', summonerID)
         .then((data) => {
-            dataMastery.championId = data[0].championId;
-            dataMastery.championLevel = data[0].championLevel;
-            dataMastery.championPoints = data[0].championPoints;
+            masteryData.championId = data[0].championId;
+            masteryData.championLevel = data[0].championLevel;
+            masteryData.championPoints = data[0].championPoints;
             for (var i = 0; i < Object.keys(championJSON.data).length; i++)
-                if ((dataMastery.championId) === (championJSON.data[Object.keys(championJSON.data)[i]].id)) {
-                    dataMastery.championName = championJSON.data[Object.keys(championJSON.data)[i]].name;
-                    dataMastery.championTitle = championJSON.data[Object.keys(championJSON.data)[i]].title;
+                if ((masteryData.championId) === (championJSON.data[Object.keys(championJSON.data)[i]].id)) {
+                    masteryData.championName = championJSON.data[Object.keys(championJSON.data)[i]].name;
+                    masteryData.championTitle = championJSON.data[Object.keys(championJSON.data)[i]].title;
                 }
         })
         .catch(error => console.log(error));
     console.log("\ngetHighestMastery complete\n");
-    return dataMastery;
+    return masteryData;
 }
 
 
@@ -259,20 +122,20 @@ async function getRecentGames(summonerRegion, summonerAccID, noOfGames) {
         "actualpositionCount": [], //counts actual position occurrences
         "modePosition": "", //most common position
         "modeChampion": "", //most common champion
-        "championCount": []
+        "championCount": [],
+        "matchData": []
     };
+    var totalWins = 0;
     console.log("getRecentGames called with : " + summonerRegion + " " + summonerAccID + " " + noOfGames);
     var data = await api.get(summonerRegion, 'match.getRecentMatchlist', summonerAccID)
-        .then((data) => {
+        .then(async (data) => {
             for (i = 0; i < noOfGames; i++) {
+                if (data.matches[i].queue === 400 || data.matches[i].queue === 420 || data.matches[i].queue === 430 || data.matches[i].queue === 440) {
                 recentGamesData.ids[i] = data.matches[i].gameId;
                 recentGamesData.roles[i] = data.matches[i].role;
                 recentGamesData.lanes[i] = data.matches[i].lane;
                 recentGamesData.queues[i] = data.matches[i].queue;
                 recentGamesData.champions[i] = data.matches[i].champion;
-
-            }
-            for (i = 0; i < noOfGames; i++) {
                 if (recentGamesData.roles[i] === "SOLO" || recentGamesData.roles[i] === "DUO" || recentGamesData.roles[i] === "NONE") {
                     if (recentGamesData.lanes[i] === "TOP") {
                         recentGamesData.actualPosition[i] = "TOP";
@@ -286,40 +149,108 @@ async function getRecentGames(summonerRegion, summonerAccID, noOfGames) {
                 } else if (recentGamesData.roles[i] === "DUO_SUPPORT") {
                     recentGamesData.actualPosition[i] = "SUPPORT";
                 }
-                //console.log(recentGamesData.actualPosition[i] + " in game " + i);
+                recentGamesData.matchData[i] = await getMatchData(summonerRegion, data.matches[i].gameId)
+                if (recentGamesData.matchData[i].outcome === "WIN") {
+                    totalWins++;
+                }
             }
+        }
             recentGamesData.modePosition = mostCommon(recentGamesData.actualPosition);
             recentGamesData.modeChampion = mostCommon(recentGamesData.champions);
             recentGamesData.actualpositionCount = countValuesIn(recentGamesData.actualPosition, defaultPositionObj);
             recentGamesData.championCount = countValuesIn(recentGamesData.champions, defaultChampionObj);
-            //console.log(recentGamesData);
-            getMatchData(summonerRegion, recentGamesData.ids, noOfGames);
+            recentGamesData.winRatio = (totalWins / noOfGames).toFixed(2) * 100;
+            console.log("win ratio is " + recentGamesData.winRatio);
             console.log("\ngetRecentGames complete\n");
-
         })
         .catch(error => console.log(error));
     return recentGamesData;
 }
 
-async function getMatchData(summonerRegion, matchIDs, noOfGames) {
-    for (var i = 0; i < noOfGames; i++) {
-        var data = await api.get(summonerRegion, 'match.getMatch', matchIDs[i])
-            .then((data) => {
-                for (var j = 0; j < Object.keys(data.participantIdentities).length; j++) {
-                    if (data.participantIdentities[j].player.accountId === summoner.accountId) {
-                        partID = data.participantIdentities[j].participantId;
-                        for (var k = 0; k < Object.keys(data.participants).length; k++) {
-                            if (data.participants[k].participantId === partID) {
-                                console.log("KILLS: " + data.participants[k].stats.kills + "DEATHS: " + data.participants[k].stats.deaths + "ASSISTS: " + data.participants[k].stats.assists);
+async function getMatchData(summonerRegion, matchID) {
+    var participantIDExt;
+    var outputString;
+    var output = {
+        "matchLength": null,
+        "kills": null,
+        "deaths": null,
+        "assists": null,
+        "kdaRatio": null,
+        "outcome": "",
+        "visionScore": null,
+        "goldEarned": null,
+        "totalDamageDealtToChampions": null,
+        "magicDamageDealtToChampions": null,
+        "physicalDamageDealtToChampions": null,
+        "trueDamageDealtToChampions": null,
+        "damageDealtToObjectives": null,
+        "damageDealtToTurrets": null,
+        "turretKills": null,
+        "inhibitorKills": null,
+        "totalMinionsKilled": null,
+        "neutralMinionsKilled": null,
+        "neutralMinionsKilledTeamJungle": null,
+        "neutralMinionsKilledEnemyJungle": null,
+        "csDiff": null,
+        "csPerMin": null,
+        "visionWardsBoughtInGame": null,
+        "wardsPlaced": null,
+        "wardsKilled": null
+    };
+    console.log("test boi");
+    var data = await api.get(summonerRegion, 'match.getMatch', matchID)
+        .then((data) => {
+            output.matchLength = data.gameDuration;
+            for (var i = 0; i < Object.keys(data.participantIdentities).length; i++) {
+                if (data.participantIdentities[i].player.accountId === summoner.accountId) {
+                    participantIDExt = data.participantIdentities[i].participantId;
+                    for (var j = 0; j < Object.keys(data.participants).length; j++) {
+                        if (data.participants[j].participantId === participantIDExt) {
+                            output.kills = data.participants[j].stats.kills;
+                            output.deaths = data.participants[j].stats.deaths;
+                            var ratioDeaths = data.participants[j].stats.deaths;
+                            output.assists = data.participants[j].stats.assists;
+                            if(ratioDeaths === 0){
+                                ratioDeaths = 1;
                             }
+                            output.kdaRatio = ((data.participants[j].stats.kills + data.participants[j].stats.assists) / ratioDeaths).toFixed(2);
+                            if (data.participants[j].stats.win === true) {
+                                output.outcome = "WIN";
+                            } else {
+                                output.outcome = "LOSE";
+                            }
+                            output.visionScore = data.participants[j].stats.visionScore;
+                            output.goldEarned = data.participants[j].stats.goldEarned;
+                            output.totalDamageDealtToChampions = data.participants[j].stats.totalDamageDealtToChampions;
+                            output.magicDamageDealtToChampions = data.participants[j].stats.magicDamageDealtToChampions;
+                            output.physicalDamageDealtToChampions = data.participants[j].stats.physicalDamageDealtToChampions;
+                            output.trueDamageDealtToChampions = data.participants[j].stats.trueDamageDealtToChampions;
+                            output.damageDealtToObjectives = data.participants[j].stats.damageDealtToObjectives;
+                            output.damageDealtToTurrets = data.participants[j].stats.damageDealtToTurrets;
+                            output.turretKills = data.participants[j].stats.turretKills;
+                            output.inhibitorKills = data.participants[j].stats.inhibitorKills;
+                            output.totalMinionsKilled = data.participants[j].stats.totalMinionsKilled;
+                            output.neutralMinionsKilled = data.participants[j].stats.neutralMinionsKilled;
+                            output.neutralMinionsKilledTeamJungle = data.participants[j].stats.neutralMinionsKilledTeamJungle;
+                            output.neutralMinionsKilledEnemyJungle = data.participants[j].stats.neutralMinionsKilledEnemyJungle;
+                            if (data.participants[j].timeline.csDiffPerMinDeltas){
+                                output.csDiff = (data.participants[j].timeline.csDiffPerMinDeltas["0-10"]).toFixed(2);
+                            } else {
+                                output.csDiff = (data.participants[j].timeline.creepsPerMinDeltas["0-10"]).toFixed(2);
+                            }
+                            output.visionWardsBoughtInGame = data.participants[j].stats.visionWardsBoughtInGame;
+                            output.wardsPlaced = data.participants[j].stats.wardsPlaced;
+                            output.wardsKilled = data.participants[j].stats.wardsKilled;
+                            output.csPerMin = ((data.participants[j].stats.totalMinionsKilled / data.gameDuration) * 60).toFixed(2);
                         }
                     }
                 }
-
-            })
-            .catch(error => console.log(error));
-    }
-    console.log("\ngetMatchData complete\n");
+            }
+        })
+        .catch(error => console.log(error));
+    return output;
+    return outputString;
+    //console.log("\ngetMatchData complete\n");
 }
 
 async function getRankedInfo(summonerRegion, summonerID) {
@@ -351,22 +282,13 @@ async function getRankedInfo(summonerRegion, summonerID) {
 
 async function retreiveData(summonerRegion, summonerName) {
     summoner = await getSummonerID(summonerRegion, summonerName);
-    //summoner = await getSummonerIDTest(summonerRegion, summonerName);
     summoner.name = summonerName;
     summoner.region = summonerRegion;
-    console.log("summoner");
-    console.log(summoner);
     if (summoner.exists) {
         mastery = await getHighestMastery(summonerRegion, summoner.id);
-        console.log("mastery");
-        console.log(mastery);
         matches = await getRecentGames(summonerRegion, summoner.accountId, 10);
-        console.log("matches");
-        console.log(matches);
         rankedInfo = await getRankedInfo(summonerRegion, summoner.id);
-        console.log("rankedInfo");
-        console.log(rankedInfo);
-        console.log("calls done");
+        console.log(matches);
     }
     return "done";
 }
@@ -418,20 +340,7 @@ router.post('/summoner/submit', async function(req, res, next) {
         title = summoner.name + " on " + summoner.region + " - LOLSTATS.GG";
     }
     var x = retreiveData(summoner.region, summoner.name);
-    console.log("x is:");
-    console.log(x);
     x.then((testVar) => {
-        console.log("test var: " + testVar);
-        // setTimeout(function() {
-        //     console.log("summoner after 5s");
-        //     console.log(summoner);
-        //     console.log("mastery after 5s");
-        //     console.log(mastery);
-        //     console.log("matches after 5s");
-        //     console.log(matches);
-        //     console.log("rankedInfo after 5s");
-        //     console.log(rankedInfo);
-        // }, 5000);
         res.redirect('/summoner/lookup');
     })
 });
