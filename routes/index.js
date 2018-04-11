@@ -17,7 +17,7 @@ var title = "Access Denied";
 
 //stores information about the last 10 matches
 var matches = {};
-
+var testArray = [1,2,3,4];
 
 //default positions object - stops errors
 var defaultPositionObj = {
@@ -183,9 +183,6 @@ async function getRecentGames(summonerRegion, summonerAccID, noOfGames) {
             recentGamesData.actualpositionCount = countValuesIn(recentGamesData.actualPosition, defaultPositionObj);
             recentGamesData.championCount = countValuesIn(recentGamesData.champions, defaultChampionObj);
             recentGamesData.winRatio = (totalWins / noOfGames).toFixed(2) * 100;
-            console.log(recentGamesData.averages);
-            console.log("win ratio is " + recentGamesData.winRatio);
-            console.log("\ngetRecentGames complete\n");
         })
         .catch(error => console.log(error));
     return recentGamesData;
@@ -200,6 +197,22 @@ async function getMatchData(summonerRegion, matchID) {
         "kdaRatio": null,
         "visionScore": null,
         "goldEarned": null,
+        "spell1Id": null,
+        "spell2Id": null,
+        "championId": null,
+        "item0": null,
+        "item1": null,
+        "item2": null,
+        "item3": null,
+        "item4": null,
+        "item5": null,
+        "item6": null,
+        "perk0": null,
+        "perk1": null,
+        "perk2": null,
+        "perk3": null,
+        "perk4": null,
+        "perk5": null,
         "totalDamageDealtToChampions": null,
         "magicDamageDealtToChampions": null,
         "physicalDamageDealtToChampions": null,
@@ -220,8 +233,8 @@ async function getMatchData(summonerRegion, matchID) {
         "matchLength": null,
         "outcome": ""
     };
-    var itemsInJSON = ['kills', 'deaths', 'assists', 'kdaRatio', 'visionScore',
-        'goldEarned', 'totalDamageDealtToChampions', 'magicDamageDealtToChampions', 'physicalDamageDealtToChampions',
+    var itemsInJSON = ['kills', 'deaths', 'assists', 'kdaRatio', 'visionScore', 'goldEarned', 'item0', 'item1', 'item2', 'item3', 'item4', 'item5','item6', 'perk0', 'perk1', 'perk2', 'perk3', 'perk4', 'perk5',
+        'totalDamageDealtToChampions', 'magicDamageDealtToChampions', 'physicalDamageDealtToChampions',
         'trueDamageDealtToChampions', 'damageDealtToObjectives', 'damageDealtToTurrets', 'turretKills', 'inhibitorKills', 'totalMinionsKilled', 'totalMinionsKilled', 'neutralMinionsKilled',
         'neutralMinionsKilledTeamJungle', 'neutralMinionsKilledEnemyJungle', 'csDiff', 'csPerMin', 'visionWardsBoughtInGame', 'wardsPlaced', 'wardsKilled'
     ];
@@ -233,6 +246,9 @@ async function getMatchData(summonerRegion, matchID) {
                     participantIDExt = data.participantIdentities[i].participantId;
                     for (var j = 0; j < Object.keys(data.participants).length; j++) {
                         if (data.participants[j].participantId === participantIDExt) {
+                            matchData.spell1Id = data.participants[j].spell1Id;
+                            matchData.spell2Id = data.participants[j].spell2Id;
+                            matchData.championId = data.participants[j].championId;
                             itemsInJSON.forEach(function(itemsInJSON) {
                                 matchData[itemsInJSON] = data.participants[j].stats[itemsInJSON];
                             })
@@ -275,7 +291,6 @@ async function getRankedInfo(summonerRegion, summonerID) {
                     rankedData.leaguePoints = data[i].leaguePoints;
                     rankedData.totalGamesRanked = rankedData.wins + rankedData.losses;
                     rankedData.winRateRanked = ((rankedData.wins / rankedData.totalGamesRanked) * 100).toFixed(2);
-                    console.log(rankedData);
                 }
             }
             if (data.length === 0) {
@@ -283,7 +298,6 @@ async function getRankedInfo(summonerRegion, summonerID) {
             }
         })
         .catch(error => console.log(error));
-    console.log("\ngetRankedInfo complete\n");
     return rankedData;
 }
 
@@ -295,7 +309,7 @@ async function retreiveData(summonerRegion, summonerName) {
         mastery = await getHighestMastery(summonerRegion, summoner.id);
         matches = await getRecentGames(summonerRegion, summoner.accountId, 10);
         rankedInfo = await getRankedInfo(summonerRegion, summoner.id);
-        //console.log(matches);
+        console.log(matches);
     }
     return "done";
 }
@@ -360,7 +374,8 @@ router.get('/summoner/lookup', function(req, res, next) {
         title,
         mastery: mastery,
         rankedInfo: rankedInfo,
-        matches: matches
+        matches: matches,
+        testArray,
     });
 });
 

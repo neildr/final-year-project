@@ -1,50 +1,59 @@
 {{#if summoner.name}}
     {{#if summoner.exists}}
-        <h1 class="testWhite">Summoner Stats </h1>
-        <div class="testWhite">
-            Summoner: {{ summoner.name }}
-        </div>
-        <div class="testWhite">
-            Region: {{ summoner.region}}
-        </div>
-        <div class="testWhite">
-            Exists?: {{summoner.exists}}
-        </div>
-        <div class="testWhite">
-            {{summoner.name}} has an id of {{summoner.id}}, an account id of {{ summoner.accountId }} and a level of {{summoner.summonerLevel}}
-        </div>
-        <div class="testWhite">
-            {{ summoner.name }} also uses icon id {{summoner.profileIconId}}
-        </div>
-        <img src="http://stelar7.no/cdragon/latest/profile-icons/{{ summoner.profileIconId }}.jpg" />
-        <div class="testWhite">
-            {{summoner.name}} is mastery level {{ mastery.championLevel }} with {{mastery.championPoints}} on champion {{mastery.championId}}, {{mastery.championName}}, {{mastery.championTitle}}
-        </div>
-        <img src="http://stelar7.no/cdragon/latest/champion-icons/{{mastery.championId}}.png" />
-        <div class="testWhite">
-            {{summoner.name}} in the last {{matches.number}} matches has played Top {{matches.actualpositionCount.TOP}} times, Jungle {{matches.actualpositionCount.JUNGLE}} times, Mid {{matches.actualpositionCount.MID}} times, ADC {{matches.actualpositionCount.ADC}}
-            times, Support {{matches.actualpositionCount.SUPPORT}} times.
-        </div>
-        <div class="testWhite">
-            {{summoner.name}} in the last {{matches.ids.length}} matches has mainly played {{matches.modePosition}}, and has mainly played <img src="http://stelar7.no/cdragon/latest/champion-icons/{{matches.modeChampion}}.png" />
-        </div>
-        <div class="testWhite">
-            {{matches.averages.kills}}
-        </div>
-        <div class="testWhite">
-            {{#if rankedInfo.tier}}
-                {{summoner.name}} is {{ rankedInfo.tier }} {{rankedInfo.rank}} with {{rankedInfo.leaguePoints}} LP in {{rankedInfo.leagueName}}, with {{rankedInfo.wins}} wins and {{rankedInfo.losses}} losses in {{rankedInfo.totalGamesRanked}} games, giving a {{rankedInfo.winRateRanked}}%
-                win ratio
-            {{else}}
-                {{summoner.name}} is Unranked on Summoner's rift
-            {{/if}}
-        </div>
-        <div>
-            {{#if rankedInfo.tier}}
-                <img src="/../../images/{{rankedInfo.tier}}_{{rankedInfo.rank}}.png" {{else}} <img src="/../../images/unranked.png" {{/if}} </div>
-            {{else}}
-                <h1 class="testWhite">Summoner {{summoner.name}} does not exist on {{summoner.region}}.</h1>
-            {{/if}}
+        <div class="bodyContainer">
+            <h1 class="testWhite">Summoner Stats -{{summoner.name}} - {{summoner.region}} </h1>
+            <div class="pageContent">
+                <div class="summaryRowContainer">
+                    <div class="summaryRow">
+                        <img class="wrapperImage" src="http://stelar7.no/cdragon/latest/profile-icons/{{ summoner.profileIconId }}.jpg" />
+                        <div class="summaryInfo">
+                            <div class="testWhite">{{summoner.name}}</div>
+                            <div class="testWhite">{{summoner.region}}</div>
+                            <div class="testWhite">Level: {{summoner.summonerLevel}}</div>
+                        </div>
+                    </div>
+                    <div class="summaryRow">
+                        {{#if rankedInfo.tier}}
+                            <img class="wrapperImage" src="/../../images/ranked/{{rankedInfo.tier}}_{{rankedInfo.rank}}.png" />
+                            <div class="summaryInfo">
+                                <div class="testWhite">{{ rankedInfo.tier }} {{rankedInfo.rank}} </div>
+                                <div class="testWhite">{{rankedInfo.leaguePoints}} LP</div>
+                                <div class="testWhite">{{rankedInfo.winRateRanked}}% win %</div>
+                                <div class="testWhite">{{rankedInfo.totalGamesRanked}} games played</div>
+                            </div>
+                        {{else}}
+                            <img class="wrapperImage" src="/../../images/ranked/unranked.png" />
+                            <div class="summaryInfo">
+                                <p class="testWhite">Unranked</p>
+                            </div>
+                        {{/if}}
+                    </div>
+                    <div class="summaryRow">
+                        <img class="wrapperImage" src="http://stelar7.no/cdragon/latest/champion-icons/{{mastery.championId}}.png" />
+                        <div class="summaryInfo">
+                            <div class="testWhite"><img class="masteryImg" src="/../../images/mastery/champMasteryLevel_{{mastery.championLevel}}.png" /></div>
+                            <div class="testWhite">{{mastery.championName}}</div>
+                            <div class="testWhite">Points: {{mastery.championPoints}}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="testWhite">
+                <div class="testWhite">
+                    {{summoner.name}} in the last {{matches.number}} matches has played Top {{matches.actualpositionCount.TOP}} times, Jungle {{matches.actualpositionCount.JUNGLE}} times, Mid {{matches.actualpositionCount.MID}} times, ADC {{matches.actualpositionCount.ADC}}
+                    times, Support {{matches.actualpositionCount.SUPPORT}} times.
+                </div>
+                <div class="testWhite">
+                    {{summoner.name}} in the last {{matches.ids.length}} matches has mainly played {{matches.modePosition}}, and has mainly played <img src="http://stelar7.no/cdragon/latest/champion-icons/{{matches.modeChampion}}.png" />
+                </div>
+                <div class="testWhite">
+                    {{matches.matchData.0.kills}}
+                </div>
+                <div>
     {{else}}
-        <h1 class="testWhite">Error - do not access lookup page via URL.</h1>
+        <h1 class="testWhite">Summoner {{summoner.name}} does not exist on {{summoner.region}}.</h1>
     {{/if}}
+{{else}}
+    <h1 class="testWhite">Error - do not access lookup page via URL.</h1>
+{{/if}}
+</div>

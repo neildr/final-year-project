@@ -18,9 +18,17 @@ body {
       url("../images/teambuilder-wallpaper.jpg");
   }
 
-
+.bodyContainer{
+    width: 100%;
+    min-width: 700px;
+    border-color: red;
+    border-width: thin;
+    border-style: dotted;
+}
 .testWhite{
     color: white;
+    vertical-align: middle;
+    text-align: center;
 }
 p {
     font-style: inherit;
@@ -42,6 +50,7 @@ button {
     margin-left: auto;
     margin-right: auto;
 }
+
 
 
 tr{
@@ -101,4 +110,70 @@ p.title{
     font: semi-bold;
     font-size: 32px;
     color: rgb(255, 255, 255);
+}
+.subsubTitle{
+    font: semi-bold;
+    font-size: 20px;
+    color: rgb(255, 255, 255);
+}
+.pageContent{
+    background-color: rgba(255, 255, 255, 0.5);
+    width: 70%;
+    margin-left: auto;
+    margin-right: auto;
+    font-family: inherit;
+    min-width: 800px;
+    text-align: center;
+}
+.summaryRowContainer{
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  flex-flow: row;
+}
+.summaryRow{
+    width: 32%;
+    min-width: 200px;
+    height: 100px;
+    margin: 3px;
+    display: flex;
+    flex-direction: row;
+
+}
+img.wrapperImage {
+  vertical-align: middle;
+  max-height:100%;
+  width: auto;
+  float: left;
+
+}
+img.masteryImg {
+    max-height: 50px;
+    width: auto;
+}
+.summaryInfo {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+
+
+
+.text1{
+    font-style: inherit;
+    font-size: 16px;
+    color: black;
+    text-align: center;
+    font: semi-bold;
+
+}
+.text2{
+    font-style: inherit;
+    font-size: 14px;
+    color: black;
+    text-align: center;
+
 }
