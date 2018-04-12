@@ -1,0 +1,246 @@
+@import url('https://fonts.googleapis.com/css?family=Nunito');
+html {
+    font-family: 'Nunito', sans-serif;
+}
+body {
+    background-image: url("../images/teambuilder-wallpaper.jpg");
+    background-repeat: no-repeat;
+    display: block;
+    overflow-x: hidden;
+}
+.tinted-image {
+    background:
+      linear-gradient(
+        rgba(0, 0, 0, 0.75),
+        rgba(0, 0, 0, 0.75)
+      ),
+      /* bottom, image */
+      url("../images/teambuilder-wallpaper.jpg");
+  }
+
+.bodyContainer{
+    width: 100%;
+    min-width: 900px;
+    border-color: red;
+    border-width: thin;
+    border-style: dotted;
+}
+.testWhite{
+    color: white;
+    vertical-align: middle;
+    text-align: center;
+}
+p {
+    font-style: inherit;
+    text-align: center;
+}
+button {
+    vertical-align: top;
+}
+
+.tableTest {
+    width: 70%;
+    margin-left: auto;
+    margin-right: auto;
+    font-family: inherit;
+
+}
+.navBar {
+    width: 35%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+
+
+tr{
+    padding: 10px;
+}
+th{
+    padding: 0px;
+
+}
+
+
+th.region {
+    height: 100%;
+
+}
+.dropdown {
+    width: 100%;
+    font-size: 24px;
+    font-family: 'Nunito', sans-serif;
+    color: black;
+    background-color: white;
+    border-color: white;
+    border-width: 1px;
+    border-style: solid;
+}
+th.searchbox {
+    height: 100%;
+}
+.input {
+    font-size: 24px;
+    font-family: 'Nunito', sans-serif;
+    width: 98%;
+    border-color: black;
+    border-width: 1px;
+    border-style: solid;
+}
+
+th.button {
+    height: 100%;
+}
+.buttonstyle {
+    display: inline-block;
+    height: 40px;
+    width: 100%;
+    border-color: black;
+    border-width: 1px;
+    border-style: solid;
+    font-family: 'Nunito', sans-serif;
+}
+
+p.title{
+    font: bolder;
+    font-size: 48px;
+    color: rgb(255, 0, 255);
+}
+.subTitle{
+    font: semi-bold;
+    font-size: 32px;
+    color: rgb(255, 255, 255);
+}
+.subsubTitle{
+    font: semi-bold;
+    font-size: 20px;
+    color: rgb(255, 255, 255);
+}
+.pageContent{
+    width: 70%;
+    margin-left: auto;
+    margin-right: auto;
+    font-family: inherit;
+    min-width: 900px;
+    text-align: center;
+}
+.rowContainer{
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  flex-flow: row;
+  background-color: rgba(255, 255, 255, 0.5);
+}
+.summaryRow{
+    width: 32%;
+    min-width: 280px;
+    height: 100px;
+    margin: 3px;
+    display: flex;
+    flex-direction: row;
+    border: 3px solid gray;
+
+}
+img.wrapperImage {
+  vertical-align: middle;
+  max-height:100%;
+  width: auto;
+  float: left;
+
+}
+img.masteryImg {
+    max-height: 50px;
+    width: auto;
+}
+.summaryInfo {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+dl {
+    margin-top: -1px;
+    margin-left: 10px;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+dt {
+    align-self: flex-start;
+    width: 100%;
+    display: block;
+    text-align: center;
+    color: white;
+}
+
+.textBarChart {
+  display: flex;
+  align-items: center;
+  position: absolute;
+  left: 0;
+  justify-content: flex-end;
+  color: white;
+  font-style: inherit;
+}
+.percentage {
+  line-height: 1;
+  width: 60%;
+  height: 15px;
+  margin-left: 100px;
+  background: repeating-linear-gradient(
+  to right,
+  #ddd,
+  #ddd 1px,
+  #fff 1px,
+  #fff 5%
+);
+
+  &:after {
+    content: "";
+    display: block;
+    background-color: #3d9970;
+    width: 0px;
+    margin-bottom: 10px;
+    height: 90%;
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+    transition: background-color .3s ease;
+  }
+  &:hover,
+  &:focus {
+    &:after {
+       background-color: #aaa;
+    }
+  }
+}
+
+@for $i from 1 through 100 {
+  .percentage-#{$i} {
+    &:after {
+      $value: ($i * 1%);
+      width: $value;
+    }
+  }
+}
+
+.text1{
+    font-style: inherit;
+    font-size: 16px;
+    color: black;
+    text-align: center;
+    font: semi-bold;
+
+}
+.text2{
+    font-style: inherit;
+    font-size: 14px;
+    color: black;
+    text-align: center;
+
+}

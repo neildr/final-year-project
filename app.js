@@ -5,12 +5,20 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var hbs = require('express-handlebars');
+var sassMiddleware = require('node-sass-middleware');
+var app = express();
+
+app.use(sassMiddleware({
+    /* Options */
+    src: path.join(__dirname, 'public/stylesheets/sass'),
+    dest: path.join(__dirname, 'public/stylesheets'),
+    debug: true,
+    outputStyle: 'compressed',
+    prefix:  '/stylesheets'
+}));
 
 //file paths to js files
 var index = require('./routes/index');
-
-
-var app = express();
 
 // view engine setup
 app.engine('hbs', hbs({extname: 'hbs', defaultLayout: 'layout', layoutsDir: __dirname + '/views/layouts/'}));

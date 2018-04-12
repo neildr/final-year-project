@@ -11,13 +11,12 @@ var api = TeemoJS(apiImport.key);
 //**********************//
 
 var summoner = {};
-
+var matches = {};
+var mastery = {};
+var rankedInfo = {};
 var title = "Access Denied";
 
 
-//stores information about the last 10 matches
-var matches = {};
-var testArray = [1,2,3,4];
 
 //default positions object - stops errors
 var defaultPositionObj = {
@@ -32,9 +31,7 @@ var defaultChampionObj = {
 
 }
 
-var mastery = {};
 
-var rankedInfo = {};
 
 
 var rankedReset = {
@@ -78,7 +75,6 @@ function getSummonerID(summonerRegion, summonerName) {
             })
             .catch(error => console.log(error));
     })
-
 }
 
 
@@ -110,8 +106,18 @@ async function getRecentGames(summonerRegion, summonerAccID, noOfGames) {
         "champions": [], //champions played
         "actualPosition": [], //finding the actual position
         "actualpositionCount": [], //counts actual position occurrences
-        "modePosition": "", //most common position
-        "modeChampion": "", //most common champion
+        "modePosition": { //most common position
+            "mode": "",
+            "count": null
+        },
+        "modeChampion": {//most common champion
+            "info":{
+                "mode": "",
+                "count": null,
+            },
+            "name": "",
+            "title": "",
+        },
         "championCount": [],
         "matchData": [],
         "averages": {
@@ -173,13 +179,18 @@ async function getRecentGames(summonerRegion, summonerAccID, noOfGames) {
                         totalWins++;
                     }
                     itemsInJSON.forEach(function(itemsInJSON) {
-                        recentGamesData.averages[itemsInJSON] += parseFloat((( recentGamesData.matchData[i][itemsInJSON]) / noOfGames));
+                        recentGamesData.averages[itemsInJSON] += parseFloat(((recentGamesData.matchData[i][itemsInJSON]) / noOfGames));
                         recentGamesData.averages[itemsInJSON] = parseFloat((recentGamesData.averages[itemsInJSON]).toFixed(2));
                     })
                 }
             }
             recentGamesData.modePosition = mostCommon(recentGamesData.actualPosition);
-            recentGamesData.modeChampion = mostCommon(recentGamesData.champions);
+            recentGamesData.modeChampion.info = mostCommon(recentGamesData.champions);
+            for (var i = 0; i < Object.keys(championJSON.data).length; i++)
+                if ((recentGamesData.modeChampion.info.mode) === (championJSON.data[Object.keys(championJSON.data)[i]].id)) {
+                    recentGamesData.modeChampion.name = championJSON.data[Object.keys(championJSON.data)[i]].name;
+                    recentGamesData.modeChampion.title = championJSON.data[Object.keys(championJSON.data)[i]].title;
+                }
             recentGamesData.actualpositionCount = countValuesIn(recentGamesData.actualPosition, defaultPositionObj);
             recentGamesData.championCount = countValuesIn(recentGamesData.champions, defaultChampionObj);
             recentGamesData.winRatio = (totalWins / noOfGames).toFixed(2) * 100;
@@ -233,7 +244,7 @@ async function getMatchData(summonerRegion, matchID) {
         "matchLength": null,
         "outcome": ""
     };
-    var itemsInJSON = ['kills', 'deaths', 'assists', 'kdaRatio', 'visionScore', 'goldEarned', 'item0', 'item1', 'item2', 'item3', 'item4', 'item5','item6', 'perk0', 'perk1', 'perk2', 'perk3', 'perk4', 'perk5',
+    var itemsInJSON = ['kills', 'deaths', 'assists', 'kdaRatio', 'visionScore', 'goldEarned', 'item0', 'item1', 'item2', 'item3', 'item4', 'item5', 'item6', 'perk0', 'perk1', 'perk2', 'perk3', 'perk4', 'perk5',
         'totalDamageDealtToChampions', 'magicDamageDealtToChampions', 'physicalDamageDealtToChampions',
         'trueDamageDealtToChampions', 'damageDealtToObjectives', 'damageDealtToTurrets', 'turretKills', 'inhibitorKills', 'totalMinionsKilled', 'totalMinionsKilled', 'neutralMinionsKilled',
         'neutralMinionsKilledTeamJungle', 'neutralMinionsKilledEnemyJungle', 'csDiff', 'csPerMin', 'visionWardsBoughtInGame', 'wardsPlaced', 'wardsKilled'
@@ -309,38 +320,42 @@ async function retreiveData(summonerRegion, summonerName) {
         mastery = await getHighestMastery(summonerRegion, summoner.id);
         matches = await getRecentGames(summonerRegion, summoner.accountId, 10);
         rankedInfo = await getRankedInfo(summonerRegion, summoner.id);
+        console.log("\nmatches for " + summoner.name);
         console.log(matches);
+        console.log("\n");
     }
     return "done";
 }
 
 function countValuesIn(array, defaultObject) {
-    var occurrences = defaultObject || {};
+    var occurrences = Object.assign({}, defaultObject || {});
     for (var i = 0, j = array.length; i < j; i++) {
         occurrences[array[i]] = (occurrences[array[i]] || 0) + 1;
     }
     return occurrences;
 }
 
-function mostCommon(array) {
-    if (array.length == 0)
-        return null;
-    var modeMap = {};
-    var maxEl = array[0],
-        maxCount = 1;
-    for (var i = 0; i < array.length; i++) {
-        var el = array[i];
-        if (modeMap[el] == null)
-            modeMap[el] = 1;
-        else
-            modeMap[el]++;
-        if (modeMap[el] > maxCount) {
-            maxEl = el;
-            maxCount = modeMap[el];
-        }
-    }
-    return maxEl;
+function mostCommon(array){
+var data = {
+	"mode": null,
+    "count": null
 }
+var m = 0;
+for (var i=0; i<array.length; i++){
+          for (var j=i; j<array.length; j++){
+                  if (array[i] == array[j])
+                   m++;
+                  if (data.count<m)
+                  {
+                    data.count=m;
+                    data.mode = array[i];
+                  }
+          }
+          m=0;
+  }
+	return data;
+}
+
 
 //**********************//
 //       ROUTING        //
@@ -370,12 +385,11 @@ router.post('/summoner/submit', async function(req, res, next) {
 //DATA DISPLAY PAGE
 router.get('/summoner/lookup', function(req, res, next) {
     res.render('summoner', {
-        summoner: summoner,
         title,
+        summoner: summoner,
         mastery: mastery,
         rankedInfo: rankedInfo,
-        matches: matches,
-        testArray,
+        matches: matches
     });
 });
 
