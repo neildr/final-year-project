@@ -91,7 +91,7 @@ th.searchbox {
 th.button {
     height: 100%;
 }
-.buttonstyle {
+.buttonGo {
     display: inline-block;
     height: 40px;
     width: 100%;
@@ -99,7 +99,13 @@ th.button {
     border-width: 1px;
     border-style: solid;
     font-family: 'Nunito', sans-serif;
+    cursor: pointer;
+    transition: background-color 0.25s ease
 }
+.buttonGo:hover{
+    background-color: rgba(255, 255, 255, 0.5);
+}
+
 
 p.title{
     font: bolder;
@@ -141,6 +147,11 @@ p.title{
     border: 3px solid gray;
 
 }
+.summaryRow.stats{
+        background-color: rgba(66, 134, 244, 0.25);
+        height: 125px;
+}
+
 img.wrapperImage {
   vertical-align: middle;
   max-height:100%;
@@ -161,7 +172,13 @@ img.masteryImg {
 }
 .clickable {
     outline: 5px dotted aqua;
+    cursor: pointer;
+
 }
+.toBeShown {
+    display: none;
+}
+
 dl {
     margin-top: -1px;
     margin-left: 10px;
@@ -230,6 +247,8 @@ dt {
     }
   }
 }
+
+
 
 .text1{
     font-style: inherit;

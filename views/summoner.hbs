@@ -41,7 +41,6 @@
                 </br>
                 <h1 class="testWhite">Summary of {{summoner.name}} in the last {{matches.ids.length}} matches</h1>
                 <h3 class="testWhite">Win ratio: {{matches.winRatio}}%</h3>
-                <div class="clickable">
                 <div class="rowContainer">
                     <div class="summaryRow">
                         <img class="wrapperImage" src="http://stelar7.no/cdragon/latest/champion-icons/{{matches.modeChampion.info.mode}}.png" />
@@ -61,24 +60,100 @@
                     </div>
                     <div class="summaryRow">
                         <dl>
-                          <dt>
+                            <dt>
                             Role distribution
                           </dt>
-                          <dd class="percentage percentage-{{matches.actualpositionCount.TOP}}0"><span class="textBarChart">TOP: {{matches.actualpositionCount.TOP}}</span></dd>
-                          <dd class="percentage percentage-{{matches.actualpositionCount.JUNGLE}}0"><span class="textBarChart">JUNGLE: {{matches.actualpositionCount.JUNGLE}}</span></dd>
-                          <dd class="percentage percentage-{{matches.actualpositionCount.MID}}0"><span class="textBarChart">MID: {{matches.actualpositionCount.MID}}</span></dd>
-                          <dd class="percentage percentage-{{matches.actualpositionCount.ADC}}0"><span class="textBarChart">ADC: {{matches.actualpositionCount.ADC}}</span></dd>
-                          <dd class="percentage percentage-{{matches.actualpositionCount.SUPPORT}}0"><span class="textBarChart">SUPPORT: {{matches.actualpositionCount.SUPPORT}}</span></dd>
+                            <dd class="percentage percentage-{{matches.actualpositionCount.TOP}}0"><span class="textBarChart">TOP: {{matches.actualpositionCount.TOP}}</span></dd>
+                            <dd class="percentage percentage-{{matches.actualpositionCount.JUNGLE}}0"><span class="textBarChart">JUNGLE: {{matches.actualpositionCount.JUNGLE}}</span></dd>
+                            <dd class="percentage percentage-{{matches.actualpositionCount.MID}}0"><span class="textBarChart">MID: {{matches.actualpositionCount.MID}}</span></dd>
+                            <dd class="percentage percentage-{{matches.actualpositionCount.ADC}}0"><span class="textBarChart">ADC: {{matches.actualpositionCount.ADC}}</span></dd>
+                            <dd class="percentage percentage-{{matches.actualpositionCount.SUPPORT}}0"><span class="textBarChart">SUPPORT: {{matches.actualpositionCount.SUPPORT}}</span></dd>
                         </dl>
                     </div>
                 </div>
-            </div>
-            </div>
-            <div class="testWhite">
-                <div class="testWhite">
-                    {{matches.matchData.0.kills}}
+                <div class="clickable">
+                    <h3 class="testWhite">Click for average Game Performance</h3>
                 </div>
-                <div>
+                <div class="toBeShown">
+                    <div class="rowContainer">
+                        <div class="summaryRow stats">
+                            <div class="summaryInfo">
+                                <div class="testWhite">
+                                    Performance:</br>
+                                    {{matches.averages.kills}} / {{matches.averages.deaths}} / {{matches.averages.assists}} </br>
+                                    KDA: {{matches.averages.kdaRatio}}:1
+                                </div>
+                            </div>
+                        </div>
+                        <div class="summaryRow stats">
+                            <div class="summaryInfo">
+                                <div class="testWhite">
+                                    Gold: </br>
+                                    Gold Earned: {{matches.averages.goldEarned}}</br>
+                                    CS: {{matches.averages.totalMinionsKilled}}</br>
+                                    CS difference to opponent: {{matches.averages.csDiff}}</br>
+                                    CS/min: {{matches.averages.csPerMin}}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="summaryRow stats">
+                            <div class="summaryInfo">
+                                <div class="testWhite">
+                                    Damage: </br>
+                                    Total Damage: {{matches.averages.totalDamageDealtToChampions}}</br>
+                                    Physical Damage: {{matches.averages.physicalDamageDealtToChampions}}</br>
+                                    Magic Damage: {{matches.averages.magicDamageDealtToChampions}}</br>
+                                    True Damage: {{matches.averages.trueDamageDealtToChampions}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="rowContainer">
+                        <div class="summaryRow stats">
+                            <div class="summaryInfo">
+                                <div class="testWhite">
+                                    Vision:</br>
+                                    Vision Score: {{matches.averages.visionScore}}</br>
+                                    Control Wards Bought: {{matches.averages.visionWardsBoughtInGame}}</br>
+                                    Wards Placed: {{matches.averages.wardsPlaced}}</br>
+                                    Wards Killed: {{matches.averages.wardsKilled}}</br>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="summaryRow stats">
+                            <div class="summaryInfo">
+                                <div class="testWhite">
+                                    Objectives:</br>
+                                    Damage to Objectives: {{matches.averages.damageDealtToObjectives}}</br>
+                                    Damage to Turrets {{matches.averages.damageDealtToObjectives}}</br>
+                                    Turret Kills: {{matches.averages.turretKills}}</br>
+                                    Inhibitor kills: {{matches.averages.inhibitorKills}}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="summaryRow stats">
+                            <div class="summaryInfo">
+                                <div class="testWhite">
+                                    Jungling:</br>
+                                    Total Neutral Minions Killed: {{matches.averages.neutralMinionsKilled}}</br>
+                                    Team Jungle {{matches.averages.neutralMinionsKilledTeamJungle}}</br>
+                                    Enemy Jungle: {{matches.averages.neutralMinionsKilledEnemyJungle}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+        </div>
+        <div class="testWhite">
+            <div class="testWhite">
+                {{matches.matchData.0.kills}}
+            </div>
+            <div>
     {{else}}
         <h1 class="testWhite">Summoner {{summoner.name}} does not exist on {{summoner.region}}.</h1>
     {{/if}}
