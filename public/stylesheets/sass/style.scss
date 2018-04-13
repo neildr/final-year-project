@@ -7,6 +7,7 @@ body {
     background-repeat: no-repeat;
     display: block;
     overflow-x: hidden;
+    overflow-y: scroll;
 }
 .tinted-image {
     background:
@@ -128,7 +129,6 @@ p.title{
     margin-right: auto;
     font-family: inherit;
     min-width: 900px;
-    text-align: center;
 }
 .rowContainer{
   width: 100%;
@@ -167,8 +167,13 @@ img.masteryImg {
     flex: 1;
     display: flex;
     flex-direction: column;
+}
+.row {
+    flex: 1;
+    display: flex;
+    flex-direction: row;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
 }
 .clickable {
     outline: 5px dotted aqua;
@@ -177,6 +182,20 @@ img.masteryImg {
 }
 .toBeShown {
     display: none;
+}
+.statsBox.title{
+    vertical-align: top;
+    font-style: inherit;
+    color: black;
+    text-decoration: underline;
+}
+.statsBox.label{
+  text-align: left;
+  color: red
+}
+.statsBox.value{
+  text-align: right;
+  color: blue;
 }
 
 dl {

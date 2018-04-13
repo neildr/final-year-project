@@ -14,6 +14,7 @@ var summoner = {};
 var matches = {};
 var mastery = {};
 var rankedInfo = {};
+
 var title = "Access Denied";
 
 
@@ -131,6 +132,8 @@ async function getRecentGames(summonerRegion, summonerAccID, noOfGames) {
             "magicDamageDealtToChampions": 0,
             "physicalDamageDealtToChampions": 0,
             "trueDamageDealtToChampions": 0,
+            "totalHeal": 0,
+            "timeCCingOthers": 0,
             "damageDealtToObjectives": 0,
             "damageDealtToTurrets": 0,
             "turretKills": 0,
@@ -146,9 +149,9 @@ async function getRecentGames(summonerRegion, summonerAccID, noOfGames) {
             "wardsKilled": 0
         }
     };
-    var itemsInJSON = ['kills', 'deaths', 'assists', 'kdaRatio', 'visionScore',
+    var itemsInJSONAverage = ['kills', 'deaths', 'assists', 'kdaRatio', 'visionScore',
         'goldEarned', 'totalDamageDealtToChampions', 'magicDamageDealtToChampions', 'physicalDamageDealtToChampions',
-        'trueDamageDealtToChampions', 'damageDealtToObjectives', 'damageDealtToTurrets', 'turretKills', 'inhibitorKills', 'totalMinionsKilled', 'totalMinionsKilled', 'neutralMinionsKilled',
+        'trueDamageDealtToChampions', 'totalHeal', 'timeCCingOthers','damageDealtToObjectives', 'damageDealtToTurrets', 'turretKills', 'inhibitorKills', 'totalMinionsKilled', 'totalMinionsKilled', 'neutralMinionsKilled',
         'neutralMinionsKilledTeamJungle', 'neutralMinionsKilledEnemyJungle', 'csDiff', 'csPerMin', 'visionWardsBoughtInGame', 'wardsPlaced', 'wardsKilled'
     ];
     var totalWins = 0;
@@ -178,9 +181,9 @@ async function getRecentGames(summonerRegion, summonerAccID, noOfGames) {
                     if (recentGamesData.matchData[i].outcome === "WIN") {
                         totalWins++;
                     }
-                    itemsInJSON.forEach(function(itemsInJSON) {
-                        recentGamesData.averages[itemsInJSON] += parseFloat(((recentGamesData.matchData[i][itemsInJSON]) / noOfGames));
-                        recentGamesData.averages[itemsInJSON] = parseFloat((recentGamesData.averages[itemsInJSON]).toFixed(2));
+                    itemsInJSONAverage.forEach(function(itemsInJSONAverage) {
+                        recentGamesData.averages[itemsInJSONAverage] += parseFloat(((recentGamesData.matchData[i][itemsInJSONAverage]) / noOfGames));
+                        recentGamesData.averages[itemsInJSONAverage] = parseFloat((recentGamesData.averages[itemsInJSONAverage]).toFixed(2));
                     })
                 }
             }
@@ -228,6 +231,8 @@ async function getMatchData(summonerRegion, matchID) {
         "magicDamageDealtToChampions": null,
         "physicalDamageDealtToChampions": null,
         "trueDamageDealtToChampions": null,
+        "totalHeal": null,
+        "timeCCingOthers": null,
         "damageDealtToObjectives": null,
         "damageDealtToTurrets": null,
         "turretKills": null,
@@ -241,17 +246,21 @@ async function getMatchData(summonerRegion, matchID) {
         "visionWardsBoughtInGame": null,
         "wardsPlaced": null,
         "wardsKilled": null,
-        "matchLength": null,
+        "matchLengthTotal": null,
+        "matchMinutes": null,
+        "matchSeconds" : null,
         "outcome": ""
     };
-    var itemsInJSON = ['kills', 'deaths', 'assists', 'kdaRatio', 'visionScore', 'goldEarned', 'item0', 'item1', 'item2', 'item3', 'item4', 'item5', 'item6', 'perk0', 'perk1', 'perk2', 'perk3', 'perk4', 'perk5',
+    var itemsInJSONMatch = ['kills', 'deaths', 'assists', 'kdaRatio', 'visionScore', 'goldEarned', 'item0', 'item1', 'item2', 'item3', 'item4', 'item5', 'item6', 'perk0', 'perk1', 'perk2', 'perk3', 'perk4', 'perk5',
         'totalDamageDealtToChampions', 'magicDamageDealtToChampions', 'physicalDamageDealtToChampions',
-        'trueDamageDealtToChampions', 'damageDealtToObjectives', 'damageDealtToTurrets', 'turretKills', 'inhibitorKills', 'totalMinionsKilled', 'totalMinionsKilled', 'neutralMinionsKilled',
+        'trueDamageDealtToChampions', 'totalHeal', 'timeCCingOthers', 'damageDealtToObjectives', 'damageDealtToTurrets', 'turretKills', 'inhibitorKills', 'totalMinionsKilled', 'totalMinionsKilled', 'neutralMinionsKilled',
         'neutralMinionsKilledTeamJungle', 'neutralMinionsKilledEnemyJungle', 'csDiff', 'csPerMin', 'visionWardsBoughtInGame', 'wardsPlaced', 'wardsKilled'
     ];
     var data = await api.get(summonerRegion, 'match.getMatch', matchID)
         .then((data) => {
-            matchData.matchLength = data.gameDuration;
+            matchData.matchLengthTotal = data.gameDuration;
+            matchData.matchMinutes = Math.floor(data.gameDuration / 60);
+            matchData.matchSeconds = data.gameDuration % 60;
             for (var i = 0; i < Object.keys(data.participantIdentities).length; i++) {
                 if (data.participantIdentities[i].player.accountId === summoner.accountId) {
                     participantIDExt = data.participantIdentities[i].participantId;
@@ -260,8 +269,8 @@ async function getMatchData(summonerRegion, matchID) {
                             matchData.spell1Id = data.participants[j].spell1Id;
                             matchData.spell2Id = data.participants[j].spell2Id;
                             matchData.championId = data.participants[j].championId;
-                            itemsInJSON.forEach(function(itemsInJSON) {
-                                matchData[itemsInJSON] = data.participants[j].stats[itemsInJSON];
+                            itemsInJSONMatch.forEach(function(itemsInJSONMatch) {
+                                matchData[itemsInJSONMatch] = data.participants[j].stats[itemsInJSONMatch];
                             })
                             var ratioDeaths = data.participants[j].stats.deaths;
                             if (ratioDeaths === 0) {

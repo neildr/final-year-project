@@ -78,67 +78,118 @@
                     <div class="rowContainer">
                         <div class="summaryRow stats">
                             <div class="summaryInfo">
-                                <div class="testWhite">
-                                    Performance:</br>
-                                    {{matches.averages.kills}} / {{matches.averages.deaths}} / {{matches.averages.assists}} </br>
-                                    KDA: {{matches.averages.kdaRatio}}:1
+                                <div class="statsBox title">Performance</div>
+                                <div class="row">
+                                    <div class="statsBox label">Kills:</div>
+                                    <div class="statsBox value">{{matches.averages.kills}}</div>
+                                </div>
+                                <div class="row">
+                                    <div class="statsBox label">Deaths:</div>
+                                    <div class="statsBox value">{{matches.averages.deaths}}</div>
+                                </div>
+                                <div class="row">
+                                    <div class="statsBox label">Assists:</div>
+                                    <div class="statsBox value">{{matches.averages.assists}}</div>
+                                </div>
+                                <div class="row">
+                                    <div class="statsBox label">KDA:</div>
+                                    <div class="statsBox value">{{matches.averages.kdaRatio}}:1</div>
                                 </div>
                             </div>
                         </div>
                         <div class="summaryRow stats">
                             <div class="summaryInfo">
-                                <div class="testWhite">
-                                    Gold: </br>
-                                    Gold Earned: {{matches.averages.goldEarned}}</br>
-                                    CS: {{matches.averages.totalMinionsKilled}}</br>
-                                    CS difference to opponent: {{matches.averages.csDiff}}</br>
-                                    CS/min: {{matches.averages.csPerMin}}
-                                </div>
+                                    <div class="statsBox title">Gold</div>
+                                    <div class="row">
+                                        <div class="statsBox label">Gold Earned:</div>
+                                        <div class="statsBox value">{{matches.averages.goldEarned}}</div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="statsBox label">CS:</div>
+                                        <div class="statsBox value">{{matches.averages.totalMinionsKilled}} {{matches.averages.csPerMin}}/min</div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="statsBox label">CS difference to opponent:</div>
+                                        <div class="statsBox value">{{matches.averages.csDiff}}</div>
+                                    </div>
                             </div>
                         </div>
                         <div class="summaryRow stats">
                             <div class="summaryInfo">
-                                <div class="testWhite">
-                                    Damage: </br>
-                                    Total Damage: {{matches.averages.totalDamageDealtToChampions}}</br>
-                                    Physical Damage: {{matches.averages.physicalDamageDealtToChampions}}</br>
-                                    Magic Damage: {{matches.averages.magicDamageDealtToChampions}}</br>
-                                    True Damage: {{matches.averages.trueDamageDealtToChampions}}
-                                </div>
+                                    <div class="statsBox title">Damage, Healing and Crowd Control:</div>
+                                    <div class="row">
+                                        <div class="statsBox label">Total Damage:</div>
+                                        <div class="statsBox value">{{matches.averages.totalDamageDealtToChampions}}</div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="statsBox label">Damage Types:</div>
+                                        <div class="statsBox value">{{matches.averages.physicalDamageDealtToChampions}}/{{matches.averages.magicDamageDealtToChampions}}/{{matches.averages.trueDamageDealtToChampions}}</div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="statsBox label">Healing:</div>
+                                        <div class="statsBox value">{{matches.averages.totalHeal}}</div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="statsBox label">Crowd Control Score:</div>
+                                        <div class="statsBox value">{{matches.averages.timeCCingOthers}}</div>
+                                    </div>
                             </div>
                         </div>
                     </div>
                     <div class="rowContainer">
                         <div class="summaryRow stats">
                             <div class="summaryInfo">
-                                <div class="testWhite">
-                                    Vision:</br>
-                                    Vision Score: {{matches.averages.visionScore}}</br>
-                                    Control Wards Bought: {{matches.averages.visionWardsBoughtInGame}}</br>
-                                    Wards Placed: {{matches.averages.wardsPlaced}}</br>
-                                    Wards Killed: {{matches.averages.wardsKilled}}</br>
-                                </div>
+                                    <div class="statsBox title">Vision:</div>
+                                    <div class="row">
+                                        <div class="statsBox label">Vision Score:</div>
+                                        <div class="statsBox value">{{matches.averages.visionScore}}</div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="statsBox label">Control Wards Bought:</div>
+                                        <div class="statsBox value">{{matches.averages.visionWardsBoughtInGame}}</div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="statsBox label">Wards Placed:</div>
+                                        <div class="statsBox value">{{matches.averages.wardsPlaced}}</div>
+                                    </div>
                             </div>
                         </div>
                         <div class="summaryRow stats">
                             <div class="summaryInfo">
-                                <div class="testWhite">
-                                    Objectives:</br>
-                                    Damage to Objectives: {{matches.averages.damageDealtToObjectives}}</br>
-                                    Damage to Turrets {{matches.averages.damageDealtToObjectives}}</br>
-                                    Turret Kills: {{matches.averages.turretKills}}</br>
-                                    Inhibitor kills: {{matches.averages.inhibitorKills}}
-                                </div>
+                                    <div class="statsBox title">Objectives:</div>
+                                    <div class="row">
+                                        <div class="statsBox label">Damage to Objectives:</div>
+                                        <div class="statsBox value">{{matches.averages.damageDealtToObjectives}}</div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="statsBox label">Damage to Turrets:</div>
+                                        <div class="statsBox value">{{matches.averages.damageDealtToTurrets}}</div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="statsBox label">Turret Kills:</div>
+                                        <div class="statsBox value">{{matches.averages.turretKills}}</div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="statsBox label">Inhibitor kills:</div>
+                                        <div class="statsBox value">{{matches.averages.inhibitorKills}}</div>
+                                    </div>
                             </div>
                         </div>
                         <div class="summaryRow stats">
                             <div class="summaryInfo">
-                                <div class="testWhite">
-                                    Jungling:</br>
-                                    Total Neutral Minions Killed: {{matches.averages.neutralMinionsKilled}}</br>
-                                    Team Jungle {{matches.averages.neutralMinionsKilledTeamJungle}}</br>
-                                    Enemy Jungle: {{matches.averages.neutralMinionsKilledEnemyJungle}}
-                                </div>
+                                    <div class="statsBox title">Jungling:</div>
+                                    <div class="row">
+                                        <div class="statsBox label">Total Neutral Minions Killed:</div>
+                                        <div class="statsBox value">{{matches.averages.neutralMinionsKilled}}</div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="statsBox label">Team Jungle:</div>
+                                        <div class="statsBox value">{{matches.averages.neutralMinionsKilledTeamJungle}}</div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="statsBox label">Enemy Jungle:</div>
+                                        <div class="statsBox value">{{matches.averages.neutralMinionsKilledEnemyJungle}}</div>
+                                    </div>
                             </div>
                         </div>
                     </div>
