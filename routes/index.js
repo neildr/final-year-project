@@ -105,6 +105,7 @@ async function getRecentGames(summonerRegion, summonerAccID, noOfGames) {
         "roles": [], //roles played
         "queues": [], //queue type
         "champions": [], //champions played
+        "timestamps": [],
         "actualPosition": [], //finding the actual position
         "actualpositionCount": [], //counts actual position occurrences
         "modePosition": { //most common position
@@ -142,6 +143,7 @@ async function getRecentGames(summonerRegion, summonerAccID, noOfGames) {
             "neutralMinionsKilled": 0,
             "neutralMinionsKilledTeamJungle": 0,
             "neutralMinionsKilledEnemyJungle": 0,
+            "creepScore": 0,
             "csDiff": 0,
             "csPerMin": 0,
             "visionWardsBoughtInGame": 0,
@@ -151,7 +153,7 @@ async function getRecentGames(summonerRegion, summonerAccID, noOfGames) {
     };
     var itemsInJSONAverage = ['kills', 'deaths', 'assists', 'kdaRatio', 'visionScore',
         'goldEarned', 'totalDamageDealtToChampions', 'magicDamageDealtToChampions', 'physicalDamageDealtToChampions',
-        'trueDamageDealtToChampions', 'totalHeal', 'timeCCingOthers','damageDealtToObjectives', 'damageDealtToTurrets', 'turretKills', 'inhibitorKills', 'totalMinionsKilled', 'totalMinionsKilled', 'neutralMinionsKilled',
+        'trueDamageDealtToChampions', 'totalHeal', 'timeCCingOthers','damageDealtToObjectives', 'damageDealtToTurrets', 'turretKills', 'inhibitorKills', 'creepScore', 'neutralMinionsKilled',
         'neutralMinionsKilledTeamJungle', 'neutralMinionsKilledEnemyJungle', 'csDiff', 'csPerMin', 'visionWardsBoughtInGame', 'wardsPlaced', 'wardsKilled'
     ];
     var totalWins = 0;
@@ -164,6 +166,7 @@ async function getRecentGames(summonerRegion, summonerAccID, noOfGames) {
                     recentGamesData.lanes[i] = data.matches[i].lane;
                     recentGamesData.queues[i] = data.matches[i].queue;
                     recentGamesData.champions[i] = data.matches[i].champion;
+                    recentGamesData.timestamps[i] = data.matches[i].timestamp;
                     if (recentGamesData.roles[i] === "SOLO" || recentGamesData.roles[i] === "DUO" || recentGamesData.roles[i] === "NONE") {
                         if (recentGamesData.lanes[i] === "TOP") {
                             recentGamesData.actualPosition[i] = "TOP";
@@ -242,6 +245,7 @@ async function getMatchData(summonerRegion, matchID) {
         "neutralMinionsKilled": null,
         "neutralMinionsKilledTeamJungle": null,
         "neutralMinionsKilledEnemyJungle": null,
+        "creepScore": null,
         "csDiff": null,
         "csPerMin": null,
         "visionWardsBoughtInGame": null,
@@ -288,7 +292,9 @@ async function getMatchData(summonerRegion, matchID) {
                             } else {
                                 matchData.csDiff = (data.participants[j].timeline.creepsPerMinDeltas["0-10"]).toFixed(2);
                             }
-                            matchData.csPerMin = ((data.participants[j].stats.totalMinionsKilled / data.gameDuration) * 60).toFixed(2);
+                            matchData.creepScore = data.participants[j].stats.totalMinionsKilled + data.participants[j].stats.neutralMinionsKilled;
+                            matchData.csPerMin = ((matchData.creepScore / data.gameDuration) * 60).toFixed(2);
+
                         }
                     }
                 }
