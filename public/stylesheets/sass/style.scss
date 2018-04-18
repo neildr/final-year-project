@@ -31,6 +31,16 @@ body {
     vertical-align: middle;
     text-align: center;
 }
+.physDmg{
+    color: #fc7c1a;
+}
+.magicDmg{
+    color: #85fc97
+}
+.trueDmg{
+    color: white;
+}
+
 p {
     font-style: inherit;
     text-align: center;
@@ -176,8 +186,8 @@ img.masteryImg {
     justify-content: space-between;
 }
 .clickable {
-    outline: 5px dotted aqua;
     cursor: pointer;
+    width: 100%;
 
 }
 .toBeShown {
@@ -342,7 +352,12 @@ dt {
   box-sizing: border-box;
 }
 
-
+.showMoreText{
+    color: black;
+    font-weight: bold;
+    text-align: center;
+    background-color: rgba(255, 255, 255, 0.5);
+}
 
 .text1{
     font-style: inherit;

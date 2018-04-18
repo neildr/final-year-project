@@ -41,38 +41,40 @@
                 </br>
                 <h2 class="testWhite">Summary of {{summoner.name}} in the last {{matches.ids.length}} matches</h2>
                 <h3 class="testWhite">Win ratio: {{matches.winRatio}}%</h3>
-                <div class="rowContainer">
-                    <div class="summaryRow">
-                        <img class="wrapperImage" src="http://stelar7.no/cdragon/latest/champion-icons/{{matches.modeChampion.info.mode}}.png" />
-                        <div class="summaryInfo">
-                            <div class="testWhite">Most Played Champion</div>
-                            <div class="testWhite">{{matches.modeChampion.name}}, {{matches.modeChampion.title}}</div>
-                            <div class="testWhite">Games played: {{matches.modeChampion.info.count}}</div>
-                        </div>
-                    </div>
-                    <div class="summaryRow">
-                        <img class="wrapperImage" src="/../../images/roles/{{matches.modePosition.mode}}.png" />
-                        <div class="summaryInfo">
-                            <div class="testWhite">Most Played Role</div>
-                            <div class="testWhite">{{matches.modePosition.mode}}</div>
-                            <div class="testWhite">Games played: {{matches.modePosition.count}}</div>
-                        </div>
-                    </div>
-                    <div class="summaryRow">
-                        <dl>
-                            <dt>
-                            Role distribution
-                          </dt>
-                            <dd class="percentage percentage-{{matches.actualpositionCount.TOP}}0"><span class="textBarChart">TOP: {{matches.actualpositionCount.TOP}}</span></dd>
-                            <dd class="percentage percentage-{{matches.actualpositionCount.JUNGLE}}0"><span class="textBarChart">JUNGLE: {{matches.actualpositionCount.JUNGLE}}</span></dd>
-                            <dd class="percentage percentage-{{matches.actualpositionCount.MID}}0"><span class="textBarChart">MID: {{matches.actualpositionCount.MID}}</span></dd>
-                            <dd class="percentage percentage-{{matches.actualpositionCount.ADC}}0"><span class="textBarChart">ADC: {{matches.actualpositionCount.ADC}}</span></dd>
-                            <dd class="percentage percentage-{{matches.actualpositionCount.SUPPORT}}0"><span class="textBarChart">SUPPORT: {{matches.actualpositionCount.SUPPORT}}</span></dd>
-                        </dl>
-                    </div>
-                </div>
                 <div class="clickable">
-                    <h3 class="testWhite">Click for average Game Performance</h3>
+                    <div class="rowContainer">
+                            <div class="summaryRow">
+                                <img class="wrapperImage" src="http://stelar7.no/cdragon/latest/champion-icons/{{matches.modeChampion.info.mode}}.png" />
+                                <div class="summaryInfo">
+                                    <div class="testWhite">Most Played Champion</div>
+                                    <div class="testWhite">{{matches.modeChampion.name}}, {{matches.modeChampion.title}}</div>
+                                    <div class="testWhite">Games played: {{matches.modeChampion.info.count}}</div>
+                                </div>
+                            </div>
+                            <div class="summaryRow">
+                                <img class="wrapperImage" src="/../../images/roles/{{matches.modePosition.mode}}.png" />
+                                <div class="summaryInfo">
+                                    <div class="testWhite">Most Played Role</div>
+                                    <div class="testWhite">{{matches.modePosition.mode}}</div>
+                                    <div class="testWhite">Games played: {{matches.modePosition.count}}</div>
+                                </div>
+                            </div>
+                            <div class="summaryRow">
+                                <dl>
+                                    <dt>
+                                    Role distribution
+                                  </dt>
+                                    <dd class="percentage percentage-{{matches.actualpositionCount.TOP}}0"><span class="textBarChart">TOP: {{matches.actualpositionCount.TOP}}</span></dd>
+                                    <dd class="percentage percentage-{{matches.actualpositionCount.JUNGLE}}0"><span class="textBarChart">JUNGLE: {{matches.actualpositionCount.JUNGLE}}</span></dd>
+                                    <dd class="percentage percentage-{{matches.actualpositionCount.MID}}0"><span class="textBarChart">MID: {{matches.actualpositionCount.MID}}</span></dd>
+                                    <dd class="percentage percentage-{{matches.actualpositionCount.ADC}}0"><span class="textBarChart">ADC: {{matches.actualpositionCount.ADC}}</span></dd>
+                                    <dd class="percentage percentage-{{matches.actualpositionCount.SUPPORT}}0"><span class="textBarChart">SUPPORT: {{matches.actualpositionCount.SUPPORT}}</span></dd>
+                                </dl>
+                            </div>
+                    </div>
+                    <div class="showMoreText">
+                        Click for stats
+                    </div>
                 </div>
                 <div class="toBeShown">
                     <div class="rowContainer">
@@ -109,7 +111,7 @@
                                     <div class="statsBox value">{{matches.averages.totalMinionsKilled}} {{matches.averages.csPerMin}}/min</div>
                                 </div>
                                 <div class="row">
-                                    <div class="statsBox label">CS difference to opponent:</div>
+                                    <div class="statsBox label">CS difference in first 10 minutes</div>
                                     <div class="statsBox value">{{matches.averages.csDiff}}</div>
                                 </div>
                             </div>
@@ -123,7 +125,7 @@
                                 </div>
                                 <div class="row">
                                     <div class="statsBox label">Damage Types:</div>
-                                    <div class="statsBox value">{{matches.averages.physicalDamageDealtToChampions}}/{{matches.averages.magicDamageDealtToChampions}}/{{matches.averages.trueDamageDealtToChampions}}</div>
+                                    <div class="statsBox value"><span class="physDmg">{{matches.averages.physicalDamageDealtToChampions}}</span> / <span class="magicDmg">{{matches.averages.magicDamageDealtToChampions}}</span> / <span class="trueDmg">{{matches.averages.trueDamageDealtToChampions}}</span></div>
                                 </div>
                                 <div class="row">
                                     <div class="statsBox label">Healing:</div>
@@ -503,6 +505,11 @@
         <div class="testWhite">
             <div class="testWhite">
                 {{matches.matchData.0.championId}}
+                {{#each matches.championCount}}
+                    <div class="testWhite">
+                        {{this}}
+                    </div>
+                    {{/each}}
             </div>
             <div>
     {{else}}

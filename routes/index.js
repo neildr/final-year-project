@@ -194,6 +194,7 @@ async function getRecentGames(summonerRegion, summonerAccID, noOfGames) {
                     recentGamesData.modeChampion.name = championJSON.data[Object.keys(championJSON.data)[i]].name;
                     recentGamesData.modeChampion.title = championJSON.data[Object.keys(championJSON.data)[i]].title;
                 }
+
             recentGamesData.actualpositionCount = countValuesIn(recentGamesData.actualPosition, defaultPositionObj);
             recentGamesData.championCount = countValuesIn(recentGamesData.champions, defaultChampionObj);
             recentGamesData.winRatio = (totalWins / noOfGames).toFixed(2) * 100;
@@ -335,6 +336,7 @@ async function retreiveData(summonerRegion, summonerName) {
     }
     return "done";
 }
+
 
 function countValuesIn(array, defaultObject) {
     var occurrences = Object.assign({}, defaultObject || {});
