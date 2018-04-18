@@ -1,19 +1,19 @@
-var express = require('express');
-var router = express.Router();
-var TeemoJS = require('TeemoJS');
-var championJSON = require('./champions.json');
-var apiImport = require('./APIKEY');
-var api = TeemoJS(apiImport.key);
+const express = require('express');
+const router = express.Router();
+const TeemoJS = require('TeemoJS');
+const championJSON = require('./champions.json');
+const apiImport = require('./APIKEY');
+const api = TeemoJS(apiImport.key);
 
 
 //**********************//
 //      VARIABLES       //
 //**********************//
 
-var summoner = {};
-var matches = {};
-var mastery = {};
-var rankedInfo = {};
+const summoner = {};
+const matches = {};
+const mastery = {};
+const rankedInfo = {};
 
 var title = "Access Denied";
 
@@ -329,6 +329,12 @@ async function getRankedInfo(summonerRegion, summonerID) {
 }
 
 async function retreiveData(summonerRegion, summonerName) {
+    var data = {
+        "summoner": null,
+        "mastery": null,
+        "matches": null,
+        "rankedInfo": null,
+    }
     summoner = await getSummonerID(summonerRegion, summonerName);
     summoner.name = summonerName;
     summoner.region = summonerRegion;
@@ -392,10 +398,8 @@ router.post('/summoner/submit', async function(req, res, next) {
     if (summoner.name) {
         title = summoner.name + " on " + summoner.region + " - LOLSTATS.GG";
     }
-    var x = retreiveData(summoner.region, summoner.name);
-    x.then((testVar) => {
-        res.redirect('/summoner/lookup');
-    })
+    const x = await retreiveData(summoner.region, summoner.name);
+     res.redirect('/summoner/lookup');
 });
 
 

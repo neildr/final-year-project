@@ -6,6 +6,8 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var hbs = require('express-handlebars');
 var sassMiddleware = require('node-sass-middleware');
+var session = require('client-sessions');
+
 var app = express();
 
 app.use(sassMiddleware({
@@ -15,6 +17,13 @@ app.use(sassMiddleware({
     debug: true,
     outputStyle: 'compressed',
     prefix:  '/stylesheets'
+}));
+
+app.use(session({
+  cookieName: 'session',
+  secret: 'BD4D9237CC871D4913221AF97792067962029427A6391089E47F86A32EA3F900',
+  duration: 30 * 60 * 1000,
+  activeDuration: 5 * 60 * 1000,
 }));
 
 //file paths to js files
