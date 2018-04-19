@@ -35,7 +35,34 @@
 </form>
 </br>
 </br>
-<form action="/test/submit" method="post">
-    <input type="text" name="testIn"/>
+<form action="/compare/submit" method="post">
+    <select class="dropdown" name="summOneRegion" required>
+        <option value="BR1">BR</option>
+        <option value="EUN1">EUNE</option>
+        <option value="EUW1">EUW</option>
+        <option value="JP1">JP</option>
+        <option value="KR">KR</option>
+        <option value="LA1">LAN</option>
+        <option value="LA2">LAS</option>
+        <option value="NA1">NA</option>
+        <option value="OC1">OCE</option>
+        <option value="TR1">TR</option>
+        <option value="RU">RU</option>
+    </select>
+    <select class="dropdown" name="summTwoRegion" required>
+        <option value="BR1">BR</option>
+        <option value="EUN1">EUNE</option>
+        <option value="EUW1">EUW</option>
+        <option value="JP1">JP</option>
+        <option value="KR">KR</option>
+        <option value="LA1">LAN</option>
+        <option value="LA2">LAS</option>
+        <option value="NA1">NA</option>
+        <option value="OC1">OCE</option>
+        <option value="TR1">TR</option>
+        <option value="RU">RU</option>
+    </select>
+    <input type="text" name="summOneName" placeholder="summoner 1"/>
+    <input type="text" name="summTwoName" placeholder="summoner 2"/>
     <button type="submit">Gotest!</button>
 </form>

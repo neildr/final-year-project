@@ -10,11 +10,20 @@ const api = TeemoJS(apiImport.key);
 //      VARIABLES       //
 //**********************//
 
-const summoner = {};
-const matches = {};
-const mastery = {};
-const rankedInfo = {};
+// var summoner = {};
+// var matches = {};
+// var mastery = {};
+// var rankedInfo = {};
 
+
+var summoner1 = {};
+var matches1 = {};
+var mastery1 = {};
+var rankedInfo1 = {};
+var summoner2 = {};
+var matches2 = {};
+var mastery2 = {};
+var rankedInfo2 = {};
 var title = "Access Denied";
 
 
@@ -56,28 +65,46 @@ var testFormIn = "";
 //**********************//
 
 
-function getSummonerID(summonerRegion, summonerName) {
-    return new Promise((resolve, reject) => {
-        var summonerData = {};
-        api.get(summonerRegion, 'summoner.getBySummonerName', summonerName)
-            .then((data) => {
-                if (data) {
-                    summonerData.id = data.id;
-                    summonerData.accountId = data.accountId;
-                    summonerData.name = data.name;
-                    summonerData.profileIconId = data.profileIconId;
-                    summonerData.summonerLevel = data.summonerLevel;
-                    summonerData.exists = true;
-                    summonerData.region = summonerRegion;
-                } else {
-                    summonerData.exists = false;
-                }
-                resolve(summonerData);
-            })
-            .catch(error => console.log(error));
+// function getSummonerID(summonerRegion, summonerName) {
+//     return new Promise((resolve, reject) => {
+//         var summonerData = {};
+//         api.get(summonerRegion, 'summoner.getBySummonerName', summonerName)
+//             .then((data) => {
+//                 if (data) {
+//                     summonerData.id = data.id;
+//                     summonerData.accountId = data.accountId;
+//                     summonerData.name = data.name;
+//                     summonerData.profileIconId = data.profileIconId;
+//                     summonerData.summonerLevel = data.summonerLevel;
+//                     summonerData.exists = true;
+//                     summonerData.region = summonerRegion;
+//                 } else {
+//                     summonerData.exists = false;
+//                 }
+//                 resolve(summonerData);
+//             })
+//             .catch(error => console.log(error));
+//     })
+// }
+async function getSummonerID(summonerRegion, summonerName){
+    var summonerData = {};
+    var data = await api.get(summonerRegion, 'summoner.getBySummonerName', summonerName)
+    .then((data) => {
+        if (data) {
+            summonerData.id = data.id;
+            summonerData.accountId = data.accountId;
+            summonerData.name = data.name;
+            summonerData.profileIconId = data.profileIconId;
+            summonerData.summonerLevel = data.summonerLevel;
+            summonerData.exists = true;
+            summonerData.region = summonerRegion;
+        } else {
+            summonerData.exists = false;
+        }
     })
+    .catch(error => console.log(error));
+    return summonerData;
 }
-
 
 async function getHighestMastery(summonerRegion, summonerID) {
     var masteryData = {};
@@ -112,8 +139,8 @@ async function getRecentGames(summonerRegion, summonerAccID, noOfGames) {
             "mode": "",
             "count": null
         },
-        "modeChampion": {//most common champion
-            "info":{
+        "modeChampion": { //most common champion
+            "info": {
                 "mode": "",
                 "count": null,
             },
@@ -153,7 +180,7 @@ async function getRecentGames(summonerRegion, summonerAccID, noOfGames) {
     };
     var itemsInJSONAverage = ['kills', 'deaths', 'assists', 'kdaRatio', 'visionScore',
         'goldEarned', 'totalDamageDealtToChampions', 'magicDamageDealtToChampions', 'physicalDamageDealtToChampions',
-        'trueDamageDealtToChampions', 'totalHeal', 'timeCCingOthers','damageDealtToObjectives', 'damageDealtToTurrets', 'turretKills', 'inhibitorKills', 'creepScore', 'neutralMinionsKilled',
+        'trueDamageDealtToChampions', 'totalHeal', 'timeCCingOthers', 'damageDealtToObjectives', 'damageDealtToTurrets', 'turretKills', 'inhibitorKills', 'creepScore', 'neutralMinionsKilled',
         'neutralMinionsKilledTeamJungle', 'neutralMinionsKilledEnemyJungle', 'csDiff', 'csPerMin', 'visionWardsBoughtInGame', 'wardsPlaced', 'wardsKilled'
     ];
     var totalWins = 0;
@@ -180,7 +207,7 @@ async function getRecentGames(summonerRegion, summonerAccID, noOfGames) {
                     } else if (recentGamesData.roles[i] === "DUO_SUPPORT") {
                         recentGamesData.actualPosition[i] = "SUPPORT";
                     }
-                    recentGamesData.matchData[i] = await getMatchData(summonerRegion, data.matches[i].gameId)
+                    recentGamesData.matchData[i] = await getMatchData(summonerRegion, data.matches[i].gameId, summonerAccID);
                     if (recentGamesData.matchData[i].outcome === "WIN") {
                         totalWins++;
                     }
@@ -206,7 +233,7 @@ async function getRecentGames(summonerRegion, summonerAccID, noOfGames) {
     return recentGamesData;
 }
 
-async function getMatchData(summonerRegion, matchID) {
+async function getMatchData(summonerRegion, matchID, summonerAccID) {
     var participantIDExt;
     var matchData = {
         "kills": null,
@@ -253,7 +280,7 @@ async function getMatchData(summonerRegion, matchID) {
         "wardsKilled": null,
         "matchLengthTotal": null,
         "matchMinutes": null,
-        "matchSeconds" : null,
+        "matchSeconds": null,
         "outcome": ""
     };
     var itemsInJSONMatch = ['kills', 'deaths', 'assists', 'kdaRatio', 'visionScore', 'goldEarned', 'item0', 'item1', 'item2', 'item3', 'item4', 'item5', 'item6', 'perk0', 'perk1', 'perk2', 'perk3', 'perk4', 'perk5',
@@ -267,7 +294,7 @@ async function getMatchData(summonerRegion, matchID) {
             matchData.matchMinutes = Math.floor(data.gameDuration / 60);
             matchData.matchSeconds = data.gameDuration % 60;
             for (var i = 0; i < Object.keys(data.participantIdentities).length; i++) {
-                if (data.participantIdentities[i].player.accountId === summoner.accountId) {
+                if (data.participantIdentities[i].player.accountId === summonerAccID) {
                     participantIDExt = data.participantIdentities[i].participantId;
                     for (var j = 0; j < Object.keys(data.participants).length; j++) {
                         if (data.participants[j].participantId === participantIDExt) {
@@ -321,7 +348,7 @@ async function getRankedInfo(summonerRegion, summonerID) {
                 }
             }
             if (data.length === 0) {
-                rankedInfo = rankedReset;
+                rankedData = rankedReset;
             }
         })
         .catch(error => console.log(error));
@@ -329,26 +356,53 @@ async function getRankedInfo(summonerRegion, summonerID) {
 }
 
 async function retreiveData(summonerRegion, summonerName) {
-    var data = {
-        "summoner": null,
-        "mastery": null,
-        "matches": null,
-        "rankedInfo": null,
-    }
-    summoner = await getSummonerID(summonerRegion, summonerName);
+    var testVar = "hello darkness my old friend";
+    summoner = await getSummonerID(summonerRegion, summonerName)
     summoner.name = summonerName;
     summoner.region = summonerRegion;
     if (summoner.exists) {
         mastery = await getHighestMastery(summonerRegion, summoner.id);
         matches = await getRecentGames(summonerRegion, summoner.accountId, 10);
         rankedInfo = await getRankedInfo(summonerRegion, summoner.id);
-        console.log("\nmatches for " + summoner.name);
-        console.log(matches);
-        console.log("\n");
+    }
+    return {
+        summoner: summoner,
+        mastery: mastery,
+        matches: matches,
+        rankedInfo: rankedInfo,
+        testVar
+        };
+}
+async function retreiveDataCompare(summoner1Region, summoner1Name,summoner2Region, summoner2Name) {
+    summoner1 = await getSummonerID(summoner1Region, summoner1Name);
+    summoner1.name = summoner1Name;
+    summoner1.region = summoner1Region;
+    if (summoner1.exists) {
+        mastery1 = await getHighestMastery(summoner1Region, summoner1.id);
+        matches1 = await getRecentGames(summoner1Region, summoner1.accountId, 5);
+        rankedInfo1 = await getRankedInfo(summoner1Region, summoner1.id);
+        //console.log(summoner1);
+        //console.log(mastery1);
+        console.log("log for 1");
+        console.log(matches1);
+        //console.log(rankedInfo1);
+        console.log("\n\n\n");
+    }
+    summoner2 = await getSummonerID(summoner2Region, summoner2Name);
+    summoner2.name = summoner2Name;
+    summoner2.region = summoner2Region;
+    if (summoner2.exists) {
+        mastery2 = await getHighestMastery(summoner2Region, summoner2.id);
+        matches2 = await getRecentGames(summoner2Region, summoner2.accountId, 5);
+        rankedInfo2 = await getRankedInfo(summoner2Region, summoner2.id);
+        //console.log(summoner2);
+        //console.log(mastery2);
+        console.log("log for 2");
+        console.log(matches2);
+        //console.log(rankedInfo2);
     }
     return "done";
 }
-
 
 function countValuesIn(array, defaultObject) {
     var occurrences = Object.assign({}, defaultObject || {});
@@ -358,25 +412,24 @@ function countValuesIn(array, defaultObject) {
     return occurrences;
 }
 
-function mostCommon(array){
-var data = {
-	"mode": null,
-    "count": null
-}
-var m = 0;
-for (var i=0; i<array.length; i++){
-          for (var j=i; j<array.length; j++){
-                  if (array[i] == array[j])
-                   m++;
-                  if (data.count<m)
-                  {
-                    data.count=m;
-                    data.mode = array[i];
-                  }
-          }
-          m=0;
-  }
-	return data;
+function mostCommon(array) {
+    var data = {
+        "mode": null,
+        "count": null
+    }
+    var m = 0;
+    for (var i = 0; i < array.length; i++) {
+        for (var j = i; j < array.length; j++) {
+            if (array[i] == array[j])
+                m++;
+            if (data.count < m) {
+                data.count = m;
+                data.mode = array[i];
+            }
+        }
+        m = 0;
+    }
+    return data;
 }
 
 
@@ -393,40 +446,61 @@ router.get('/', function(req, res, next) {
 
 //GET DATA FROM FORM AND REDIRECT
 router.post('/summoner/submit', async function(req, res, next) {
-    summoner.region = req.body.summRegion;
-    summoner.name = req.body.summName;
-    if (summoner.name) {
-        title = summoner.name + " on " + summoner.region + " - LOLSTATS.GG";
+    const data = await retreiveData(req.body.summRegion, req.body.summName);
+    // console.log("data is");
+    // console.log(data.summoner);
+    // console.log(data.matches);
+    // console.log(data.rankedInfo);
+    // console.log(data.mastery);
+    // console.log(data.testVar);
+    req.session.summoner = data.summoner;
+    req.session.matches = data.matches;
+    req.session.rankedInfo = data.rankedInfo;
+    req.session.mastery = data.mastery;
+    if (data.summoner.name) {
+        title = req.body.summName + " on " + req.body.summRegion + " - LOLSTATS.GG";
     }
-    const x = await retreiveData(summoner.region, summoner.name);
-     res.redirect('/summoner/lookup');
+    req.session.title = title;
+    req.session.testVar = data.testVar;
+    console.log("testVar thing" + req.session.testVar);
+    res.redirect('/summoner/lookup');
 });
 
 
 //DATA DISPLAY PAGE
 router.get('/summoner/lookup', function(req, res, next) {
-    res.render('summoner', {
-        title,
-        summoner: summoner,
-        mastery: mastery,
-        rankedInfo: rankedInfo,
-        matches: matches
-    });
+    if (req.session) {
+        res.locals.title = title;
+        res.locals.summoner = summoner;
+        res.locals.mastery = mastery;
+        res.locals.rankedInfo = rankedInfo;
+        res.locals.matches = matches;
+        console.log("testVar = " + res.locals.testVar);
+        res.render('summoner', {
+        });
+    } else {
+        res.redirect('/');
+    }
 });
 
 router.get('/summoner/', function(req, res, next) {
     res.redirect('/');
 });
 
-router.post('/test/submit', function(req, res, next) {
-    testFormIn = req.body.testIn;
-    res.redirect('/test/letsgo');
+router.post('/compare/submit', async function(req, res, next) {
+    summoner1.region = req.body.summOneRegion;
+    summoner1.name = req.body.summOneName;
+    summoner2.region = req.body.summTwoRegion;
+    summoner2.name = req.body.summTwoName;
+    const x = await retreiveDataCompare(summoner1.region, summoner1.name, summoner2.region, summoner2.name);
+    res.redirect('/compare/');
 });
 
-router.get('/test/letsgo', function(req, res, next) {
-    res.render('test', {
-        title: "test title",
-        testFormIn
+router.get('/compare/', function(req, res, next) {
+    res.render('compare', {
+        title: "Comparion between " + summoner1.name + " and " + summoner2.name,
+        summoner1,
+        summoner2
     });
 });
 
