@@ -10,10 +10,10 @@ const api = TeemoJS(apiImport.key);
 //      VARIABLES       //
 //**********************//
 
-// var summoner = {};
-// var matches = {};
-// var mastery = {};
-// var rankedInfo = {};
+var summoner = {};
+var matches = {};
+var mastery = {};
+var rankedInfo = {};
 
 
 var summoner1 = {};
@@ -356,7 +356,7 @@ async function getRankedInfo(summonerRegion, summonerID) {
 }
 
 async function retreiveData(summonerRegion, summonerName) {
-    var testVar = "hello darkness my old friend";
+    var testVar = "hello world";
     summoner = await getSummonerID(summonerRegion, summonerName)
     summoner.name = summonerName;
     summoner.region = summonerRegion;
@@ -371,8 +371,28 @@ async function retreiveData(summonerRegion, summonerName) {
         matches: matches,
         rankedInfo: rankedInfo,
         testVar
-        };
+
+    };
 }
+// async function retreiveData(summonerRegion, summonerName) {
+//     var testVar = "hello world";
+//     outputSummoner = await getSummonerID(summonerRegion, summonerName)
+//     outputSummoner.name = summonerName;
+//     outputSummoner.region = summonerRegion;
+//     if (outputSummoner.exists) {
+//         outputMastery = await getHighestMastery(summonerRegion, outputSummoner.id);
+//         outputMatches = await getRecentGames(summonerRegion, outputSummoner.accountId, 10);
+//         outputRanked = await getRankedInfo(summonerRegion, outputSummoner.id);
+//     }
+//     return {
+//         outputSummoner: outputSummoner,
+//         outputMastery: outputMastery,
+//         outputMatches: outputMatches,
+//         outputRanked: outputRanked,
+//         testVar
+//
+//     };
+// }
 async function retreiveDataCompare(summoner1Region, summoner1Name,summoner2Region, summoner2Name) {
     summoner1 = await getSummonerID(summoner1Region, summoner1Name);
     summoner1.name = summoner1Name;
@@ -447,40 +467,40 @@ router.get('/', function(req, res, next) {
 //GET DATA FROM FORM AND REDIRECT
 router.post('/summoner/submit', async function(req, res, next) {
     const data = await retreiveData(req.body.summRegion, req.body.summName);
-    // console.log("data is");
-    // console.log(data.summoner);
-    // console.log(data.matches);
-    // console.log(data.rankedInfo);
-    // console.log(data.mastery);
-    // console.log(data.testVar);
-    req.session.summoner = data.summoner;
-    req.session.matches = data.matches;
-    req.session.rankedInfo = data.rankedInfo;
-    req.session.mastery = data.mastery;
-    if (data.summoner.name) {
+    // req.session.summoner = data.outputSummoner;
+    // req.session.matches = data.outputMatches;
+    // req.session.rankedInfo = data.outputRanked;
+    // req.session.mastery = data.outputMastery;
+    if (summoner.name) {
         title = req.body.summName + " on " + req.body.summRegion + " - LOLSTATS.GG";
     }
-    req.session.title = title;
-    req.session.testVar = data.testVar;
-    console.log("testVar thing" + req.session.testVar);
+    // if (outputSummoner.name) {
+    //     title = req.body.summName + " on " + req.body.summRegion + " - LOLSTATS.GG";
+    // }
+    // req.session.title = title;
+    // req.session.testVar = data.testVar;
     res.redirect('/summoner/lookup');
 });
 
 
 //DATA DISPLAY PAGE
 router.get('/summoner/lookup', function(req, res, next) {
-    if (req.session) {
-        res.locals.title = title;
-        res.locals.summoner = summoner;
-        res.locals.mastery = mastery;
-        res.locals.rankedInfo = rankedInfo;
-        res.locals.matches = matches;
-        console.log("testVar = " + res.locals.testVar);
+    // if (req.session) {
+    //     res.locals.title = title;
+    //     res.locals.summoner = summoner;
+    //     res.locals.mastery = mastery;
+    //     res.locals.rankedInfo = rankedInfo;
+    //     res.locals.matches = matches;
         res.render('summoner', {
+            summoner: summoner,
+            matches: matches,
+            rankedInfo: rankedInfo,
+            mastery: mastery,
+            title
         });
-    } else {
-        res.redirect('/');
-    }
+    // } else {
+    //     res.redirect('/');
+    // }
 });
 
 router.get('/summoner/', function(req, res, next) {
