@@ -63,29 +63,7 @@ var testFormIn = "";
 //**********************//
 //      FUNCTIONS       //
 //**********************//
-
-
-// function getSummonerID(summonerRegion, summonerName) {
-//     return new Promise((resolve, reject) => {
-//         var summonerData = {};
-//         api.get(summonerRegion, 'summoner.getBySummonerName', summonerName)
-//             .then((data) => {
-//                 if (data) {
-//                     summonerData.id = data.id;
-//                     summonerData.accountId = data.accountId;
-//                     summonerData.name = data.name;
-//                     summonerData.profileIconId = data.profileIconId;
-//                     summonerData.summonerLevel = data.summonerLevel;
-//                     summonerData.exists = true;
-//                     summonerData.region = summonerRegion;
-//                 } else {
-//                     summonerData.exists = false;
-//                 }
-//                 resolve(summonerData);
-//             })
-//             .catch(error => console.log(error));
-//     })
-// }
+//hi
 async function getSummonerID(summonerRegion, summonerName){
     var summonerData = {};
     var data = await api.get(summonerRegion, 'summoner.getBySummonerName', summonerName)
