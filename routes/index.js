@@ -344,12 +344,11 @@ async function retreiveData(summonerRegion, summonerName) {
         rankedInfo = await getRankedInfo(summonerRegion, summoner.id);
     }
     return {
-        summoner: summoner,
-        mastery: mastery,
-        matches: matches,
-        rankedInfo: rankedInfo,
+        summoner,
+        mastery,
+        matches,
+        rankedInfo,
         testVar
-
     };
 }
 // async function retreiveData(summonerRegion, summonerName) {
@@ -363,10 +362,10 @@ async function retreiveData(summonerRegion, summonerName) {
 //         outputRanked = await getRankedInfo(summonerRegion, outputSummoner.id);
 //     }
 //     return {
-//         outputSummoner: outputSummoner,
-//         outputMastery: outputMastery,
-//         outputMatches: outputMatches,
-//         outputRanked: outputRanked,
+//         outputSummoner,
+//         outputMastery,
+//         outputMatches,
+//         outputRanked,
 //         testVar
 //
 //     };
@@ -470,10 +469,10 @@ router.get('/summoner/lookup', function(req, res, next) {
     //     res.locals.rankedInfo = rankedInfo;
     //     res.locals.matches = matches;
         res.render('summoner', {
-            summoner: summoner,
-            matches: matches,
-            rankedInfo: rankedInfo,
-            mastery: mastery,
+            summoner,
+            matches,
+            rankedInfo,
+            mastery,
             title
         });
     // } else {
@@ -498,7 +497,13 @@ router.get('/compare/', function(req, res, next) {
     res.render('compare', {
         title: "Comparion between " + summoner1.name + " and " + summoner2.name,
         summoner1,
-        summoner2
+        summoner2,
+        matches1,
+        matches2,
+        rankedInfo1,
+        rankedInfo2,
+        mastery1,
+        mastery2
     });
 });
 
