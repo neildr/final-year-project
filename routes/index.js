@@ -10,20 +10,7 @@ const api = TeemoJS(apiImport.key);
 //      VARIABLES       //
 //**********************//
 
-var summoner = {};
-var matches = {};
-var mastery = {};
-var rankedInfo = {};
 
-
-var summoner1 = {};
-var matches1 = {};
-var mastery1 = {};
-var rankedInfo1 = {};
-var summoner2 = {};
-var matches2 = {};
-var mastery2 = {};
-var rankedInfo2 = {};
 var title = "Access Denied";
 
 
@@ -37,13 +24,12 @@ var defaultPositionObj = {
     "SUPPORT": 0
 }
 
+//default champion object - stops errors
 var defaultChampionObj = {
-
 }
 
 
-
-
+//default ranked data object - stops errors
 var rankedReset = {
     wins: null,
     losses: null,
@@ -57,33 +43,33 @@ var rankedReset = {
 
 
 
-var testFormIn = "";
-
-
 //**********************//
 //      FUNCTIONS       //
 //**********************//
-//hi
-async function getSummonerID(summonerRegion, summonerName){
+
+//GET SUMMONER INFORMATION FROM NAME
+async function getSummonerID(summonerRegion, summonerName) {
     var summonerData = {};
     var data = await api.get(summonerRegion, 'summoner.getBySummonerName', summonerName)
-    .then((data) => {
-        if (data) {
-            summonerData.id = data.id;
-            summonerData.accountId = data.accountId;
-            summonerData.name = data.name;
-            summonerData.profileIconId = data.profileIconId;
-            summonerData.summonerLevel = data.summonerLevel;
-            summonerData.exists = true;
-            summonerData.region = summonerRegion;
-        } else {
-            summonerData.exists = false;
-        }
-    })
-    .catch(error => console.log(error));
+        .then((data) => {
+            if (data) {
+                summonerData.id = data.id;
+                summonerData.accountId = data.accountId;
+                summonerData.name = data.name;
+                summonerData.profileIconId = data.profileIconId;
+                summonerData.summonerLevel = data.summonerLevel;
+                summonerData.exists = true;
+                summonerData.region = summonerRegion;
+            } else {
+                summonerData.exists = false;
+            }
+        })
+        .catch(error => console.log(error));
     return summonerData;
 }
 
+
+//GETS A USERS HIGHEST MASTERY CHAMPION
 async function getHighestMastery(summonerRegion, summonerID) {
     var masteryData = {};
     var data = await api.get(summonerRegion, 'championMastery.getAllChampionMasteries', summonerID)
@@ -91,6 +77,7 @@ async function getHighestMastery(summonerRegion, summonerID) {
             masteryData.championId = data[0].championId;
             masteryData.championLevel = data[0].championLevel;
             masteryData.championPoints = data[0].championPoints;
+            //loop through champions.JSON to find an ID match
             for (var i = 0; i < Object.keys(championJSON.data).length; i++)
                 if ((masteryData.championId) === (championJSON.data[Object.keys(championJSON.data)[i]].id)) {
                     masteryData.championName = championJSON.data[Object.keys(championJSON.data)[i]].name;
@@ -102,8 +89,9 @@ async function getHighestMastery(summonerRegion, summonerID) {
 }
 
 
-//gets players recent games
+//GETS PLAYERS RECENT GAMES, 10 RECCOMENDED BECAUSE OF API RATE LIMIT
 async function getRecentGames(summonerRegion, summonerAccID, noOfGames) {
+    //stores information about the games in arrays
     var recentGamesData = {
         "ids": [], //ids of the matches
         "lanes": [], //lanes played
@@ -165,6 +153,7 @@ async function getRecentGames(summonerRegion, summonerAccID, noOfGames) {
     var data = await api.get(summonerRegion, 'match.getRecentMatchlist', summonerAccID)
         .then(async (data) => {
             for (i = 0; i < noOfGames; i++) {
+                //validating games
                 if (data.matches[i].queue === 400 || data.matches[i].queue === 420 || data.matches[i].queue === 430 || data.matches[i].queue === 440) {
                     recentGamesData.ids[i] = data.matches[i].gameId;
                     recentGamesData.roles[i] = data.matches[i].role;
@@ -172,6 +161,7 @@ async function getRecentGames(summonerRegion, summonerAccID, noOfGames) {
                     recentGamesData.queues[i] = data.matches[i].queue;
                     recentGamesData.champions[i] = data.matches[i].champion;
                     recentGamesData.timestamps[i] = data.matches[i].timestamp;
+                    //calculating actual position - can have errors on Riot's end
                     if (recentGamesData.roles[i] === "SOLO" || recentGamesData.roles[i] === "DUO" || recentGamesData.roles[i] === "NONE") {
                         if (recentGamesData.lanes[i] === "TOP") {
                             recentGamesData.actualPosition[i] = "TOP";
@@ -185,16 +175,19 @@ async function getRecentGames(summonerRegion, summonerAccID, noOfGames) {
                     } else if (recentGamesData.roles[i] === "DUO_SUPPORT") {
                         recentGamesData.actualPosition[i] = "SUPPORT";
                     }
+                    //gets the game data from each match
                     recentGamesData.matchData[i] = await getMatchData(summonerRegion, data.matches[i].gameId, summonerAccID);
                     if (recentGamesData.matchData[i].outcome === "WIN") {
                         totalWins++;
                     }
+                    //calculates average
                     itemsInJSONAverage.forEach(function(itemsInJSONAverage) {
                         recentGamesData.averages[itemsInJSONAverage] += parseFloat(((recentGamesData.matchData[i][itemsInJSONAverage]) / noOfGames));
                         recentGamesData.averages[itemsInJSONAverage] = parseFloat((recentGamesData.averages[itemsInJSONAverage]).toFixed(2));
                     })
                 }
             }
+            //more calculations - mode role, mode champion, win ratio, champion count and role count
             recentGamesData.modePosition = mostCommon(recentGamesData.actualPosition);
             recentGamesData.modeChampion.info = mostCommon(recentGamesData.champions);
             for (var i = 0; i < Object.keys(championJSON.data).length; i++)
@@ -211,8 +204,11 @@ async function getRecentGames(summonerRegion, summonerAccID, noOfGames) {
     return recentGamesData;
 }
 
+//FUNCTION FOR GETTING DATA ABOUT AN INDIVIDUAL MATCH
 async function getMatchData(summonerRegion, matchID, summonerAccID) {
+    //stores the participantId externally outside loop
     var participantIDExt;
+    //initialising variables to store data for the match
     var matchData = {
         "kills": null,
         "deaths": null,
@@ -268,30 +264,41 @@ async function getMatchData(summonerRegion, matchID, summonerAccID) {
     ];
     var data = await api.get(summonerRegion, 'match.getMatch', matchID)
         .then((data) => {
+            //get time data for match
             matchData.matchLengthTotal = data.gameDuration;
             matchData.matchMinutes = Math.floor(data.gameDuration / 60);
             matchData.matchSeconds = data.gameDuration % 60;
+            //loop through participantIdentities to find ID match
             for (var i = 0; i < Object.keys(data.participantIdentities).length; i++) {
                 if (data.participantIdentities[i].player.accountId === summonerAccID) {
+                    //store the participantId
                     participantIDExt = data.participantIdentities[i].participantId;
+                    //loop through participants
                     for (var j = 0; j < Object.keys(data.participants).length; j++) {
+                        //if ID match is found, get data
                         if (data.participants[j].participantId === participantIDExt) {
+                            //gets summone spells and champion played
                             matchData.spell1Id = data.participants[j].spell1Id;
                             matchData.spell2Id = data.participants[j].spell2Id;
                             matchData.championId = data.participants[j].championId;
+                            //gets data from matches
                             itemsInJSONMatch.forEach(function(itemsInJSONMatch) {
                                 matchData[itemsInJSONMatch] = data.participants[j].stats[itemsInJSONMatch];
                             })
+                            //stop /0 error
                             var ratioDeaths = data.participants[j].stats.deaths;
                             if (ratioDeaths === 0) {
                                 ratioDeaths = 1;
                             }
+                            //calculate kda ratio
                             matchData.kdaRatio = ((data.participants[j].stats.kills + data.participants[j].stats.assists) / ratioDeaths).toFixed(2);
+                            //outcome
                             if (data.participants[j].stats.win === true) {
                                 matchData.outcome = "WIN";
                             } else {
                                 matchData.outcome = "LOSE";
                             }
+                            //validation for missing data - problem on Riot's end
                             if (data.participants[j].timeline.csDiffPerMinDeltas) {
                                 matchData.csDiff = (data.participants[j].timeline.csDiffPerMinDeltas["0-10"]).toFixed(2);
                             } else {
@@ -308,12 +315,13 @@ async function getMatchData(summonerRegion, matchID, summonerAccID) {
         .catch(error => console.log(error));
     return matchData;
 }
-
+//GET RANKED INFORMATION FOR A PLAYER
 async function getRankedInfo(summonerRegion, summonerID) {
     var rankedData = {};
     var data = await api.get(summonerRegion, 'league.getAllLeaguePositionsForSummoner', summonerID)
         .then((data) => {
             for (var i = 0; i < data.length; i++) {
+                //go through data to find correct queue type. if found, get data
                 if (data[i].queueType === "RANKED_SOLO_5x5") {
                     rankedData.wins = data[i].wins;
                     rankedData.losses = data[i].losses;
@@ -325,6 +333,7 @@ async function getRankedInfo(summonerRegion, summonerID) {
                     rankedData.winRateRanked = ((rankedData.wins / rankedData.totalGamesRanked) * 100).toFixed(2);
                 }
             }
+            //if not found or nothing, return null
             if (data.length === 0) {
                 rankedData = rankedReset;
             }
@@ -333,74 +342,53 @@ async function getRankedInfo(summonerRegion, summonerID) {
     return rankedData;
 }
 
+//ASYNC FUNCTION TO GET DATA
 async function retreiveData(summonerRegion, summonerName) {
-    var testVar = "hello world";
-    summoner = await getSummonerID(summonerRegion, summonerName)
-    summoner.name = summonerName;
-    summoner.region = summonerRegion;
-    if (summoner.exists) {
-        mastery = await getHighestMastery(summonerRegion, summoner.id);
-        matches = await getRecentGames(summonerRegion, summoner.accountId, 10);
-        rankedInfo = await getRankedInfo(summonerRegion, summoner.id);
+    outputSummoner = await getSummonerID(summonerRegion, summonerName)
+    if (outputSummoner.exists) {
+        outputMastery = await getHighestMastery(summonerRegion, outputSummoner.id);
+        outputMatches = await getRecentGames(summonerRegion, outputSummoner.accountId, 10);
+        outputRanked = await getRankedInfo(summonerRegion, outputSummoner.id);
+
     }
     return {
-        summoner,
-        mastery,
-        matches,
-        rankedInfo,
-        testVar
+        outputSummoner,
+        outputMastery,
+        outputMatches,
+        outputRanked
     };
 }
-// async function retreiveData(summonerRegion, summonerName) {
-//     var testVar = "hello world";
-//     outputSummoner = await getSummonerID(summonerRegion, summonerName)
-//     outputSummoner.name = summonerName;
-//     outputSummoner.region = summonerRegion;
-//     if (outputSummoner.exists) {
-//         outputMastery = await getHighestMastery(summonerRegion, outputSummoner.id);
-//         outputMatches = await getRecentGames(summonerRegion, outputSummoner.accountId, 10);
-//         outputRanked = await getRankedInfo(summonerRegion, outputSummoner.id);
-//     }
-//     return {
-//         outputSummoner,
-//         outputMastery,
-//         outputMatches,
-//         outputRanked,
-//         testVar
-//
-//     };
-// }
-async function retreiveDataCompare(summoner1Region, summoner1Name,summoner2Region, summoner2Name) {
-    summoner1 = await getSummonerID(summoner1Region, summoner1Name);
-    summoner1.name = summoner1Name;
-    summoner1.region = summoner1Region;
-    if (summoner1.exists) {
-        mastery1 = await getHighestMastery(summoner1Region, summoner1.id);
-        matches1 = await getRecentGames(summoner1Region, summoner1.accountId, 5);
-        rankedInfo1 = await getRankedInfo(summoner1Region, summoner1.id);
-        //console.log(summoner1);
-        //console.log(mastery1);
+//ASYNC FUNCTION TO GET DATA ABOUT 2 PEOPLE
+async function retreiveDataCompare(summoner1Region, summoner1Name, summoner2Region, summoner2Name) {
+    outputSummoner1 = await getSummonerID(summoner1Region, summoner1Name);
+    if (outputSummoner1.exists) {
+        outputMastery1 = await getHighestMastery(summoner1Region, outputSummoner1.id);
+        outputMatches1 = await getRecentGames(summoner1Region, outputSummoner1.accountId, 5);
+        outputRanked1 = await getRankedInfo(summoner1Region, outputSummoner1.id);
         console.log("log for 1");
-        console.log(matches1);
-        //console.log(rankedInfo1);
+        console.log(outputMatches1);
         console.log("\n\n\n");
     }
-    summoner2 = await getSummonerID(summoner2Region, summoner2Name);
-    summoner2.name = summoner2Name;
-    summoner2.region = summoner2Region;
-    if (summoner2.exists) {
-        mastery2 = await getHighestMastery(summoner2Region, summoner2.id);
-        matches2 = await getRecentGames(summoner2Region, summoner2.accountId, 5);
-        rankedInfo2 = await getRankedInfo(summoner2Region, summoner2.id);
-        //console.log(summoner2);
-        //console.log(mastery2);
+    outputSummoner2 = await getSummonerID(summoner2Region, summoner2Name);
+    if (outputSummoner2.exists) {
+        outputMastery2 = await getHighestMastery(summoner2Region, outputSummoner2.id);
+        outputMatches2 = await getRecentGames(summoner2Region, outputSummoner2.accountId, 5);
+        outputRanked2 = await getRankedInfo(summoner2Region, outputSummoner2.id);
         console.log("log for 2");
-        console.log(matches2);
-        //console.log(rankedInfo2);
+        console.log(outputMatches2);
     }
-    return "done";
+    return {
+        outputSummoner1,
+        outputMastery1,
+        outputRanked1,
+        outputMatches1,
+        outputSummoner2,
+        outputMastery2,
+        outputRanked2,
+        outputMatches2
+    }
 }
-
+//function for counting values in an array
 function countValuesIn(array, defaultObject) {
     var occurrences = Object.assign({}, defaultObject || {});
     for (var i = 0, j = array.length; i < j; i++) {
@@ -408,7 +396,7 @@ function countValuesIn(array, defaultObject) {
     }
     return occurrences;
 }
-
+//FUNCTION FOR CALCULATING THE MODE (AND COUNT OF MODE)
 function mostCommon(array) {
     var data = {
         "mode": null,
@@ -434,7 +422,7 @@ function mostCommon(array) {
 //       ROUTING        //
 //**********************//
 
-//HOMEPAGEs
+//HOMEPAGE
 router.get('/', function(req, res, next) {
     res.render('index', {
         title: "LOLSTATS.GG"
@@ -442,68 +430,90 @@ router.get('/', function(req, res, next) {
 });
 
 //GET DATA FROM FORM AND REDIRECT
-router.post('/summoner/submit', async function(req, res, next) {
-    const data = await retreiveData(req.body.summRegion, req.body.summName);
-    // req.session.summoner = data.outputSummoner;
-    // req.session.matches = data.outputMatches;
-    // req.session.rankedInfo = data.outputRanked;
-    // req.session.mastery = data.outputMastery;
-    if (summoner.name) {
-        title = req.body.summName + " on " + req.body.summRegion + " - LOLSTATS.GG";
-    }
-    // if (outputSummoner.name) {
-    //     title = req.body.summName + " on " + req.body.summRegion + " - LOLSTATS.GG";
-    // }
-    // req.session.title = title;
-    // req.session.testVar = data.testVar;
-    res.redirect('/summoner/lookup');
+router.post('/lookup/submit', function(req, res, next) {
+    //contruct wildcard url
+    res.redirect('/lookup/' + req.body.summRegion + '/' + req.body.summName);
 });
 
 
 //DATA DISPLAY PAGE
-router.get('/summoner/lookup', function(req, res, next) {
-    // if (req.session) {
-    //     res.locals.title = title;
-    //     res.locals.summoner = summoner;
-    //     res.locals.mastery = mastery;
-    //     res.locals.rankedInfo = rankedInfo;
-    //     res.locals.matches = matches;
-        res.render('summoner', {
-            summoner,
-            matches,
-            rankedInfo,
-            mastery,
-            title
-        });
-    // } else {
-    //     res.redirect('/');
-    // }
+router.get('/lookup/:summRegion/:summName', async function(req, res, next) {
+    //variables
+    var outputSummoner;
+    var outputRanked;
+    var outputMatches;
+    var outputMastery;
+    //call function to get data from region/name passed from wildcard url
+    const data = await retreiveData(req.params.summRegion, req.params.summName);
+    //pass data to variables
+    outputSummoner = data.outputSummoner;
+    outputRanked = data.outputRanked;
+    outputMatches = data.outputMatches;
+    outputMastery = data.outputMastery;
+    if (data.outputSummoner.name) {
+        title = data.outputSummoner.name + " on " + req.params.summRegion + " - LOLSTATS.GG";
+    }
+    //render page with data
+    res.render('summoner', {
+        summoner: outputSummoner,
+        matches: outputMatches,
+        rankedInfo: outputRanked,
+        mastery: outputMastery,
+        title
+    });
 });
 
-router.get('/summoner/', function(req, res, next) {
+//ROUTING REDIRECT
+router.get('/lookup/', function(req, res, next) {
     res.redirect('/');
 });
-
-router.post('/compare/submit', async function(req, res, next) {
-    summoner1.region = req.body.summOneRegion;
-    summoner1.name = req.body.summOneName;
-    summoner2.region = req.body.summTwoRegion;
-    summoner2.name = req.body.summTwoName;
-    const x = await retreiveDataCompare(summoner1.region, summoner1.name, summoner2.region, summoner2.name);
-    res.redirect('/compare/');
+//GET DATA FROM FORM AND REDIRECT
+router.post('/compare/submit', function(req, res, next) {
+    //contruct wildcard url
+    res.redirect('/compare/user1=' + req.body.summOneRegion + '/' +req.body.summOneName + '/user2=' + req.body.summTwoRegion + '/' + req.body.summTwoName);
 });
 
-router.get('/compare/', function(req, res, next) {
+router.get('/compare/user1=:summOneRegion/:summOneName/user2=:summTwoRegion/:summTwoName', async function(req, res, next) {
+    //variables
+    var outputSummoner1;
+    var outputSummoner2;
+    var outputMastery1;
+    var outputMastery2;
+    var outputMatches1;
+    var outputMatches2;
+    var outputRanked1;
+    var outputRanked2;
+    //call function to get data from regions/names passed from wildcard url
+    const compareData = await retreiveDataCompare(req.params.summOneRegion, req.params.summOneName, req.params.summTwoRegion, req.params.summTwoName);
+    console.log(req.params.summOneRegion);
+    console.log(req.params.summOneName);
+    console.log(req.params.summTwoRegion);
+    console.log(req.params.summTwoName);
+    //pass data to variables
+    outputSummoner1 = compareData.outputSummoner1;
+    outputMastery1 = compareData.outputMastery1;
+    outputMatches1 = compareData.outputMatches1;
+    outputRanked1 = compareData.outputRanked1;
+    outputSummoner2 = compareData.outputSummoner2;
+    outputMastery2 = compareData.outputMastery2;
+    outputMatches2 = compareData.outputMatches2;
+    outputRanked2 = compareData.outputRanked2;
+    //render page with data
     res.render('compare', {
-        title: "Comparion between " + summoner1.name + " and " + summoner2.name,
-        summoner1,
-        summoner2,
-        matches1,
-        matches2,
-        rankedInfo1,
-        rankedInfo2,
-        mastery1,
-        mastery2
+        title: "Comparion between " + outputSummoner1.name + " and " + outputSummoner2.name,
+        summoner1: outputSummoner1,
+        summoner2: outputSummoner2,
+        matches1: outputMatches1,
+        matches2: outputMatches2,
+        rankedInfo1: outputRanked1,
+        rankedInfo2: outputRanked2,
+        mastery1: outputMastery1,
+        mastery2: outputMastery2
+    });
+});
+router.get('/legal', function(req, res, next) {
+    res.render('legal', {
+
     });
 });
 

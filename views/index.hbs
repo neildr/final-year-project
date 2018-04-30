@@ -1,68 +1,122 @@
-<p class="title">LOLSTATS.GG</p>
-    <br>
-    <br>
-    <br>
-    <br>
-    <p class="testWhite">
-        Search for a summoner:
-    </p>
-    <form action="/summoner/submit" method="post">
-    <table class="tableTest">
-    <tr>
-    <th class="region" colspan="1">
-        <select class="dropdown" name="summRegion" required>
-            <option value="BR1">BR</option>
-            <option value="EUN1">EUNE</option>
-            <option value="EUW1">EUW</option>
-            <option value="JP1">JP</option>
-            <option value="KR">KR</option>
-            <option value="LA1">LAN</option>
-            <option value="LA2">LAS</option>
-            <option value="NA1">NA</option>
-            <option value="OC1">OCE</option>
-            <option value="TR1">TR</option>
-            <option value="RU">RU</option>
-        </select>
-    </th>
-    <th class="searchbox" colspan="3">
-            <input type="text" placeholder="Enter summoner name here." class="input" name="summName" required>
-    </th>
-    <th class="button" colspan="1">
-            <button class = "buttonGo" type="submit">Go!</button>
-    </th>
-    </tr>
-    </table>
-</form>
-</br>
-</br>
-<form action="/compare/submit" method="post">
-    <select class="dropdown" name="summOneRegion" required>
-        <option value="BR1">BR</option>
-        <option value="EUN1">EUNE</option>
-        <option value="EUW1">EUW</option>
-        <option value="JP1">JP</option>
-        <option value="KR">KR</option>
-        <option value="LA1">LAN</option>
-        <option value="LA2">LAS</option>
-        <option value="NA1">NA</option>
-        <option value="OC1">OCE</option>
-        <option value="TR1">TR</option>
-        <option value="RU">RU</option>
-    </select>
-    <select class="dropdown" name="summTwoRegion" required>
-        <option value="BR1">BR</option>
-        <option value="EUN1">EUNE</option>
-        <option value="EUW1">EUW</option>
-        <option value="JP1">JP</option>
-        <option value="KR">KR</option>
-        <option value="LA1">LAN</option>
-        <option value="LA2">LAS</option>
-        <option value="NA1">NA</option>
-        <option value="OC1">OCE</option>
-        <option value="TR1">TR</option>
-        <option value="RU">RU</option>
-    </select>
-    <input type="text" name="summOneName" placeholder="summoner 1"/>
-    <input type="text" name="summTwoName" placeholder="summoner 2"/>
-    <button type="submit">Gotest!</button>
-</form>
+<div class="bodyContainer">
+    <h1 class="testWhite">LOLSTATS.GG</h1>
+    <div class="pageContent">
+        <br>
+        <br>
+        <p class="testWhite">
+            Search for a summoner:
+        </p>
+        <form action="/lookup/submit" method="post">
+            <table class="displayTable">
+                <tr>
+                    <th class="region" colspan="1">
+                        <select class="dropdown" name="summRegion" required>
+                            <option value="BR1">BR</option>
+                            <option value="EUN1">EUNE</option>
+                            <option value="EUW1">EUW</option>
+                            <option value="JP1">JP</option>
+                            <option value="KR">KR</option>
+                            <option value="LA1">LAN</option>
+                            <option value="LA2">LAS</option>
+                            <option value="NA1">NA</option>
+                            <option value="OC1">OCE</option>
+                            <option value="TR1">TR</option>
+                            <option value="RU">RU</option>
+                        </select>
+                    </th>
+                    <th class="searchbox" colspan="3">
+                        <input type="text" placeholder="Enter summoner name here." class="input" name="summName" required>
+                    </th>
+                    <th class="button" colspan="1">
+                        <button class="buttonGo" type="submit">Go!</button>
+                    </th>
+                </tr>
+            </table>
+        </form>
+        </br>
+        <p class="testWhite">
+            Compare two summoners:
+        </p>
+        </br>
+        <form action="/compare/submit" method="post">
+            <table class="displayTable">
+                <tr>
+                    <th class="region" colspan="1">
+                        <select class="dropdown" name="summOneRegion" required>
+                            <option value="BR1">BR</option>
+                            <option value="EUN1">EUNE</option>
+                            <option value="EUW1">EUW</option>
+                            <option value="JP1">JP</option>
+                            <option value="KR">KR</option>
+                            <option value="LA1">LAN</option>
+                            <option value="LA2">LAS</option>
+                            <option value="NA1">NA</option>
+                            <option value="OC1">OCE</option>
+                            <option value="TR1">TR</option>
+                            <option value="RU">RU</option>
+                        </select>
+                    </th>
+                    <th class="searchbox" colspan="3">
+                        <input type="text" placeholder="Enter 1st Summoner name here." class="input" name="summOneName" required>
+                    </th>
+                    <th class="button" colspan="1" rowspan="2">
+                        <button class="buttonGo big" type="submit">Go!</button>
+                    </th>
+                </tr>
+                <tr>
+                    <th class="region" colspan="1">
+                        <select class="dropdown" name="summTwoRegion" required>
+                            <option value="BR1">BR</option>
+                            <option value="EUN1">EUNE</option>
+                            <option value="EUW1">EUW</option>
+                            <option value="JP1">JP</option>
+                            <option value="KR">KR</option>
+                            <option value="LA1">LAN</option>
+                            <option value="LA2">LAS</option>
+                            <option value="NA1">NA</option>
+                            <option value="OC1">OCE</option>
+                            <option value="TR1">TR</option>
+                            <option value="RU">RU</option>
+                        </select>
+                    </th>
+                    <th class="searchbox" colspan="3">
+                        <input type="text" placeholder="Enter 2nd summoner name here." class="input" name="summTwoName" required>
+                    </th>
+                </tr>
+            </table>
+        </form>
+        <br />
+        <p class="testWhite">
+            Live Game Lookup:
+        </p>
+        <br />
+        <table class="displayTable">
+            <tr>
+                <th class="region" colspan="1">
+                    <select class="dropdown" name="summRegionLive" required>
+                        <option value="BR1">BR</option>
+                        <option value="EUN1">EUNE</option>
+                        <option value="EUW1">EUW</option>
+                        <option value="JP1">JP</option>
+                        <option value="KR">KR</option>
+                        <option value="LA1">LAN</option>
+                        <option value="LA2">LAS</option>
+                        <option value="NA1">NA</option>
+                        <option value="OC1">OCE</option>
+                        <option value="TR1">TR</option>
+                        <option value="RU">RU</option>
+                    </select>
+                </th>
+                <th class="searchbox" colspan="3">
+                    <input type="text" placeholder="Enter summoner name here." class="input" name="summNameLive" required>
+                </th>
+                <th class="button" colspan="1">
+                    <button class="buttonGo" type="submit">Go!</button>
+                </th>
+            </tr>
+        </table>
+        <div class="testWhite">
+            <a class="legalLink" href="/legal">Legal information</a>
+        </div>
+    </div>
+</div>

@@ -48,15 +48,32 @@ p {
     font-style: inherit;
     text-align: center;
 }
+.legalLink{
+    text-decoration: none;
+}
+.legalLink:link{
+    color: white;
+}
+.legalLink:hover{
+    color: white;
+    text-decoration: underline;
+}
+.legalLink:visited{
+    color: white;
+}
+.legalLink:active{
+    color: white;
+}
 button {
     vertical-align: top;
 }
 
-.tableTest {
+.displayTable {
     width: 70%;
     margin-left: auto;
     margin-right: auto;
     font-family: inherit;
+    min-width: 800px;
 
 }
 .navBar {
@@ -68,14 +85,12 @@ button {
 
 
 tr{
-    padding: 10px;
+    padding: 5px;
 }
 th{
     padding: 0px;
 
 }
-
-
 th.region {
     height: 100%;
 
@@ -116,8 +131,11 @@ th.button {
     cursor: pointer;
     transition: background-color 0.25s ease
 }
+.buttonGo.big {
+    height: 75px;
+}
 .buttonGo:hover{
-    background-color: rgba(255, 255, 255, 0.5);
+    background-color: rgba(255, 255, 255, 1);
 }
 
 
@@ -149,6 +167,7 @@ p.title{
   flex-direction: row;
   flex-flow: row;
   background-color: rgba(255, 255, 255, 0.5);
+
 }
 .summaryRow{
     width: 32%;
