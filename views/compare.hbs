@@ -145,6 +145,13 @@
             </dl>
         </div>
     </div>
+    <h3 class="testWhite">test stuff</h3>
+    <div class="testWhite">
+        {{#each averages}}
+        {{this.statName}}: {{this.summOne}} / {{this.summTwo}} / {{this.delta}}</br>
+        {{/each}}
+
+    </div>
     </div>
 </div>
 {{else}}

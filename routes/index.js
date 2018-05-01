@@ -41,7 +41,12 @@ var rankedReset = {
     leaguePoints: null
 };
 
-
+//variable template for easier processing
+var itemsInJSONAverage = ['kills', 'deaths', 'assists', 'kdaRatio', 'visionScore',
+    'goldEarned', 'totalDamageDealtToChampions', 'magicDamageDealtToChampions', 'physicalDamageDealtToChampions',
+    'trueDamageDealtToChampions', 'totalHeal', 'timeCCingOthers', 'damageDealtToObjectives', 'damageDealtToTurrets', 'turretKills', 'inhibitorKills', 'creepScore', 'neutralMinionsKilled',
+    'neutralMinionsKilledTeamJungle', 'neutralMinionsKilledEnemyJungle', 'csDiff', 'csPerMin', 'visionWardsBoughtInGame', 'wardsPlaced', 'wardsKilled'
+];
 
 //**********************//
 //      FUNCTIONS       //
@@ -144,13 +149,9 @@ async function getRecentGames(summonerRegion, summonerAccID, noOfGames) {
             "wardsKilled": 0
         }
     };
-    var itemsInJSONAverage = ['kills', 'deaths', 'assists', 'kdaRatio', 'visionScore',
-        'goldEarned', 'totalDamageDealtToChampions', 'magicDamageDealtToChampions', 'physicalDamageDealtToChampions',
-        'trueDamageDealtToChampions', 'totalHeal', 'timeCCingOthers', 'damageDealtToObjectives', 'damageDealtToTurrets', 'turretKills', 'inhibitorKills', 'creepScore', 'neutralMinionsKilled',
-        'neutralMinionsKilledTeamJungle', 'neutralMinionsKilledEnemyJungle', 'csDiff', 'csPerMin', 'visionWardsBoughtInGame', 'wardsPlaced', 'wardsKilled'
-    ];
+
     var totalWins = 0;
-    var data = await api.get(summonerRegion, 'match.getRecentMatchlist', summonerAccID)
+    var data = await api.get(summonerRegion, 'match.getMatchlist', summonerAccID)
         .then(async (data) => {
             for (i = 0; i < noOfGames; i++) {
                 //validating games
@@ -203,6 +204,7 @@ async function getRecentGames(summonerRegion, summonerAccID, noOfGames) {
         .catch(error => console.log(error));
     return recentGamesData;
 }
+
 
 //FUNCTION FOR GETTING DATA ABOUT AN INDIVIDUAL MATCH
 async function getMatchData(summonerRegion, matchID, summonerAccID) {
@@ -259,7 +261,7 @@ async function getMatchData(summonerRegion, matchID, summonerAccID) {
     };
     var itemsInJSONMatch = ['kills', 'deaths', 'assists', 'kdaRatio', 'visionScore', 'goldEarned', 'item0', 'item1', 'item2', 'item3', 'item4', 'item5', 'item6', 'perk0', 'perk1', 'perk2', 'perk3', 'perk4', 'perk5',
         'totalDamageDealtToChampions', 'magicDamageDealtToChampions', 'physicalDamageDealtToChampions',
-        'trueDamageDealtToChampions', 'totalHeal', 'timeCCingOthers', 'damageDealtToObjectives', 'damageDealtToTurrets', 'turretKills', 'inhibitorKills', 'totalMinionsKilled', 'totalMinionsKilled', 'neutralMinionsKilled',
+        'trueDamageDealtToChampions', 'totalHeal', 'timeCCingOthers', 'damageDealtToObjectives', 'damageDealtToTurrets', 'turretKills', 'inhibitorKills', 'totalMinionsKilled', 'neutralMinionsKilled',
         'neutralMinionsKilledTeamJungle', 'neutralMinionsKilledEnemyJungle', 'csDiff', 'csPerMin', 'visionWardsBoughtInGame', 'wardsPlaced', 'wardsKilled'
     ];
     var data = await api.get(summonerRegion, 'match.getMatch', matchID)
@@ -483,6 +485,159 @@ router.get('/compare/user1=:summOneRegion/:summOneName/user2=:summTwoRegion/:sum
     var outputMatches2;
     var outputRanked1;
     var outputRanked2;
+    var outputAverages = {
+            "kills": {
+                "statName": "Kills",
+                "summOne": 0,
+                "summTwo": 0,
+                "delta": 0
+            },
+            "deaths": {
+                "statName": "Deaths",
+                "summOne": 0,
+                "summTwo": 0,
+                "delta": 0
+            },
+            "assists": {
+                "statName": "Assists",
+                "summOne": 0,
+                "summTwo": 0,
+                "delta": 0
+            },
+            "kdaRatio": {
+                "statName": "KDA Ratio",
+                "summOne": 0,
+                "summTwo": 0,
+                "delta": 0
+            },
+            "visionScore": {
+                "statName": "Vision Score",
+                "summOne": 0,
+                "summTwo": 0,
+                "delta": 0
+            },
+            "goldEarned": {
+                "statName": "Gold Earned",
+                "summOne": 0,
+                "summTwo": 0,
+                "delta": 0
+            },
+            "totalDamageDealtToChampions": {
+                "statName": "Total Damage Dealt to Champions",
+                "summOne": 0,
+                "summTwo": 0,
+                "delta": 0
+            },
+            "magicDamageDealtToChampions": {
+                "statName": "Magic Damage Dealt to Champions",
+                "summOne": 0,
+                "summTwo": 0,
+                "delta": 0
+            },
+            "physicalDamageDealtToChampions": {
+                "statName": "Physical Damage Dealt to Champion",
+                "summOne": 0,
+                "summTwo": 0,
+                "delta": 0
+            },
+            "trueDamageDealtToChampions": {
+                "statName": "True Damage Dealt to Champions",
+                "summOne": 0,
+                "summTwo": 0,
+                "delta": 0
+            },
+            "totalHeal": {
+                "statName": "Total Healing",
+                "summOne": 0,
+                "summTwo": 0,
+                "delta": 0
+            },
+            "timeCCingOthers": {
+                "statName": "CC Score",
+                "summOne": 0,
+                "summTwo": 0,
+                "delta": 0
+            },
+            "damageDealtToObjectives": {
+                "statName": "Damage Dealt to Objectives",
+                "summOne": 0,
+                "summTwo": 0,
+                "delta": 0
+            },
+            "damageDealtToTurrets": {
+                "statName": "Damage Dealt to Turrets",
+                "summOne": 0,
+                "summTwo": 0,
+                "delta": 0
+            },
+            "turretKills": {
+                "statName": "Turret KIlls",
+                "summOne": 0,
+                "summTwo": 0,
+                "delta": 0
+            },
+            "inhibitorKills": {
+                "statName": "Inhibitor Kills",
+                "summOne": 0,
+                "summTwo": 0,
+                "delta": 0
+            },
+            "neutralMinionsKilled": {
+                "statName": "Neutral Minions Killed",
+                "summOne": 0,
+                "summTwo": 0,
+                "delta": 0
+            },
+            "neutralMinionsKilledTeamJungle": {
+                "statName": "Neutral Minions Killed in Team's Jungle",
+                "summOne": 0,
+                "summTwo": 0,
+                "delta": 0
+            },
+            "neutralMinionsKilledEnemyJungle": {
+                "statName": "Neutral Minions Killed in Enemy Jungle",
+                "summOne": 0,
+                "summTwo": 0,
+                "delta": 0
+            },
+            "creepScore": {
+                "statName": "Creep Score",
+                "summOne": 0,
+                "summTwo": 0,
+                "delta": 0
+            },
+            "csDiff": {
+                "statName": "CS Difference in first 10 minutes",
+                "summOne": 0,
+                "summTwo": 0,
+                "delta": 0
+            },
+            "csPerMin": {
+                "statName": "CS/Min",
+                "summOne": 0,
+                "summTwo": 0,
+                "delta": 0
+            },
+            "visionWardsBoughtInGame": {
+                "statName": "Vision Wards Bought",
+                "summOne": 0,
+                "summTwo": 0,
+                "delta": 0
+            },
+            "wardsPlaced": {
+                "statName": "Wards Placed",
+                "summOne": 0,
+                "summTwo": 0,
+                "delta": 0
+            },
+            "wardsKilled":{
+                "statName": "Wards Killed",
+                "summOne": 0,
+                "summTwo": 0,
+                "delta": 0
+            }
+    }
+
     //call function to get data from regions/names passed from wildcard url
     const compareData = await retreiveDataCompare(req.params.summOneRegion, req.params.summOneName, req.params.summTwoRegion, req.params.summTwoName);
     console.log(req.params.summOneRegion);
@@ -498,6 +653,12 @@ router.get('/compare/user1=:summOneRegion/:summOneName/user2=:summTwoRegion/:sum
     outputMastery2 = compareData.outputMastery2;
     outputMatches2 = compareData.outputMatches2;
     outputRanked2 = compareData.outputRanked2;
+    itemsInJSONAverage.forEach(function(itemsInJSONAverage) {
+        outputAverages[itemsInJSONAverage].summOne = outputMatches1.averages[itemsInJSONAverage];
+        outputAverages[itemsInJSONAverage].summTwo = outputMatches2.averages[itemsInJSONAverage];
+        outputAverages[itemsInJSONAverage].delta = (outputAverages[itemsInJSONAverage].summOne - outputAverages[itemsInJSONAverage].summTwo).toFixed(2);
+    });
+    console.log(outputAverages);
     //render page with data
     res.render('compare', {
         title: "Comparion between " + outputSummoner1.name + " and " + outputSummoner2.name,
@@ -508,7 +669,8 @@ router.get('/compare/user1=:summOneRegion/:summOneName/user2=:summTwoRegion/:sum
         rankedInfo1: outputRanked1,
         rankedInfo2: outputRanked2,
         mastery1: outputMastery1,
-        mastery2: outputMastery2
+        mastery2: outputMastery2,
+        averages: outputAverages
     });
 });
 router.get('/legal', function(req, res, next) {
