@@ -1,165 +1,177 @@
-{{#if summoner1.name}}
-{{#if summoner1.exists}}
-{{#if summoner2.exists}}
-<div class = "bodyContainer">
-    <div class="pageContent">
-        <h1 class="testWhite">Comparison</h1>
-        <h1 class="testWhite">{{summoner1.name}} ({{summoner1.region}}) vs {{summoner2.name}} ({{summoner2.region}}) </h1>
-    </br>
-    <div class="rowContainer">
-        <div class="summaryRow">
-            <img class="wrapperImage" src="http://stelar7.no/cdragon/latest/profile-icons/{{ summoner1.profileIconId }}.jpg" />
-            <div class="summaryInfo">
-                <div class="testWhite">{{summoner1.name}}</div>
-                <div class="testWhite">{{summoner1.region}}</div>
-                <div class="testWhite">Level: {{summoner1.summonerLevel}}</div>
-            </div>
-        </div>
-        <div class="summaryRow">
-            {{#if rankedInfo1.tier}}
-            <img class="wrapperImage" src="/../../images/ranked/{{rankedInfo1.tier}}_{{rankedInfo1.rank}}.png" />
-            <div class="summaryInfo">
-                <div class="testWhite">{{ rankedInfo1.tier }} {{rankedInfo1.rank}} </div>
-                <div class="testWhite">{{rankedInfo1.leaguePoints}} LP</div>
-                <div class="testWhite">Win: {{rankedInfo1.winRateRanked}}%</div>
-                <div class="testWhite">Games played: {{rankedInfo1.totalGamesRanked}}</div>
-            </div>
-            {{else}}
-            <img class="wrapperImage" src="/../../images/ranked/unranked.png" />
-            <div class="summaryInfo">
-                <p class="testWhite">Unranked</p>
-            </div>
-            {{/if}}
-        </div>
-        <div class="summaryRow">
-            <img class="wrapperImage" src="http://stelar7.no/cdragon/latest/champion-icons/{{mastery1.championId}}.png" />
-            <div class="summaryInfo">
-                <div class="testWhite"><img class="masteryImg" src="/../../images/mastery/champMasteryLevel_{{mastery1.championLevel}}.png" /></div>
-                <div class="testWhite">{{mastery1.championName}}, {{mastery1.championTitle}}</div>
-                <div class="testWhite">Points: {{mastery1.championPoints}}</div>
-            </div>
-        </div>
-    </div>
-    <div class="summaryTitle">
-        Role/Champion distribution of {{summoner1.name}} over last {{matches1.ids.length}} games </br>
-        Win Ratio: {{matches1.winRatio}}%
-    </div>
-    <div class="rowContainer">
-        <div class="summaryRow">
-            <img class="wrapperImage" src="http://stelar7.no/cdragon/latest/champion-icons/{{matches1.modeChampion.info.mode}}.png" />
-            <div class="summaryInfo">
-                <div class="testWhite">Most Played Champion</div>
-                <div class="testWhite">{{matches1.modeChampion.name}}, {{matches1.modeChampion.title}}</div>
-                <div class="testWhite">Games played: {{matches1.modeChampion.info.count}}</div>
-            </div>
-        </div>
-        <div class="summaryRow">
-            <img class="wrapperImage" src="/../../images/roles/{{matches1.modePosition.mode}}.png" />
-            <div class="summaryInfo">
-                <div class="testWhite">Most Played Role</div>
-                <div class="testWhite">{{matches1.modePosition.mode}}</div>
-                <div class="testWhite">Games played: {{matches1.modePosition.count}}</div>
-            </div>
-        </div>
-        <div class="summaryRow">
-            <dl>
-                <dt>
-                    Role distribution
-                </dt>
-                <dd class="percentage percentage-{{matches1.actualpositionCount.TOP}}0"><span class="textBarChart">TOP: {{matches1.actualpositionCount.TOP}}</span></dd>
-                <dd class="percentage percentage-{{matches1.actualpositionCount.JUNGLE}}0"><span class="textBarChart">JUNGLE: {{matches1.actualpositionCount.JUNGLE}}</span></dd>
-                <dd class="percentage percentage-{{matches1.actualpositionCount.MID}}0"><span class="textBarChart">MID: {{matches1.actualpositionCount.MID}}</span></dd>
-                <dd class="percentage percentage-{{matches1.actualpositionCount.ADC}}0"><span class="textBarChart">ADC: {{matches1.actualpositionCount.ADC}}</span></dd>
-                <dd class="percentage percentage-{{matches1.actualpositionCount.SUPPORT}}0"><span class="textBarChart">SUPPORT: {{matches1.actualpositionCount.SUPPORT}}</span></dd>
-            </dl>
-        </div>
-    </div>
-    </br>
-    <h3 class="testWhite">VS</h3>
-    <br />
-    <div class="rowContainer">
-        <div class="summaryRow">
-            <img class="wrapperImage" src="http://stelar7.no/cdragon/latest/profile-icons/{{ summoner2.profileIconId }}.jpg" />
-            <div class="summaryInfo">
-                <div class="testWhite">{{summoner2.name}}</div>
-                <div class="testWhite">{{summoner2.region}}</div>
-                <div class="testWhite">Level: {{summoner2.summonerLevel}}</div>
-            </div>
-        </div>
-        <div class="summaryRow">
-            {{#if rankedInfo2.tier}}
-            <img class="wrapperImage" src="/../../images/ranked/{{rankedInfo2.tier}}_{{rankedInfo2.rank}}.png" />
-            <div class="summaryInfo">
-                <div class="testWhite">{{ rankedInfo2.tier }} {{rankedInfo2.rank}} </div>
-                <div class="testWhite">{{rankedInfo2.leaguePoints}} LP</div>
-                <div class="testWhite">Win: {{rankedInfo2.winRateRanked}}%</div>
-                <div class="testWhite">Games played: {{rankedInfo2.totalGamesRanked}}</div>
-            </div>
-            {{else}}
-            <img class="wrapperImage" src="/../../images/ranked/unranked.png" />
-            <div class="summaryInfo">
-                <p class="testWhite">Unranked</p>
-            </div>
-            {{/if}}
-        </div>
-        <div class="summaryRow">
-            <img class="wrapperImage" src="http://stelar7.no/cdragon/latest/champion-icons/{{mastery2.championId}}.png" />
-            <div class="summaryInfo">
-                <div class="testWhite"><img class="masteryImg" src="/../../images/mastery/champMasteryLevel_{{mastery2.championLevel}}.png" /></div>
-                <div class="testWhite">{{mastery2.championName}}, {{mastery2.championTitle}}</div>
-                <div class="testWhite">Points: {{mastery2.championPoints}}</div>
-            </div>
-        </div>
-    </div>
-    <div class="summaryTitle">
-        Role/Champion distribution of {{summoner2.name}} over last {{matches2.ids.length}} games </br>
-        Win Ratio: {{matches2.winRatio}}%
-    </div>
-    <div class="rowContainer">
-        <div class="summaryRow">
-            <img class="wrapperImage" src="http://stelar7.no/cdragon/latest/champion-icons/{{matches2.modeChampion.info.mode}}.png" />
-            <div class="summaryInfo">
-                <div class="testWhite">Most Played Champion</div>
-                <div class="testWhite">{{matches2.modeChampion.name}}, {{matches2.modeChampion.title}}</div>
-                <div class="testWhite">Games played: {{matches2.modeChampion.info.count}}</div>
-            </div>
-        </div>
-        <div class="summaryRow">
-            <img class="wrapperImage" src="/../../images/roles/{{matches2.modePosition.mode}}.png" />
-            <div class="summaryInfo">
-                <div class="testWhite">Most Played Role</div>
-                <div class="testWhite">{{matches2.modePosition.mode}}</div>
-                <div class="testWhite">Games played: {{matches2.modePosition.count}}</div>
-            </div>
-        </div>
-        <div class="summaryRow">
-            <dl>
-                <dt>
-                    Role distribution
-                </dt>
-                <dd class="percentage percentage-{{matches2.actualpositionCount.TOP}}0"><span class="textBarChart">TOP: {{matches2.actualpositionCount.TOP}}</span></dd>
-                <dd class="percentage percentage-{{matches2.actualpositionCount.JUNGLE}}0"><span class="textBarChart">JUNGLE: {{matches2.actualpositionCount.JUNGLE}}</span></dd>
-                <dd class="percentage percentage-{{matches2.actualpositionCount.MID}}0"><span class="textBarChart">MID: {{matches2.actualpositionCount.MID}}</span></dd>
-                <dd class="percentage percentage-{{matches2.actualpositionCount.ADC}}0"><span class="textBarChart">ADC: {{matches2.actualpositionCount.ADC}}</span></dd>
-                <dd class="percentage percentage-{{matches2.actualpositionCount.SUPPORT}}0"><span class="textBarChart">SUPPORT: {{matches2.actualpositionCount.SUPPORT}}</span></dd>
-            </dl>
-        </div>
-    </div>
-    <h3 class="testWhite">test stuff</h3>
-    <div class="testWhite">
-        {{#each averages}}
-        {{this.statName}}: {{this.summOne}} / {{this.summTwo}} / {{this.delta}}</br>
-        {{/each}}
+{{#if validRegion1}}
+    {{#if validRegion2}}
+        {{#if summoner1.exists}}
+            {{#if summoner2.exists}}
+            <div class = "bodyContainer">
+                <div class="pageContent">
+                    <h1 class="testWhite">Comparison</h1>
+                    <h1 class="testWhite">{{summoner1.name}} ({{summoner1.region}}) vs {{summoner2.name}} ({{summoner2.region}}) </h1>
+                </br>
+                <div class="rowContainer">
+                    <div class="summaryRow">
+                        <img class="wrapperImage" src="http://stelar7.no/cdragon/latest/profile-icons/{{ summoner1.profileIconId }}.jpg" />
+                        <div class="summaryInfo">
+                            <div class="testWhite">{{summoner1.name}}</div>
+                            <div class="testWhite">{{summoner1.region}}</div>
+                            <div class="testWhite">Level: {{summoner1.summonerLevel}}</div>
+                        </div>
+                    </div>
+                    <div class="summaryRow">
+                        {{#if rankedInfo1.tier}}
+                        <img class="wrapperImage" src="/../../images/ranked/{{rankedInfo1.tier}}_{{rankedInfo1.rank}}.png" />
+                        <div class="summaryInfo">
+                            <div class="testWhite">{{ rankedInfo1.tier }} {{rankedInfo1.rank}} </div>
+                            <div class="testWhite">{{rankedInfo1.leaguePoints}} LP</div>
+                            <div class="testWhite">Win: {{rankedInfo1.winRateRanked}}%</div>
+                            <div class="testWhite">Games played: {{rankedInfo1.totalGamesRanked}}</div>
+                        </div>
+                        {{else}}
+                        <img class="wrapperImage" src="/../../images/ranked/unranked.png" />
+                        <div class="summaryInfo">
+                            <p class="testWhite">Unranked</p>
+                        </div>
+                        {{/if}}
+                    </div>
+                    <div class="summaryRow">
+                        <img class="wrapperImage" src="http://stelar7.no/cdragon/latest/champion-icons/{{mastery1.championId}}.png" />
+                        <div class="summaryInfo">
+                            <div class="testWhite"><img class="masteryImg" src="/../../images/mastery/champMasteryLevel_{{mastery1.championLevel}}.png" /></div>
+                            <div class="testWhite">{{mastery1.championName}}, {{mastery1.championTitle}}</div>
+                            <div class="testWhite">Points: {{mastery1.championPoints}}</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="summaryTitle">
+                    Role/Champion distribution of {{summoner1.name}} over last {{matches1.ids.length}} games </br>
+                    Win Ratio: {{matches1.winRatio}}%
+                </div>
+                <div class="rowContainer">
+                    <div class="summaryRow">
+                        <img class="wrapperImage" src="http://stelar7.no/cdragon/latest/champion-icons/{{matches1.modeChampion.info.mode}}.png" />
+                        <div class="summaryInfo">
+                            <div class="testWhite">Most Played Champion</div>
+                            <div class="testWhite">{{matches1.modeChampion.name}}, {{matches1.modeChampion.title}}</div>
+                            <div class="testWhite">Games played: {{matches1.modeChampion.info.count}}</div>
+                        </div>
+                    </div>
+                    <div class="summaryRow">
+                        <img class="wrapperImage" src="/../../images/roles/{{matches1.modePosition.mode}}.png" />
+                        <div class="summaryInfo">
+                            <div class="testWhite">Most Played Role</div>
+                            <div class="testWhite">{{matches1.modePosition.mode}}</div>
+                            <div class="testWhite">Games played: {{matches1.modePosition.count}}</div>
+                        </div>
+                    </div>
+                    <div class="summaryRow">
+                        <dl>
+                            <dt>
+                                Role distribution
+                            </dt>
+                            <dd class="percentage percentage-{{matches1.actualpositionCount.TOP}}0"><span class="textBarChart">TOP: {{matches1.actualpositionCount.TOP}}</span></dd>
+                            <dd class="percentage percentage-{{matches1.actualpositionCount.JUNGLE}}0"><span class="textBarChart">JUNGLE: {{matches1.actualpositionCount.JUNGLE}}</span></dd>
+                            <dd class="percentage percentage-{{matches1.actualpositionCount.MID}}0"><span class="textBarChart">MID: {{matches1.actualpositionCount.MID}}</span></dd>
+                            <dd class="percentage percentage-{{matches1.actualpositionCount.ADC}}0"><span class="textBarChart">ADC: {{matches1.actualpositionCount.ADC}}</span></dd>
+                            <dd class="percentage percentage-{{matches1.actualpositionCount.SUPPORT}}0"><span class="textBarChart">SUPPORT: {{matches1.actualpositionCount.SUPPORT}}</span></dd>
+                        </dl>
+                    </div>
+                </div>
+                </br>
+                <h3 class="testWhite">VS</h3>
+                <br />
+                <div class="rowContainer">
+                    <div class="summaryRow">
+                        <img class="wrapperImage" src="http://stelar7.no/cdragon/latest/profile-icons/{{ summoner2.profileIconId }}.jpg" />
+                        <div class="summaryInfo">
+                            <div class="testWhite">{{summoner2.name}}</div>
+                            <div class="testWhite">{{summoner2.region}}</div>
+                            <div class="testWhite">Level: {{summoner2.summonerLevel}}</div>
+                        </div>
+                    </div>
+                    <div class="summaryRow">
+                        {{#if rankedInfo2.tier}}
+                        <img class="wrapperImage" src="/../../images/ranked/{{rankedInfo2.tier}}_{{rankedInfo2.rank}}.png" />
+                        <div class="summaryInfo">
+                            <div class="testWhite">{{ rankedInfo2.tier }} {{rankedInfo2.rank}} </div>
+                            <div class="testWhite">{{rankedInfo2.leaguePoints}} LP</div>
+                            <div class="testWhite">Win: {{rankedInfo2.winRateRanked}}%</div>
+                            <div class="testWhite">Games played: {{rankedInfo2.totalGamesRanked}}</div>
+                        </div>
+                        {{else}}
+                        <img class="wrapperImage" src="/../../images/ranked/unranked.png" />
+                        <div class="summaryInfo">
+                            <p class="testWhite">Unranked</p>
+                        </div>
+                        {{/if}}
+                    </div>
+                    <div class="summaryRow">
+                        <img class="wrapperImage" src="http://stelar7.no/cdragon/latest/champion-icons/{{mastery2.championId}}.png" />
+                        <div class="summaryInfo">
+                            <div class="testWhite"><img class="masteryImg" src="/../../images/mastery/champMasteryLevel_{{mastery2.championLevel}}.png" /></div>
+                            <div class="testWhite">{{mastery2.championName}}, {{mastery2.championTitle}}</div>
+                            <div class="testWhite">Points: {{mastery2.championPoints}}</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="summaryTitle">
+                    Role/Champion distribution of {{summoner2.name}} over last {{matches2.ids.length}} games </br>
+                    Win Ratio: {{matches2.winRatio}}%
+                </div>
+                <div class="rowContainer">
+                    <div class="summaryRow">
+                        <img class="wrapperImage" src="http://stelar7.no/cdragon/latest/champion-icons/{{matches2.modeChampion.info.mode}}.png" />
+                        <div class="summaryInfo">
+                            <div class="testWhite">Most Played Champion</div>
+                            <div class="testWhite">{{matches2.modeChampion.name}}, {{matches2.modeChampion.title}}</div>
+                            <div class="testWhite">Games played: {{matches2.modeChampion.info.count}}</div>
+                        </div>
+                    </div>
+                    <div class="summaryRow">
+                        <img class="wrapperImage" src="/../../images/roles/{{matches2.modePosition.mode}}.png" />
+                        <div class="summaryInfo">
+                            <div class="testWhite">Most Played Role</div>
+                            <div class="testWhite">{{matches2.modePosition.mode}}</div>
+                            <div class="testWhite">Games played: {{matches2.modePosition.count}}</div>
+                        </div>
+                    </div>
+                    <div class="summaryRow">
+                        <dl>
+                            <dt>
+                                Role distribution
+                            </dt>
+                            <dd class="percentage percentage-{{matches2.actualpositionCount.TOP}}0"><span class="textBarChart">TOP: {{matches2.actualpositionCount.TOP}}</span></dd>
+                            <dd class="percentage percentage-{{matches2.actualpositionCount.JUNGLE}}0"><span class="textBarChart">JUNGLE: {{matches2.actualpositionCount.JUNGLE}}</span></dd>
+                            <dd class="percentage percentage-{{matches2.actualpositionCount.MID}}0"><span class="textBarChart">MID: {{matches2.actualpositionCount.MID}}</span></dd>
+                            <dd class="percentage percentage-{{matches2.actualpositionCount.ADC}}0"><span class="textBarChart">ADC: {{matches2.actualpositionCount.ADC}}</span></dd>
+                            <dd class="percentage percentage-{{matches2.actualpositionCount.SUPPORT}}0"><span class="textBarChart">SUPPORT: {{matches2.actualpositionCount.SUPPORT}}</span></dd>
+                        </dl>
+                    </div>
+                </div>
+                <h3 class="testWhite">test stuff</h3>
+                <div class="testWhite">
+                    {{#each averages}}
+                    {{this.statName}}: {{this.summOne}} / {{this.summTwo}} / {{this.delta}}</br>
+                    {{/each}}
 
+                </div>
+                </div>
+            </div>
+            {{else}}
+            <div class="testWhite">
+                {{summoner2.name}} does not exist on server {{summoner2.region}}
+            </div>
+            {{/if}}
+        {{else}}
+        <div class="testWhite">
+            {{summoner1.name}} does not exist on server {{summoner1.region}}
+        </div>
+        {{/if}}
+    {{else}}
+    <div class="testWhite">
+        Invalid region "{{summoner2.region}}" for {{summoner2.name}}
     </div>
-    </div>
+    {{/if}}
+{{else}}
+<div class="testWhite">
+    Invalid region "{{summoner1.region}}" for {{summoner1.name}}
 </div>
-{{else}}
-{{summoner2.name}} does not exist on server {{summoner2.region}}
-{{/if}}
-{{else}}
-{{summoner1.name}} does not exist on server {{summoner1.region}}
-{{/if}}
-{{else}}
-Do not access page by URL
 {{/if}}

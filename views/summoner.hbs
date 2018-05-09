@@ -1,7 +1,9 @@
-{{#if summoner.name}} {{#if summoner.exists}}
+{{#if validRegion}}
+{{#if summoner.exists}}
 <div class="bodyContainer">
     <h1 class="testWhite">Summoner Stats - {{summoner.name}} - {{summoner.region}}</h1>
     <div class="pageContent">
+        {{#if mastery.valid}}
         <div class="rowContainer">
             <div class="summaryRow">
                 <img class="wrapperImage" src="http://stelar7.no/cdragon/latest/profile-icons/{{ summoner.profileIconId }}.jpg" />
@@ -38,6 +40,7 @@
         </div>
         </br>
         </br>
+        {{#if matches.isValid}}
         <h2 class="testWhite">Summary of "{{summoner.name}}" in the last {{matches.ids.length}} matches</h2>
         <h3 class="testWhite">Win ratio: {{matches.winRatio}}%</h3>
             <div class="rowContainer">
@@ -204,7 +207,7 @@
             </div>
             <div class="match-data">
                 <div class="matchDataSplit">
-                    <span class="matchInfo">Match Length: {{this.matchMinutes}}m {{this.matchSeconds}}s</span></br>
+                    <span class="matchInfo">{{this.outcome}} in {{this.matchMinutes}}m {{this.matchSeconds}}s</span></br>
                     <span class="matchInfo">KDA: {{this.kills}} / {{this.deaths}} / {{this.assists}} ({{this.kdaRatio}}:1)</span></br>
                     <span class="matchInfo">Total Damage Dealt: {{this.totalDamageDealtToChampions}}</span></br>
                     <span class="matchInfo">Damage Types: <span class="physDmg">{{this.physicalDamageDealtToChampions}}</span> / <span class="magicDmg">{{this.magicDamageDealtToChampions}}</span> / <span class="trueDmg">{{this.trueDamageDealtToChampions}}</span></span></br>
@@ -237,12 +240,21 @@
             </div>
         </div>
         {{/each}}
+        {{else}}
+        <h2 class="testWhite">{{summoner.name}} has not played enough games on Summoner's Rift recently to get match data</h2>
+        {{/if}}
+        {{else}}
+        <h2 class="testWhite">{{summoner.name}} has not played enough games on Summoner's Rift recently to get data</h2>
+        {{/if}}
     </div>
 
 </div>
 </div>
     <div>
         {{else}}
-        <h1 class="testWhite">Summoner {{summoner.name}} does not exist on {{summoner.region}}.</h1> {{/if}} {{else}}
-        <h1 class="testWhite">Error - do not access lookup page via URL.</h1> {{/if}}
+        <h1 class="testWhite">Summoner {{summoner.name}} does not exist on {{summoner.region}}</h1>
+        {{/if}}
+        {{else}}
+        <h1 class="testWhite">Invalid Region</h1>
+        {{/if}}
     </div>

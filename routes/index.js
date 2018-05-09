@@ -11,9 +11,12 @@ const api = TeemoJS(apiImport.key);
 //**********************//
 
 
-var title = "Access Denied";
+var title = "Error - LOLSTATS.GG";
 
-
+//server platforms
+var platform = ['BR1', 'EUN1', 'EUW1', 'JP1', 'KR', 'LA1', 'LA2', 'NA1', 'OC1', 'TR1', 'RU'];
+//server regions
+var region = ['BR', 'EUNE', 'EUW', 'JP', 'KR', 'LAN', 'LAS', 'NA', 'OCE', 'TR', 'RU'];
 
 //default positions object - stops errors
 var defaultPositionObj = {
@@ -25,8 +28,7 @@ var defaultPositionObj = {
 }
 
 //default champion object - stops errors
-var defaultChampionObj = {
-}
+var defaultChampionObj = {}
 
 
 //default ranked data object - stops errors
@@ -41,12 +43,7 @@ var rankedReset = {
     leaguePoints: null
 };
 
-//variable template for easier processing
-var itemsInJSONAverage = ['kills', 'deaths', 'assists', 'kdaRatio', 'visionScore',
-    'goldEarned', 'totalDamageDealtToChampions', 'magicDamageDealtToChampions', 'physicalDamageDealtToChampions',
-    'trueDamageDealtToChampions', 'totalHeal', 'timeCCingOthers', 'damageDealtToObjectives', 'damageDealtToTurrets', 'turretKills', 'inhibitorKills', 'creepScore', 'neutralMinionsKilled',
-    'neutralMinionsKilledTeamJungle', 'neutralMinionsKilledEnemyJungle', 'csDiff', 'csPerMin', 'visionWardsBoughtInGame', 'wardsPlaced', 'wardsKilled'
-];
+
 
 //**********************//
 //      FUNCTIONS       //
@@ -64,9 +61,9 @@ async function getSummonerID(summonerRegion, summonerName) {
                 summonerData.profileIconId = data.profileIconId;
                 summonerData.summonerLevel = data.summonerLevel;
                 summonerData.exists = true;
-                summonerData.region = summonerRegion;
             } else {
                 summonerData.exists = false;
+                summonerData.name = summonerName;
             }
         })
         .catch(error => console.log(error));
@@ -79,15 +76,21 @@ async function getHighestMastery(summonerRegion, summonerID) {
     var masteryData = {};
     var data = await api.get(summonerRegion, 'championMastery.getAllChampionMasteries', summonerID)
         .then((data) => {
-            masteryData.championId = data[0].championId;
-            masteryData.championLevel = data[0].championLevel;
-            masteryData.championPoints = data[0].championPoints;
-            //loop through champions.JSON to find an ID match
-            for (var i = 0; i < Object.keys(championJSON.data).length; i++)
-                if ((masteryData.championId) === (championJSON.data[Object.keys(championJSON.data)[i]].id)) {
-                    masteryData.championName = championJSON.data[Object.keys(championJSON.data)[i]].name;
-                    masteryData.championTitle = championJSON.data[Object.keys(championJSON.data)[i]].title;
-                }
+            console.log(data);
+            if (data.length != 0) {
+                masteryData.championId = data[0].championId;
+                masteryData.championLevel = data[0].championLevel;
+                masteryData.championPoints = data[0].championPoints;
+                //loop through champions.JSON to find an ID match
+                for (var i = 0; i < Object.keys(championJSON.data).length; i++)
+                    if ((masteryData.championId) === (championJSON.data[Object.keys(championJSON.data)[i]].id)) {
+                        masteryData.championName = championJSON.data[Object.keys(championJSON.data)[i]].name;
+                        masteryData.championTitle = championJSON.data[Object.keys(championJSON.data)[i]].title;
+                    }
+                    masteryData.valid = true;
+            } else {
+                masteryData.valid = false;
+            }
         })
         .catch(error => console.log(error));
     return masteryData;
@@ -147,59 +150,75 @@ async function getRecentGames(summonerRegion, summonerAccID, noOfGames) {
             "visionWardsBoughtInGame": 0,
             "wardsPlaced": 0,
             "wardsKilled": 0
-        }
+        },
+        "isValid": false
     };
-
+    //variable template for easier processing
+    var itemsInJSONAverage = ['kills', 'deaths', 'assists', 'kdaRatio', 'visionScore',
+        'goldEarned', 'totalDamageDealtToChampions', 'magicDamageDealtToChampions', 'physicalDamageDealtToChampions',
+        'trueDamageDealtToChampions', 'totalHeal', 'timeCCingOthers', 'damageDealtToObjectives', 'damageDealtToTurrets', 'turretKills', 'inhibitorKills', 'creepScore', 'neutralMinionsKilled',
+        'neutralMinionsKilledTeamJungle', 'neutralMinionsKilledEnemyJungle', 'csDiff', 'csPerMin', 'visionWardsBoughtInGame', 'wardsPlaced', 'wardsKilled'
+    ];
+    //unix timestamp to check if they've played recent enough games - set to midnight 10th November 2017 - 3 days after launch of new runes
+    const timestamp = 1510272000;
     var totalWins = 0;
     var data = await api.get(summonerRegion, 'match.getMatchlist', summonerAccID)
         .then(async (data) => {
-            for (i = 0; i < noOfGames; i++) {
-                //validating games
-                if (data.matches[i].queue === 400 || data.matches[i].queue === 420 || data.matches[i].queue === 430 || data.matches[i].queue === 440) {
-                    recentGamesData.ids[i] = data.matches[i].gameId;
-                    recentGamesData.roles[i] = data.matches[i].role;
-                    recentGamesData.lanes[i] = data.matches[i].lane;
-                    recentGamesData.queues[i] = data.matches[i].queue;
-                    recentGamesData.champions[i] = data.matches[i].champion;
-                    recentGamesData.timestamps[i] = data.matches[i].timestamp;
-                    //calculating actual position - can have errors on Riot's end
-                    if (recentGamesData.roles[i] === "SOLO" || recentGamesData.roles[i] === "DUO" || recentGamesData.roles[i] === "NONE") {
-                        if (recentGamesData.lanes[i] === "TOP") {
-                            recentGamesData.actualPosition[i] = "TOP";
-                        } else if (recentGamesData.lanes[i] === "MID") {
-                            recentGamesData.actualPosition[i] = "MID";
-                        } else if (recentGamesData.lanes[i] === "JUNGLE") {
-                            recentGamesData.actualPosition[i] = "JUNGLE";
+            if (data) {
+                var validMatchesCount = 0;
+                for (i = 0; i < data.matches.length; i++) {
+                    //validating games
+                    if ((data.matches[i].queue === 400 || data.matches[i].queue === 420 || data.matches[i].queue === 430 || data.matches[i].queue === 440) && data.matches[i].timestamp > 1510272000) {
+                        validMatchesCount++;
+                        recentGamesData.ids[i] = data.matches[i].gameId;
+                        recentGamesData.roles[i] = data.matches[i].role;
+                        recentGamesData.lanes[i] = data.matches[i].lane;
+                        recentGamesData.queues[i] = data.matches[i].queue;
+                        recentGamesData.champions[i] = data.matches[i].champion;
+                        recentGamesData.timestamps[i] = data.matches[i].timestamp;
+                        //calculating actual position - can have errors on Riot's end
+                        if (recentGamesData.roles[i] === "SOLO" || recentGamesData.roles[i] === "DUO" || recentGamesData.roles[i] === "NONE") {
+                            if (recentGamesData.lanes[i] === "TOP") {
+                                recentGamesData.actualPosition[i] = "TOP";
+                            } else if (recentGamesData.lanes[i] === "MID") {
+                                recentGamesData.actualPosition[i] = "MID";
+                            } else if (recentGamesData.lanes[i] === "JUNGLE") {
+                                recentGamesData.actualPosition[i] = "JUNGLE";
+                            }
+                        } else if (recentGamesData.roles[i] === "DUO_CARRY") {
+                            recentGamesData.actualPosition[i] = "ADC";
+                        } else if (recentGamesData.roles[i] === "DUO_SUPPORT") {
+                            recentGamesData.actualPosition[i] = "SUPPORT";
                         }
-                    } else if (recentGamesData.roles[i] === "DUO_CARRY") {
-                        recentGamesData.actualPosition[i] = "ADC";
-                    } else if (recentGamesData.roles[i] === "DUO_SUPPORT") {
-                        recentGamesData.actualPosition[i] = "SUPPORT";
+                        //gets the game data from each match
+                        recentGamesData.matchData[i] = await getMatchData(summonerRegion, data.matches[i].gameId, summonerAccID);
+                        if (recentGamesData.matchData[i].outcome === "WIN") {
+                            totalWins++;
+                        }
+                        //calculates average
+                        itemsInJSONAverage.forEach(function(itemsInJSONAverage) {
+                            recentGamesData.averages[itemsInJSONAverage] += parseFloat(((recentGamesData.matchData[i][itemsInJSONAverage]) / noOfGames));
+                            recentGamesData.averages[itemsInJSONAverage] = parseFloat((recentGamesData.averages[itemsInJSONAverage]).toFixed(2));
+                        })
                     }
-                    //gets the game data from each match
-                    recentGamesData.matchData[i] = await getMatchData(summonerRegion, data.matches[i].gameId, summonerAccID);
-                    if (recentGamesData.matchData[i].outcome === "WIN") {
-                        totalWins++;
+                    if (validMatchesCount >= noOfGames) {
+                        recentGamesData.isValid = true;
+                        break;
                     }
-                    //calculates average
-                    itemsInJSONAverage.forEach(function(itemsInJSONAverage) {
-                        recentGamesData.averages[itemsInJSONAverage] += parseFloat(((recentGamesData.matchData[i][itemsInJSONAverage]) / noOfGames));
-                        recentGamesData.averages[itemsInJSONAverage] = parseFloat((recentGamesData.averages[itemsInJSONAverage]).toFixed(2));
-                    })
                 }
-            }
-            //more calculations - mode role, mode champion, win ratio, champion count and role count
-            recentGamesData.modePosition = mostCommon(recentGamesData.actualPosition);
-            recentGamesData.modeChampion.info = mostCommon(recentGamesData.champions);
-            for (var i = 0; i < Object.keys(championJSON.data).length; i++)
-                if ((recentGamesData.modeChampion.info.mode) === (championJSON.data[Object.keys(championJSON.data)[i]].id)) {
-                    recentGamesData.modeChampion.name = championJSON.data[Object.keys(championJSON.data)[i]].name;
-                    recentGamesData.modeChampion.title = championJSON.data[Object.keys(championJSON.data)[i]].title;
-                }
+                //more calculations - mode role, mode champion, win ratio, champion count and role count
+                recentGamesData.modePosition = mostCommon(recentGamesData.actualPosition);
+                recentGamesData.modeChampion.info = mostCommon(recentGamesData.champions);
+                for (var i = 0; i < Object.keys(championJSON.data).length; i++)
+                    if ((recentGamesData.modeChampion.info.mode) === (championJSON.data[Object.keys(championJSON.data)[i]].id)) {
+                        recentGamesData.modeChampion.name = championJSON.data[Object.keys(championJSON.data)[i]].name;
+                        recentGamesData.modeChampion.title = championJSON.data[Object.keys(championJSON.data)[i]].title;
+                    }
 
-            recentGamesData.actualpositionCount = countValuesIn(recentGamesData.actualPosition, defaultPositionObj);
-            recentGamesData.championCount = countValuesIn(recentGamesData.champions, defaultChampionObj);
-            recentGamesData.winRatio = (totalWins / noOfGames).toFixed(2) * 100;
+                recentGamesData.actualpositionCount = countValuesIn(recentGamesData.actualPosition, defaultPositionObj);
+                recentGamesData.championCount = countValuesIn(recentGamesData.champions, defaultChampionObj);
+                recentGamesData.winRatio = (totalWins / noOfGames).toFixed(2) * 100;
+            }
         })
         .catch(error => console.log(error));
     return recentGamesData;
@@ -298,7 +317,7 @@ async function getMatchData(summonerRegion, matchID, summonerAccID) {
                             if (data.participants[j].stats.win === true) {
                                 matchData.outcome = "WIN";
                             } else {
-                                matchData.outcome = "LOSE";
+                                matchData.outcome = "LOSS";
                             }
                             //validation for missing data - problem on Riot's end
                             if (data.participants[j].timeline.csDiffPerMinDeltas) {
@@ -344,14 +363,17 @@ async function getRankedInfo(summonerRegion, summonerID) {
     return rankedData;
 }
 
+//SLEEP FUNCTION BECAUSE JS IS WEIRD
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
 //ASYNC FUNCTION TO GET DATA
 async function retreiveData(summonerRegion, summonerName) {
-    outputSummoner = await getSummonerID(summonerRegion, summonerName)
+    var outputSummoner = await getSummonerID(summonerRegion, summonerName)
     if (outputSummoner.exists) {
-        outputMastery = await getHighestMastery(summonerRegion, outputSummoner.id);
-        outputMatches = await getRecentGames(summonerRegion, outputSummoner.accountId, 10);
-        outputRanked = await getRankedInfo(summonerRegion, outputSummoner.id);
-
+        var outputMastery = await getHighestMastery(summonerRegion, outputSummoner.id);
+        var outputMatches = await getRecentGames(summonerRegion, outputSummoner.accountId, 10);
+        var outputRanked = await getRankedInfo(summonerRegion, outputSummoner.id);
     }
     return {
         outputSummoner,
@@ -362,22 +384,18 @@ async function retreiveData(summonerRegion, summonerName) {
 }
 //ASYNC FUNCTION TO GET DATA ABOUT 2 PEOPLE
 async function retreiveDataCompare(summoner1Region, summoner1Name, summoner2Region, summoner2Name) {
-    outputSummoner1 = await getSummonerID(summoner1Region, summoner1Name);
+    var outputSummoner1 = await getSummonerID(summoner1Region, summoner1Name);
     if (outputSummoner1.exists) {
-        outputMastery1 = await getHighestMastery(summoner1Region, outputSummoner1.id);
-        outputMatches1 = await getRecentGames(summoner1Region, outputSummoner1.accountId, 5);
-        outputRanked1 = await getRankedInfo(summoner1Region, outputSummoner1.id);
-        console.log("log for 1");
-        console.log(outputMatches1);
-        console.log("\n\n\n");
+        var outputMastery1 = await getHighestMastery(summoner1Region, outputSummoner1.id);
+        var outputMatches1 = await getRecentGames(summoner1Region, outputSummoner1.accountId, 10);
+        var outputRanked1 = await getRankedInfo(summoner1Region, outputSummoner1.id);
     }
-    outputSummoner2 = await getSummonerID(summoner2Region, summoner2Name);
+    await sleep(1000);
+    var outputSummoner2 = await getSummonerID(summoner2Region, summoner2Name);
     if (outputSummoner2.exists) {
-        outputMastery2 = await getHighestMastery(summoner2Region, outputSummoner2.id);
-        outputMatches2 = await getRecentGames(summoner2Region, outputSummoner2.accountId, 5);
-        outputRanked2 = await getRankedInfo(summoner2Region, outputSummoner2.id);
-        console.log("log for 2");
-        console.log(outputMatches2);
+        var outputMastery2 = await getHighestMastery(summoner2Region, outputSummoner2.id);
+        var outputMatches2 = await getRecentGames(summoner2Region, outputSummoner2.accountId, 10);
+        var outputRanked2 = await getRankedInfo(summoner2Region, outputSummoner2.id);;
     }
     return {
         outputSummoner1,
@@ -390,7 +408,7 @@ async function retreiveDataCompare(summoner1Region, summoner1Name, summoner2Regi
         outputMatches2
     }
 }
-//function for counting values in an array
+//FUNCTION FOR COUNTING VALUES IN AN ARRAY
 function countValuesIn(array, defaultObject) {
     var occurrences = Object.assign({}, defaultObject || {});
     for (var i = 0, j = array.length; i < j; i++) {
@@ -419,6 +437,14 @@ function mostCommon(array) {
     return data;
 }
 
+//FUNCTION FOR IF ARRAY CONTAINS
+Array.prototype.contains = function(object) {
+    if (this.indexOf(object) == -1) {
+        return false;
+    } else {
+        return true;
+    }
+}
 
 //**********************//
 //       ROUTING        //
@@ -441,19 +467,28 @@ router.post('/lookup/submit', function(req, res, next) {
 //DATA DISPLAY PAGE
 router.get('/lookup/:summRegion/:summName', async function(req, res, next) {
     //variables
-    var outputSummoner;
-    var outputRanked;
-    var outputMatches;
-    var outputMastery;
-    //call function to get data from region/name passed from wildcard url
-    const data = await retreiveData(req.params.summRegion, req.params.summName);
-    //pass data to variables
-    outputSummoner = data.outputSummoner;
-    outputRanked = data.outputRanked;
-    outputMatches = data.outputMatches;
-    outputMastery = data.outputMastery;
-    if (data.outputSummoner.name) {
-        title = data.outputSummoner.name + " on " + req.params.summRegion + " - LOLSTATS.GG";
+    var outputSummoner = {};
+    var outputRanked = {};
+    var outputMatches = {};
+    var outputMastery = {};
+    var validRegion = false;
+    if (region.contains(req.params.summRegion)) {
+        var lookupPlatform = platform[region.indexOf(req.params.summRegion)];
+        //call function to get data from region/name passed from wildcard url
+        validRegion = true;
+        const data = await retreiveData(lookupPlatform, req.params.summName);
+        //pass data to variables
+        outputSummoner = data.outputSummoner;
+        if (outputSummoner.exists) {
+            outputRanked = data.outputRanked;
+            outputMatches = data.outputMatches;
+            outputMastery = data.outputMastery;
+            outputSummoner.region = req.params.summRegion;
+            title = data.outputSummoner.name + " on " + req.params.summRegion + " - LOLSTATS.GG";
+        } else {
+            title = req.params.summName + " on " + req.params.summRegion + " - LOLSTATS.GG";
+            outputSummoner.region = req.params.summRegion;
+        }
     }
     //render page with data
     res.render('summoner', {
@@ -461,7 +496,8 @@ router.get('/lookup/:summRegion/:summName', async function(req, res, next) {
         matches: outputMatches,
         rankedInfo: outputRanked,
         mastery: outputMastery,
-        title
+        title,
+        validRegion
     });
 });
 
@@ -472,196 +508,222 @@ router.get('/lookup/', function(req, res, next) {
 //GET DATA FROM FORM AND REDIRECT
 router.post('/compare/submit', function(req, res, next) {
     //contruct wildcard url
-    res.redirect('/compare/user1=' + req.body.summOneRegion + '/' +req.body.summOneName + '/user2=' + req.body.summTwoRegion + '/' + req.body.summTwoName);
+    res.redirect('/compare/user1=' + req.body.summOneRegion + '/' + req.body.summOneName + '/user2=' + req.body.summTwoRegion + '/' + req.body.summTwoName);
 });
 
 router.get('/compare/user1=:summOneRegion/:summOneName/user2=:summTwoRegion/:summTwoName', async function(req, res, next) {
     //variables
-    var outputSummoner1;
-    var outputSummoner2;
-    var outputMastery1;
-    var outputMastery2;
-    var outputMatches1;
-    var outputMatches2;
-    var outputRanked1;
-    var outputRanked2;
+    var outputSummoner1 = {};
+    var outputSummoner2 = {};
+    var outputMastery1 = {};
+    var outputMastery2 = {};
+    var outputMatches1 = {};
+    var outputMatches2 = {};
+    var outputRanked1 = {};
+    var outputRanked2 = {};
+    var validRegion1 = false;
+    var validRegion2 = false;
+    var itemsInJSONShow = ['kills', 'deaths', 'assists', 'kdaRatio', 'visionScore',
+        'goldEarned', 'totalDamageDealtToChampions', 'magicDamageDealtToChampions', 'physicalDamageDealtToChampions',
+        'trueDamageDealtToChampions', 'totalHeal', 'timeCCingOthers', 'damageDealtToObjectives', 'damageDealtToTurrets', 'turretKills', 'inhibitorKills', 'creepScore', 'neutralMinionsKilled',
+        'neutralMinionsKilledTeamJungle', 'neutralMinionsKilledEnemyJungle', 'csDiff', 'csPerMin', 'visionWardsBoughtInGame', 'wardsPlaced', 'wardsKilled'
+    ];
     var outputAverages = {
-            "kills": {
-                "statName": "Kills",
-                "summOne": 0,
-                "summTwo": 0,
-                "delta": 0
-            },
-            "deaths": {
-                "statName": "Deaths",
-                "summOne": 0,
-                "summTwo": 0,
-                "delta": 0
-            },
-            "assists": {
-                "statName": "Assists",
-                "summOne": 0,
-                "summTwo": 0,
-                "delta": 0
-            },
-            "kdaRatio": {
-                "statName": "KDA Ratio",
-                "summOne": 0,
-                "summTwo": 0,
-                "delta": 0
-            },
-            "visionScore": {
-                "statName": "Vision Score",
-                "summOne": 0,
-                "summTwo": 0,
-                "delta": 0
-            },
-            "goldEarned": {
-                "statName": "Gold Earned",
-                "summOne": 0,
-                "summTwo": 0,
-                "delta": 0
-            },
-            "totalDamageDealtToChampions": {
-                "statName": "Total Damage Dealt to Champions",
-                "summOne": 0,
-                "summTwo": 0,
-                "delta": 0
-            },
-            "magicDamageDealtToChampions": {
-                "statName": "Magic Damage Dealt to Champions",
-                "summOne": 0,
-                "summTwo": 0,
-                "delta": 0
-            },
-            "physicalDamageDealtToChampions": {
-                "statName": "Physical Damage Dealt to Champion",
-                "summOne": 0,
-                "summTwo": 0,
-                "delta": 0
-            },
-            "trueDamageDealtToChampions": {
-                "statName": "True Damage Dealt to Champions",
-                "summOne": 0,
-                "summTwo": 0,
-                "delta": 0
-            },
-            "totalHeal": {
-                "statName": "Total Healing",
-                "summOne": 0,
-                "summTwo": 0,
-                "delta": 0
-            },
-            "timeCCingOthers": {
-                "statName": "CC Score",
-                "summOne": 0,
-                "summTwo": 0,
-                "delta": 0
-            },
-            "damageDealtToObjectives": {
-                "statName": "Damage Dealt to Objectives",
-                "summOne": 0,
-                "summTwo": 0,
-                "delta": 0
-            },
-            "damageDealtToTurrets": {
-                "statName": "Damage Dealt to Turrets",
-                "summOne": 0,
-                "summTwo": 0,
-                "delta": 0
-            },
-            "turretKills": {
-                "statName": "Turret KIlls",
-                "summOne": 0,
-                "summTwo": 0,
-                "delta": 0
-            },
-            "inhibitorKills": {
-                "statName": "Inhibitor Kills",
-                "summOne": 0,
-                "summTwo": 0,
-                "delta": 0
-            },
-            "neutralMinionsKilled": {
-                "statName": "Neutral Minions Killed",
-                "summOne": 0,
-                "summTwo": 0,
-                "delta": 0
-            },
-            "neutralMinionsKilledTeamJungle": {
-                "statName": "Neutral Minions Killed in Team's Jungle",
-                "summOne": 0,
-                "summTwo": 0,
-                "delta": 0
-            },
-            "neutralMinionsKilledEnemyJungle": {
-                "statName": "Neutral Minions Killed in Enemy Jungle",
-                "summOne": 0,
-                "summTwo": 0,
-                "delta": 0
-            },
-            "creepScore": {
-                "statName": "Creep Score",
-                "summOne": 0,
-                "summTwo": 0,
-                "delta": 0
-            },
-            "csDiff": {
-                "statName": "CS Difference in first 10 minutes",
-                "summOne": 0,
-                "summTwo": 0,
-                "delta": 0
-            },
-            "csPerMin": {
-                "statName": "CS/Min",
-                "summOne": 0,
-                "summTwo": 0,
-                "delta": 0
-            },
-            "visionWardsBoughtInGame": {
-                "statName": "Vision Wards Bought",
-                "summOne": 0,
-                "summTwo": 0,
-                "delta": 0
-            },
-            "wardsPlaced": {
-                "statName": "Wards Placed",
-                "summOne": 0,
-                "summTwo": 0,
-                "delta": 0
-            },
-            "wardsKilled":{
-                "statName": "Wards Killed",
-                "summOne": 0,
-                "summTwo": 0,
-                "delta": 0
-            }
+        "kills": {
+            "statName": "Kills",
+            "summOne": 0,
+            "summTwo": 0,
+            "delta": 0
+        },
+        "deaths": {
+            "statName": "Deaths",
+            "summOne": 0,
+            "summTwo": 0,
+            "delta": 0
+        },
+        "assists": {
+            "statName": "Assists",
+            "summOne": 0,
+            "summTwo": 0,
+            "delta": 0
+        },
+        "kdaRatio": {
+            "statName": "KDA Ratio",
+            "summOne": 0,
+            "summTwo": 0,
+            "delta": 0
+        },
+        "visionScore": {
+            "statName": "Vision Score",
+            "summOne": 0,
+            "summTwo": 0,
+            "delta": 0
+        },
+        "goldEarned": {
+            "statName": "Gold Earned",
+            "summOne": 0,
+            "summTwo": 0,
+            "delta": 0
+        },
+        "totalDamageDealtToChampions": {
+            "statName": "Total Damage Dealt to Champions",
+            "summOne": 0,
+            "summTwo": 0,
+            "delta": 0
+        },
+        "magicDamageDealtToChampions": {
+            "statName": "Magic Damage Dealt to Champions",
+            "summOne": 0,
+            "summTwo": 0,
+            "delta": 0
+        },
+        "physicalDamageDealtToChampions": {
+            "statName": "Physical Damage Dealt to Champion",
+            "summOne": 0,
+            "summTwo": 0,
+            "delta": 0
+        },
+        "trueDamageDealtToChampions": {
+            "statName": "True Damage Dealt to Champions",
+            "summOne": 0,
+            "summTwo": 0,
+            "delta": 0
+        },
+        "totalHeal": {
+            "statName": "Total Healing",
+            "summOne": 0,
+            "summTwo": 0,
+            "delta": 0
+        },
+        "timeCCingOthers": {
+            "statName": "CC Score",
+            "summOne": 0,
+            "summTwo": 0,
+            "delta": 0
+        },
+        "damageDealtToObjectives": {
+            "statName": "Damage Dealt to Objectives",
+            "summOne": 0,
+            "summTwo": 0,
+            "delta": 0
+        },
+        "damageDealtToTurrets": {
+            "statName": "Damage Dealt to Turrets",
+            "summOne": 0,
+            "summTwo": 0,
+            "delta": 0
+        },
+        "turretKills": {
+            "statName": "Turret KIlls",
+            "summOne": 0,
+            "summTwo": 0,
+            "delta": 0
+        },
+        "inhibitorKills": {
+            "statName": "Inhibitor Kills",
+            "summOne": 0,
+            "summTwo": 0,
+            "delta": 0
+        },
+        "neutralMinionsKilled": {
+            "statName": "Neutral Minions Killed",
+            "summOne": 0,
+            "summTwo": 0,
+            "delta": 0
+        },
+        "neutralMinionsKilledTeamJungle": {
+            "statName": "Neutral Minions Killed in Team's Jungle",
+            "summOne": 0,
+            "summTwo": 0,
+            "delta": 0
+        },
+        "neutralMinionsKilledEnemyJungle": {
+            "statName": "Neutral Minions Killed in Enemy Jungle",
+            "summOne": 0,
+            "summTwo": 0,
+            "delta": 0
+        },
+        "creepScore": {
+            "statName": "Creep Score",
+            "summOne": 0,
+            "summTwo": 0,
+            "delta": 0
+        },
+        "csDiff": {
+            "statName": "CS Difference in first 10 minutes",
+            "summOne": 0,
+            "summTwo": 0,
+            "delta": 0
+        },
+        "csPerMin": {
+            "statName": "CS/Min",
+            "summOne": 0,
+            "summTwo": 0,
+            "delta": 0
+        },
+        "visionWardsBoughtInGame": {
+            "statName": "Vision Wards Bought",
+            "summOne": 0,
+            "summTwo": 0,
+            "delta": 0
+        },
+        "wardsPlaced": {
+            "statName": "Wards Placed",
+            "summOne": 0,
+            "summTwo": 0,
+            "delta": 0
+        },
+        "wardsKilled": {
+            "statName": "Wards Killed",
+            "summOne": 0,
+            "summTwo": 0,
+            "delta": 0
+        }
     }
 
     //call function to get data from regions/names passed from wildcard url
-    const compareData = await retreiveDataCompare(req.params.summOneRegion, req.params.summOneName, req.params.summTwoRegion, req.params.summTwoName);
-    console.log(req.params.summOneRegion);
-    console.log(req.params.summOneName);
-    console.log(req.params.summTwoRegion);
-    console.log(req.params.summTwoName);
-    //pass data to variables
-    outputSummoner1 = compareData.outputSummoner1;
-    outputMastery1 = compareData.outputMastery1;
-    outputMatches1 = compareData.outputMatches1;
-    outputRanked1 = compareData.outputRanked1;
-    outputSummoner2 = compareData.outputSummoner2;
-    outputMastery2 = compareData.outputMastery2;
-    outputMatches2 = compareData.outputMatches2;
-    outputRanked2 = compareData.outputRanked2;
-    itemsInJSONAverage.forEach(function(itemsInJSONAverage) {
-        outputAverages[itemsInJSONAverage].summOne = outputMatches1.averages[itemsInJSONAverage];
-        outputAverages[itemsInJSONAverage].summTwo = outputMatches2.averages[itemsInJSONAverage];
-        outputAverages[itemsInJSONAverage].delta = (outputAverages[itemsInJSONAverage].summOne - outputAverages[itemsInJSONAverage].summTwo).toFixed(2);
-    });
-    console.log(outputAverages);
+    if (region.contains(req.params.summOneRegion)) {
+        validRegion1 = true;
+        var lookupPlatform1 = platform[region.indexOf(req.params.summOneRegion)];
+        if (region.contains(req.params.summTwoRegion)) {
+            validRegion2 = true;
+            var lookupPlatform2 = platform[region.indexOf(req.params.summTwoRegion)];
+            const compareData = await retreiveDataCompare(lookupPlatform1, req.params.summOneName, lookupPlatform2, req.params.summTwoName);
+            //pass data to variables
+            outputSummoner1 = compareData.outputSummoner1;
+            outputMastery1 = compareData.outputMastery1;
+            outputMatches1 = compareData.outputMatches1;
+            outputRanked1 = compareData.outputRanked1;
+            outputSummoner2 = compareData.outputSummoner2;
+            outputMastery2 = compareData.outputMastery2;
+            outputMatches2 = compareData.outputMatches2;
+            outputRanked2 = compareData.outputRanked2;
+            outputSummoner1.region = req.params.summOneRegion;
+            outputSummoner2.region = req.params.summTwoRegion;
+            if (outputSummoner1.exists && outputSummoner2.exists) {
+                itemsInJSONShow.forEach(function(itemsInJSONShow) {
+                    outputAverages[itemsInJSONShow].summOne = outputMatches1.averages[itemsInJSONShow];
+                    outputAverages[itemsInJSONShow].summTwo = outputMatches2.averages[itemsInJSONShow];
+                    outputAverages[itemsInJSONShow].delta = (outputAverages[itemsInJSONShow].summOne - outputAverages[itemsInJSONShow].summTwo).toFixed(2);
+                    title = "Comparion between " + outputSummoner1.name + " (" + req.params.summOneRegion + ") and " + outputSummoner2.name + " (" + req.params.summTwoRegion + ") - LOLSTATS.GG";
+                });
+            }
+        } else {
+            outputSummoner2.name = req.params.summTwoName;
+            outputSummoner2.region = req.params.summTwoRegion;
+        }
+    } else {
+        outputSummoner1.name = req.params.summOneName;
+        outputSummoner1.region = req.params.summOneRegion;
+    }
+    console.log(outputSummoner1.name);
+    console.log(outputSummoner1.region);
+    console.log(outputSummoner2.name);
+    console.log(outputSummoner2.region);
+    //console.log(outputAverages);
     //render page with data
     res.render('compare', {
-        title: "Comparion between " + outputSummoner1.name + " and " + outputSummoner2.name,
+        title: title,
         summoner1: outputSummoner1,
         summoner2: outputSummoner2,
         matches1: outputMatches1,
@@ -670,7 +732,10 @@ router.get('/compare/user1=:summOneRegion/:summOneName/user2=:summTwoRegion/:sum
         rankedInfo2: outputRanked2,
         mastery1: outputMastery1,
         mastery2: outputMastery2,
-        averages: outputAverages
+        averages: outputAverages,
+        validRegion1,
+        validRegion2
+
     });
 });
 router.get('/legal', function(req, res, next) {
