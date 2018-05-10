@@ -40,14 +40,14 @@
         </div>
         </br>
         </br>
-        {{#if matches.isValid}}
+        {{#if matches.valid}}
         <h2 class="testWhite">Summary of "{{summoner.name}}" in the last {{matches.ids.length}} matches</h2>
         <h3 class="testWhite">Win ratio: {{matches.winRatio}}%</h3>
             <div class="rowContainer">
                 <div class="summaryRow">
                     <img class="wrapperImage" src="http://stelar7.no/cdragon/latest/champion-icons/{{matches.modeChampion.info.mode}}.png" />
                     <div class="summaryInfo">
-                        <div class="testWhite">Most Played Champion</div>
+                        <div class="testWhite underline">Most Played Champion</div>
                         <div class="testWhite">{{matches.modeChampion.name}}, {{matches.modeChampion.title}}</div>
                         <div class="testWhite">Games played: {{matches.modeChampion.info.count}}</div>
                     </div>
@@ -55,7 +55,7 @@
                 <div class="summaryRow">
                     <img class="wrapperImage" src="/../../images/roles/{{matches.modePosition.mode}}.png" />
                     <div class="summaryInfo">
-                        <div class="testWhite">Most Played Role</div>
+                        <div class="testWhite underline">Most Played Role</div>
                         <div class="testWhite">{{matches.modePosition.mode}}</div>
                         <div class="testWhite">Games played: {{matches.modePosition.count}}</div>
                     </div>
@@ -63,7 +63,9 @@
                 <div class="summaryRow">
                     <dl>
                         <dt>
-                            Role distribution
+                            <div class="testWhite underline">
+                                Role distribution
+                            </div>
                         </dt>
                         <dd class="percentage percentage-{{matches.actualpositionCount.TOP}}0"><span class="textBarChart">TOP: {{matches.actualpositionCount.TOP}}</span></dd>
                         <dd class="percentage percentage-{{matches.actualpositionCount.JUNGLE}}0"><span class="textBarChart">JUNGLE: {{matches.actualpositionCount.JUNGLE}}</span></dd>
@@ -118,7 +120,7 @@
                     <div class="summaryInfo">
                         <div class="statsBox title">Damage, Healing and Crowd Control:</div>
                         <div class="row">
-                            <div class="statsBox label">Total Damage:</div>
+                            <div class="statsBox label">Total Damage Dealt:</div>
                             <div class="statsBox value">{{matches.averages.totalDamageDealtToChampions}}</div>
                         </div>
                         <div class="row">

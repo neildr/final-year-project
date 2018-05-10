@@ -31,6 +31,9 @@ body {
     vertical-align: middle;
     text-align: center;
 }
+.testWhite.underline{
+    text-decoration: underline;
+}
 .matchInfo{
     font-size: 12px;
 }
@@ -48,22 +51,23 @@ p {
     font-style: inherit;
     text-align: center;
 }
-.legalLink{
+.urlStyle{
     text-decoration: none;
 }
-.legalLink:link{
+.urlStyle:link{
     color: white;
 }
-.legalLink:hover{
+.urlStyle:hover{
     color: white;
     text-decoration: underline;
 }
-.legalLink:visited{
+.urlStyle:visited{
     color: white;
 }
-.legalLink:active{
+.urlStyle:active{
     color: white;
 }
+
 button {
     vertical-align: top;
 }
@@ -166,6 +170,7 @@ p.title{
   display: flex;
   flex-direction: row;
   flex-flow: row;
+  justify-content: center;
   background-color: rgba(255, 255, 255, 0.5);
 
 }
@@ -177,6 +182,7 @@ p.title{
     display: flex;
     flex-direction: row;
     border: 3px solid gray;
+    flex-grow: 1;
 
 }
 .summaryTitle{

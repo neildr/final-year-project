@@ -76,7 +76,6 @@ async function getHighestMastery(summonerRegion, summonerID) {
     var masteryData = {};
     var data = await api.get(summonerRegion, 'championMastery.getAllChampionMasteries', summonerID)
         .then((data) => {
-            console.log(data);
             if (data.length != 0) {
                 masteryData.championId = data[0].championId;
                 masteryData.championLevel = data[0].championLevel;
@@ -92,7 +91,7 @@ async function getHighestMastery(summonerRegion, summonerID) {
                 masteryData.valid = false;
             }
         })
-        .catch(error => console.log(error));
+    .catch(error => console.log(error));
     return masteryData;
 }
 
@@ -151,7 +150,7 @@ async function getRecentGames(summonerRegion, summonerAccID, noOfGames) {
             "wardsPlaced": 0,
             "wardsKilled": 0
         },
-        "isValid": false
+        "valid": false
     };
     //variable template for easier processing
     var itemsInJSONAverage = ['kills', 'deaths', 'assists', 'kdaRatio', 'visionScore',
@@ -202,7 +201,7 @@ async function getRecentGames(summonerRegion, summonerAccID, noOfGames) {
                         })
                     }
                     if (validMatchesCount >= noOfGames) {
-                        recentGamesData.isValid = true;
+                        recentGamesData.valid = true;
                         break;
                     }
                 }
@@ -523,6 +522,7 @@ router.get('/compare/user1=:summOneRegion/:summOneName/user2=:summTwoRegion/:sum
     var outputRanked2 = {};
     var validRegion1 = false;
     var validRegion2 = false;
+    var noValidMatches = false;
     var itemsInJSONShow = ['kills', 'deaths', 'assists', 'kdaRatio', 'visionScore',
         'goldEarned', 'totalDamageDealtToChampions', 'magicDamageDealtToChampions', 'physicalDamageDealtToChampions',
         'trueDamageDealtToChampions', 'totalHeal', 'timeCCingOthers', 'damageDealtToObjectives', 'damageDealtToTurrets', 'turretKills', 'inhibitorKills', 'creepScore', 'neutralMinionsKilled',
@@ -708,6 +708,9 @@ router.get('/compare/user1=:summOneRegion/:summOneName/user2=:summTwoRegion/:sum
                     title = "Comparion between " + outputSummoner1.name + " (" + req.params.summOneRegion + ") and " + outputSummoner2.name + " (" + req.params.summTwoRegion + ") - LOLSTATS.GG";
                 });
             }
+            if ((outputMatches1.valid == false) && (outputMatches2.valid == false)){
+                noValidMatches = true;
+            }
         } else {
             outputSummoner2.name = req.params.summTwoName;
             outputSummoner2.region = req.params.summTwoRegion;
@@ -716,11 +719,6 @@ router.get('/compare/user1=:summOneRegion/:summOneName/user2=:summTwoRegion/:sum
         outputSummoner1.name = req.params.summOneName;
         outputSummoner1.region = req.params.summOneRegion;
     }
-    console.log(outputSummoner1.name);
-    console.log(outputSummoner1.region);
-    console.log(outputSummoner2.name);
-    console.log(outputSummoner2.region);
-    //console.log(outputAverages);
     //render page with data
     res.render('compare', {
         title: title,
@@ -734,8 +732,8 @@ router.get('/compare/user1=:summOneRegion/:summOneName/user2=:summTwoRegion/:sum
         mastery2: outputMastery2,
         averages: outputAverages,
         validRegion1,
-        validRegion2
-
+        validRegion2,
+        noValidMatches
     });
 });
 router.get('/legal', function(req, res, next) {
