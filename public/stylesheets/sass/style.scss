@@ -26,12 +26,13 @@ body {
     border-width: thin;
     border-style: dotted;
 }
-.testWhite{
+.mainText{
     color: white;
     vertical-align: middle;
     text-align: center;
+
 }
-.testWhite.underline{
+.mainText.underline{
     text-decoration: underline;
 }
 .matchInfo{
@@ -172,7 +173,13 @@ p.title{
   flex-flow: row;
   justify-content: center;
   background-color: rgba(255, 255, 255, 0.5);
-
+  border-radius: 5px;
+}
+.rowContainer.top {
+    border-radius: 5px 5px 0px 0px;
+}
+.rowContainer.bottom {
+    border-radius: 0px 0px 5px 5px;
 }
 .summaryRow{
     width: 32%;
@@ -183,7 +190,10 @@ p.title{
     flex-direction: row;
     border: 3px solid gray;
     flex-grow: 1;
-
+    border-radius: 5px;
+}
+.summaryRow.center{
+    align-items: center;
 }
 .summaryTitle{
     background-color: rgba(255, 255, 255, 0.5);
@@ -203,6 +213,9 @@ img.wrapperImage {
   float: left;
 
 }
+img.wrapperImage.rounded{
+    border-radius: 8px;
+}
 img.masteryImg {
     max-height: 50px;
     width: auto;
@@ -212,6 +225,7 @@ img.masteryImg {
     display: flex;
     flex-direction: column;
     flex-grow: 1;
+
 }
 .row {
     flex: 1;
@@ -324,6 +338,7 @@ dt {
   margin: 0 auto;
   height: 130px;
   background-color: rgba(255, 255, 255, 0.5);
+  border-radius: 8px;
 }
 
 .match-container.WIN{
@@ -338,6 +353,7 @@ dt {
   height: 100px;
   border: 1px solid black;
   margin-right: 10px;
+  border-radius: 8px;
 }
 
 .match-data {
@@ -359,6 +375,7 @@ dt {
   height: 60px;
   width: 130px;
   margin-right: 10px;
+  border-radius: 25px;
 }
 
 .runes-container{
@@ -382,10 +399,14 @@ dt {
   border: 1px solid black;
   margin: 1px;
   box-sizing: border-box;
+  border-radius: 8px;
+  background-color: rgba(178, 178, 178, 0.5);
 }
+
 .rune {
   width: 30px;
   height: 30px;
+
 }
 .spell {
   width: 50px;
@@ -393,6 +414,7 @@ dt {
   border: 1px solid black;
   margin: 1px;
   box-sizing: border-box;
+  border-radius: 8px;
 }
 
 .showMoreText{

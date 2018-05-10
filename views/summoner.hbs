@@ -1,262 +1,259 @@
 {{#if validRegion}}
-{{#if summoner.exists}}
-<div class="bodyContainer">
-    <h1 class="testWhite">Summoner Stats - {{summoner.name}} - {{summoner.region}}</h1>
-    <div class="pageContent">
-        {{#if mastery.valid}}
-        <div class="rowContainer">
-            <div class="summaryRow">
-                <img class="wrapperImage" src="http://stelar7.no/cdragon/latest/profile-icons/{{ summoner.profileIconId }}.jpg" />
-                <div class="summaryInfo">
-                    <div class="testWhite">{{summoner.name}}</div>
-                    <div class="testWhite">{{summoner.region}}</div>
-                    <div class="testWhite">Level: {{summoner.summonerLevel}}</div>
-                </div>
-            </div>
-            <div class="summaryRow">
-                {{#if rankedInfo.tier}}
-                <img class="wrapperImage" src="/../../images/ranked/{{rankedInfo.tier}}_{{rankedInfo.rank}}.png" />
-                <div class="summaryInfo">
-                    <div class="testWhite">{{ rankedInfo.tier }} {{rankedInfo.rank}} </div>
-                    <div class="testWhite">{{rankedInfo.leaguePoints}} LP</div>
-                    <div class="testWhite">Win: {{rankedInfo.winRateRanked}}%</div>
-                    <div class="testWhite">Games played: {{rankedInfo.totalGamesRanked}}</div>
-                </div>
+    {{#if summoner.exists}}
+        <div class="bodyContainer">
+            <h1 class="mainText">Summoner Stats - {{summoner.name}} - {{summoner.region}}</h1>
+            <div class="pageContent">
+                {{#if mastery.valid}}
+                    <div class="rowContainer">
+                        <div class="summaryRow center">
+                            <img class="wrapperImage rounded" src="http://stelar7.no/cdragon/latest/profile-icons/{{ summoner.profileIconId }}.jpg" />
+                            <div class="summaryInfo">
+                                <div class="mainText">{{summoner.name}}</div>
+                                <div class="mainText">{{summoner.region}}</div>
+                                <div class="mainText">Level: {{summoner.summonerLevel}}</div>
+                            </div>
+                        </div>
+                        <div class="summaryRow center">
+                            {{#if rankedInfo.tier}}
+                                <img class="wrapperImage" src="/../../images/ranked/{{rankedInfo.tier}}_{{rankedInfo.rank}}.png" />
+                                <div class="summaryInfo">
+                                    <div class="mainText">{{ rankedInfo.tier }} {{rankedInfo.rank}} </div>
+                                    <div class="mainText">{{rankedInfo.leaguePoints}} LP</div>
+                                    <div class="mainText">Win: {{rankedInfo.winRateRanked}}%</div>
+                                    <div class="mainText">Games played: {{rankedInfo.totalGamesRanked}}</div>
+                                </div>
+                            {{else}}
+                                <img class="wrapperImage" src="/../../images/ranked/unranked.png" />
+                                <div class="summaryInfo">
+                                    <p class="mainText">Unranked</p>
+                                </div>
+                            {{/if}}
+                        </div>
+                        <div class="summaryRow center">
+                            <img class="wrapperImage rounded" src="http://stelar7.no/cdragon/latest/champion-icons/{{mastery.championId}}.png" />
+                            <img class="wrapperImage" src="/../../images/mastery/champMasteryLevel_{{mastery.championLevel}}.png" />
+                            <div class="summaryInfo">
+                                    <div class="mainText">{{mastery.championName}}, {{mastery.championTitle}}</div>
+                                    <div class="mainText">Points: {{mastery.championPoints}}</div>
+                            </div>
+                        </div>
+                    </div>
+                    {{#if matches.valid}}
+                        <h2 class="mainText">Summary of "{{summoner.name}}" in the last {{matches.ids.length}} matches</h2>
+                        <h3 class="mainText">Win ratio: {{matches.winRatio}}%</h3>
+                        <div class="rowContainer">
+                            <div class="summaryRow">
+                                <img class="wrapperImage rounded" src="http://stelar7.no/cdragon/latest/champion-icons/{{matches.modeChampion.info.mode}}.png" />
+                                <div class="summaryInfo">
+                                    <div class="mainText underline">Most Played Champion</div>
+                                    <div class="mainText">{{matches.modeChampion.name}}, {{matches.modeChampion.title}}</div>
+                                    <div class="mainText">Games played: {{matches.modeChampion.info.count}}</div>
+                                </div>
+                            </div>
+                            <div class="summaryRow">
+                                <img class="wrapperImage" src="/../../images/roles/{{matches.modePosition.mode}}.png" />
+                                <div class="summaryInfo">
+                                    <div class="mainText underline">Most Played Role</div>
+                                    <div class="mainText">{{matches.modePosition.mode}}</div>
+                                    <div class="mainText">Games played: {{matches.modePosition.count}}</div>
+                                </div>
+                            </div>
+                            <div class="summaryRow">
+                                <dl>
+                                    <dt>
+                                        <div class="mainText underline">
+                                            Role distribution
+                                        </div>
+                                    </dt>
+                                    <dd class="percentage percentage-{{matches.actualpositionCount.TOP}}0"><span class="textBarChart">TOP: {{matches.actualpositionCount.TOP}}</span></dd>
+                                    <dd class="percentage percentage-{{matches.actualpositionCount.JUNGLE}}0"><span class="textBarChart">JUNGLE: {{matches.actualpositionCount.JUNGLE}}</span></dd>
+                                    <dd class="percentage percentage-{{matches.actualpositionCount.MID}}0"><span class="textBarChart">MID: {{matches.actualpositionCount.MID}}</span></dd>
+                                    <dd class="percentage percentage-{{matches.actualpositionCount.ADC}}0"><span class="textBarChart">ADC: {{matches.actualpositionCount.ADC}}</span></dd>
+                                    <dd class="percentage percentage-{{matches.actualpositionCount.SUPPORT}}0"><span class="textBarChart">SUPPORT: {{matches.actualpositionCount.SUPPORT}}</span></dd>
+                                </dl>
+                            </div>
+                        </div>
+                        <h2 class="mainText">Performance per game</h2>
+                        <div class="rowContainer top">
+                            <div class="summaryRow stats">
+                                <div class="summaryInfo">
+                                    <div class="statsBox title">Performance</div>
+                                    <div class="row">
+                                        <div class="statsBox label">Kills:</div>
+                                        <div class="statsBox value">{{matches.averages.kills}}</div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="statsBox label">Deaths:</div>
+                                        <div class="statsBox value">{{matches.averages.deaths}}</div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="statsBox label">Assists:</div>
+                                        <div class="statsBox value">{{matches.averages.assists}}</div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="statsBox label">KDA:</div>
+                                        <div class="statsBox value">{{matches.averages.kdaRatio}}:1</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="summaryRow stats">
+                                <div class="summaryInfo">
+                                    <div class="statsBox title">Gold</div>
+                                    <div class="row">
+                                        <div class="statsBox label">Gold Earned:</div>
+                                        <div class="statsBox value">{{matches.averages.goldEarned}}</div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="statsBox label">Creep Score:</div>
+                                        <div class="statsBox value">{{matches.averages.creepScore}} ({{matches.averages.csPerMin}}/min)</div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="statsBox label">CS difference in first 10 minutes</div>
+                                        <div class="statsBox value">{{matches.averages.csDiff}}</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="summaryRow stats">
+                                <div class="summaryInfo">
+                                    <div class="statsBox title">Damage, Healing and Crowd Control:</div>
+                                    <div class="row">
+                                        <div class="statsBox label">Total Damage Dealt:</div>
+                                        <div class="statsBox value">{{matches.averages.totalDamageDealtToChampions}}</div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="statsBox label">Damage Types:</div>
+                                        <div class="statsBox value"><span class="physDmg">{{matches.averages.physicalDamageDealtToChampions}}</span> / <span class="magicDmg">{{matches.averages.magicDamageDealtToChampions}}</span> / <span class="trueDmg">{{matches.averages.trueDamageDealtToChampions}}</span></div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="statsBox label">Healing:</div>
+                                        <div class="statsBox value">{{matches.averages.totalHeal}}</div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="statsBox label">Crowd Control Score:</div>
+                                        <div class="statsBox value">{{matches.averages.timeCCingOthers}}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="rowContainer bottom">
+                            <div class="summaryRow stats">
+                                <div class="summaryInfo">
+                                    <div class="statsBox title">Vision:</div>
+                                    <div class="row">
+                                        <div class="statsBox label">Vision Score:</div>
+                                        <div class="statsBox value">{{matches.averages.visionScore}}</div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="statsBox label">Control Wards Bought:</div>
+                                        <div class="statsBox value">{{matches.averages.visionWardsBoughtInGame}}</div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="statsBox label">Wards Placed:</div>
+                                        <div class="statsBox value">{{matches.averages.wardsPlaced}}</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="summaryRow stats">
+                                <div class="summaryInfo">
+                                    <div class="statsBox title">Objectives:</div>
+                                    <div class="row">
+                                        <div class="statsBox label">Damage to Objectives:</div>
+                                        <div class="statsBox value">{{matches.averages.damageDealtToObjectives}}</div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="statsBox label">Damage to Turrets:</div>
+                                        <div class="statsBox value">{{matches.averages.damageDealtToTurrets}}</div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="statsBox label">Turret Kills:</div>
+                                        <div class="statsBox value">{{matches.averages.turretKills}}</div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="statsBox label">Inhibitor kills:</div>
+                                        <div class="statsBox value">{{matches.averages.inhibitorKills}}</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="summaryRow stats">
+                                <div class="summaryInfo">
+                                    <div class="statsBox title">Jungling:</div>
+                                    <div class="row">
+                                        <div class="statsBox label">Total Neutral Minions Killed:</div>
+                                        <div class="statsBox value">{{matches.averages.neutralMinionsKilled}}</div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="statsBox label">Team Jungle:</div>
+                                        <div class="statsBox value">{{matches.averages.neutralMinionsKilledTeamJungle}}</div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="statsBox label">Enemy Jungle:</div>
+                                        <div class="statsBox value">{{matches.averages.neutralMinionsKilledEnemyJungle}}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <h2 class="mainText">Match History</h2>
+                        {{#each matches.matchData}}
+                            </br>
+                            <div class="match-container {{this.outcome}}">
+                                <div class="champion-portrait">
+                                    <img class="wrapperImage rounded" src="http://stelar7.no/cdragon/latest/champion-icons/{{this.championId}}.png" />
+                                </div>
+                                <div class="ss-container">
+                                    <div class="spell"><img class="wrapperImage rounded" src="http://stelar7.no/cdragon/latest/summoner-spells/{{this.spell1Id}}.png" /></div>
+                                    <div class="spell"><img class="wrapperImage rounded" src="http://stelar7.no/cdragon/latest/summoner-spells/{{this.spell2Id}}.png" /></div>
+                                </div>
+                                <div class="match-data">
+                                    <div class="matchDataSplit">
+                                        <span class="matchInfo">{{this.outcome}} in {{this.matchMinutes}}m {{this.matchSeconds}}s</span></br>
+                                        <span class="matchInfo">KDA: {{this.kills}} / {{this.deaths}} / {{this.assists}} ({{this.kdaRatio}}:1)</span></br>
+                                        <span class="matchInfo">Total Damage Dealt: {{this.totalDamageDealtToChampions}}</span></br>
+                                        <span class="matchInfo">Damage Types: <span class="physDmg">{{this.physicalDamageDealtToChampions}}</span> / <span class="magicDmg">{{this.magicDamageDealtToChampions}}</span> / <span class="trueDmg">{{this.trueDamageDealtToChampions}}</span></span>
+                                        </br>
+                                        <span class="matchInfo">Creep Score: {{this.creepScore}} ({{this.csPerMin}}/min)</span></br>
+                                    </div>
+                                    <div class="matchDataSplit">
+                                        <span class="matchInfo">Vision Score: {{this.visionScore}}</span></br>
+                                        <span class="matchInfo">Crowd Control Score: {{this.timeCCingOthers}}</span></br>
+                                        <span class="matchInfo">Healing: {{this.totalHeal}}</span></br>
+                                        <span class="matchInfo">Damage to Turrets: {{this.damageDealtToTurrets}}</span></br>
+                                        <span class="matchInfo">Damage to Objectives: {{this.damageDealtToObjectives}}</span>
+                                    </div>
+                                </div>
+                                <div class="items-container">
+                                    <div class="item"><img class="wrapperImage rounded" src="http://stelar7.no/cdragon/latest/items/{{this.item0}}.png" /></div>
+                                    <div class="item"><img class="wrapperImage rounded" src="http://stelar7.no/cdragon/latest/items/{{this.item1}}.png" /></div>
+                                    <div class="item"><img class="wrapperImage rounded" src="http://stelar7.no/cdragon/latest/items/{{this.item2}}.png" /></div>
+                                    <div class="item"><img class="wrapperImage rounded" src="http://stelar7.no/cdragon/latest/items/{{this.item6}}.png" /></div>
+                                    <div class="item"><img class="wrapperImage rounded" src="http://stelar7.no/cdragon/latest/items/{{this.item3}}.png" /></div>
+                                    <div class="item"><img class="wrapperImage rounded" src="http://stelar7.no/cdragon/latest/items/{{this.item4}}.png" /></div>
+                                    <div class="item"><img class="wrapperImage rounded" src="http://stelar7.no/cdragon/latest/items/{{this.item5}}.png" /></div>
+                                </div>
+                                <div class="runes-container">
+                                    <div class="rune"><img class="wrapperImage" src="http://stelar7.no/cdragon/latest/perks/{{this.perk3}}.png" /></div>
+                                    <div class="rune"><img class="wrapperImage" src="http://stelar7.no/cdragon/latest/perks/{{this.perk2}}.png" /></div>
+                                    <div class="rune"><img class="wrapperImage" src="http://stelar7.no/cdragon/latest/perks/{{this.perk1}}.png" /></div>
+                                    <div class="rune"><img class="wrapperImage" src="http://stelar7.no/cdragon/latest/perks/{{this.perk0}}.png" /></div>
+                                    <div class="rune"><img class="wrapperImage" src="http://stelar7.no/cdragon/latest/perks/{{this.perk5}}.png" /></div>
+                                    <div class="rune"><img class="wrapperImage" src="http://stelar7.no/cdragon/latest/perks/{{this.perk4}}.png" /></div>
+                                </div>
+                            </div>
+                        {{/each}}
+                    {{else}}
+                        <h2 class="mainText">{{summoner.name}} has not played enough games on Summoner's Rift recently to get match data</h2>
+                    {{/if}}
                 {{else}}
-                <img class="wrapperImage" src="/../../images/ranked/unranked.png" />
-                <div class="summaryInfo">
-                    <p class="testWhite">Unranked</p>
-                </div>
+                    <h2 class="mainText">{{summoner.name}} has not played enough games on Summoner's Rift recently to get data</h2>
                 {{/if}}
             </div>
-            <div class="summaryRow">
-                <img class="wrapperImage" src="http://stelar7.no/cdragon/latest/champion-icons/{{mastery.championId}}.png" />
-                <div class="summaryInfo">
-                    <div class="testWhite"><img class="masteryImg" src="/../../images/mastery/champMasteryLevel_{{mastery.championLevel}}.png" /></div>
-                    <div class="testWhite">{{mastery.championName}}, {{mastery.championTitle}}</div>
-                    <div class="testWhite">Points: {{mastery.championPoints}}</div>
-                </div>
-            </div>
         </div>
-        </br>
-        </br>
-        {{#if matches.valid}}
-        <h2 class="testWhite">Summary of "{{summoner.name}}" in the last {{matches.ids.length}} matches</h2>
-        <h3 class="testWhite">Win ratio: {{matches.winRatio}}%</h3>
-            <div class="rowContainer">
-                <div class="summaryRow">
-                    <img class="wrapperImage" src="http://stelar7.no/cdragon/latest/champion-icons/{{matches.modeChampion.info.mode}}.png" />
-                    <div class="summaryInfo">
-                        <div class="testWhite underline">Most Played Champion</div>
-                        <div class="testWhite">{{matches.modeChampion.name}}, {{matches.modeChampion.title}}</div>
-                        <div class="testWhite">Games played: {{matches.modeChampion.info.count}}</div>
-                    </div>
-                </div>
-                <div class="summaryRow">
-                    <img class="wrapperImage" src="/../../images/roles/{{matches.modePosition.mode}}.png" />
-                    <div class="summaryInfo">
-                        <div class="testWhite underline">Most Played Role</div>
-                        <div class="testWhite">{{matches.modePosition.mode}}</div>
-                        <div class="testWhite">Games played: {{matches.modePosition.count}}</div>
-                    </div>
-                </div>
-                <div class="summaryRow">
-                    <dl>
-                        <dt>
-                            <div class="testWhite underline">
-                                Role distribution
-                            </div>
-                        </dt>
-                        <dd class="percentage percentage-{{matches.actualpositionCount.TOP}}0"><span class="textBarChart">TOP: {{matches.actualpositionCount.TOP}}</span></dd>
-                        <dd class="percentage percentage-{{matches.actualpositionCount.JUNGLE}}0"><span class="textBarChart">JUNGLE: {{matches.actualpositionCount.JUNGLE}}</span></dd>
-                        <dd class="percentage percentage-{{matches.actualpositionCount.MID}}0"><span class="textBarChart">MID: {{matches.actualpositionCount.MID}}</span></dd>
-                        <dd class="percentage percentage-{{matches.actualpositionCount.ADC}}0"><span class="textBarChart">ADC: {{matches.actualpositionCount.ADC}}</span></dd>
-                        <dd class="percentage percentage-{{matches.actualpositionCount.SUPPORT}}0"><span class="textBarChart">SUPPORT: {{matches.actualpositionCount.SUPPORT}}</span></dd>
-                    </dl>
-                </div>
-            </div>
-
-
-            <div class="rowContainer">
-                <div class="summaryRow stats">
-                    <div class="summaryInfo">
-                        <div class="statsBox title">Performance</div>
-                        <div class="row">
-                            <div class="statsBox label">Kills:</div>
-                            <div class="statsBox value">{{matches.averages.kills}}</div>
-                        </div>
-                        <div class="row">
-                            <div class="statsBox label">Deaths:</div>
-                            <div class="statsBox value">{{matches.averages.deaths}}</div>
-                        </div>
-                        <div class="row">
-                            <div class="statsBox label">Assists:</div>
-                            <div class="statsBox value">{{matches.averages.assists}}</div>
-                        </div>
-                        <div class="row">
-                            <div class="statsBox label">KDA:</div>
-                            <div class="statsBox value">{{matches.averages.kdaRatio}}:1</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="summaryRow stats">
-                    <div class="summaryInfo">
-                        <div class="statsBox title">Gold</div>
-                        <div class="row">
-                            <div class="statsBox label">Gold Earned:</div>
-                            <div class="statsBox value">{{matches.averages.goldEarned}}</div>
-                        </div>
-                        <div class="row">
-                            <div class="statsBox label">Creep Score:</div>
-                            <div class="statsBox value">{{matches.averages.creepScore}} ({{matches.averages.csPerMin}}/min)</div>
-                        </div>
-                        <div class="row">
-                            <div class="statsBox label">CS difference in first 10 minutes</div>
-                            <div class="statsBox value">{{matches.averages.csDiff}}</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="summaryRow stats">
-                    <div class="summaryInfo">
-                        <div class="statsBox title">Damage, Healing and Crowd Control:</div>
-                        <div class="row">
-                            <div class="statsBox label">Total Damage Dealt:</div>
-                            <div class="statsBox value">{{matches.averages.totalDamageDealtToChampions}}</div>
-                        </div>
-                        <div class="row">
-                            <div class="statsBox label">Damage Types:</div>
-                            <div class="statsBox value"><span class="physDmg">{{matches.averages.physicalDamageDealtToChampions}}</span> / <span class="magicDmg">{{matches.averages.magicDamageDealtToChampions}}</span> / <span class="trueDmg">{{matches.averages.trueDamageDealtToChampions}}</span></div>
-                        </div>
-                        <div class="row">
-                            <div class="statsBox label">Healing:</div>
-                            <div class="statsBox value">{{matches.averages.totalHeal}}</div>
-                        </div>
-                        <div class="row">
-                            <div class="statsBox label">Crowd Control Score:</div>
-                            <div class="statsBox value">{{matches.averages.timeCCingOthers}}</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="rowContainer">
-                <div class="summaryRow stats">
-                    <div class="summaryInfo">
-                        <div class="statsBox title">Vision:</div>
-                        <div class="row">
-                            <div class="statsBox label">Vision Score:</div>
-                            <div class="statsBox value">{{matches.averages.visionScore}}</div>
-                        </div>
-                        <div class="row">
-                            <div class="statsBox label">Control Wards Bought:</div>
-                            <div class="statsBox value">{{matches.averages.visionWardsBoughtInGame}}</div>
-                        </div>
-                        <div class="row">
-                            <div class="statsBox label">Wards Placed:</div>
-                            <div class="statsBox value">{{matches.averages.wardsPlaced}}</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="summaryRow stats">
-                    <div class="summaryInfo">
-                        <div class="statsBox title">Objectives:</div>
-                        <div class="row">
-                            <div class="statsBox label">Damage to Objectives:</div>
-                            <div class="statsBox value">{{matches.averages.damageDealtToObjectives}}</div>
-                        </div>
-                        <div class="row">
-                            <div class="statsBox label">Damage to Turrets:</div>
-                            <div class="statsBox value">{{matches.averages.damageDealtToTurrets}}</div>
-                        </div>
-                        <div class="row">
-                            <div class="statsBox label">Turret Kills:</div>
-                            <div class="statsBox value">{{matches.averages.turretKills}}</div>
-                        </div>
-                        <div class="row">
-                            <div class="statsBox label">Inhibitor kills:</div>
-                            <div class="statsBox value">{{matches.averages.inhibitorKills}}</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="summaryRow stats">
-                    <div class="summaryInfo">
-                        <div class="statsBox title">Jungling:</div>
-                        <div class="row">
-                            <div class="statsBox label">Total Neutral Minions Killed:</div>
-                            <div class="statsBox value">{{matches.averages.neutralMinionsKilled}}</div>
-                        </div>
-                        <div class="row">
-                            <div class="statsBox label">Team Jungle:</div>
-                            <div class="statsBox value">{{matches.averages.neutralMinionsKilledTeamJungle}}</div>
-                        </div>
-                        <div class="row">
-                            <div class="statsBox label">Enemy Jungle:</div>
-                            <div class="statsBox value">{{matches.averages.neutralMinionsKilledEnemyJungle}}</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-        <h2 class="testWhite">Match History</h2>
-        {{#each matches.matchData}}
-        </br>
-        <div class="match-container {{this.outcome}}">
-            <div class="champion-portrait">
-                <img class="wrapperImage" src="http://stelar7.no/cdragon/latest/champion-icons/{{this.championId}}.png" />
-            </div>
-            <div class="ss-container">
-                <div class="spell"><img class="wrapperImage" src="http://stelar7.no/cdragon/latest/summoner-spells/{{this.spell1Id}}.png" /></div>
-                <div class="spell"><img class="wrapperImage" src="http://stelar7.no/cdragon/latest/summoner-spells/{{this.spell2Id}}.png" /></div>
-            </div>
-            <div class="match-data">
-                <div class="matchDataSplit">
-                    <span class="matchInfo">{{this.outcome}} in {{this.matchMinutes}}m {{this.matchSeconds}}s</span></br>
-                    <span class="matchInfo">KDA: {{this.kills}} / {{this.deaths}} / {{this.assists}} ({{this.kdaRatio}}:1)</span></br>
-                    <span class="matchInfo">Total Damage Dealt: {{this.totalDamageDealtToChampions}}</span></br>
-                    <span class="matchInfo">Damage Types: <span class="physDmg">{{this.physicalDamageDealtToChampions}}</span> / <span class="magicDmg">{{this.magicDamageDealtToChampions}}</span> / <span class="trueDmg">{{this.trueDamageDealtToChampions}}</span></span></br>
-                    <span class="matchInfo">Creep Score: {{this.creepScore}} ({{this.csPerMin}}/min)</span></br>
-                </div>
-                <div class="matchDataSplit">
-                    <span class="matchInfo">Vision Score: {{this.visionScore}}</span></br>
-                    <span class="matchInfo">Crowd Control Score: {{this.timeCCingOthers}}</span></br>
-                    <span class="matchInfo">Healing: {{this.totalHeal}}</span></br>
-                    <span class="matchInfo">Damage to Turrets: {{this.damageDealtToTurrets}}</span></br>
-                    <span class="matchInfo">Damage to Objectives: {{this.damageDealtToObjectives}}</span>
-                </div>
-            </div>
-            <div class="items-container">
-                <div class="item"><img class="wrapperImage" src="http://stelar7.no/cdragon/latest/items/{{this.item0}}.png" /></div>
-                <div class="item"><img class="wrapperImage" src="http://stelar7.no/cdragon/latest/items/{{this.item1}}.png" /></div>
-                <div class="item"><img class="wrapperImage" src="http://stelar7.no/cdragon/latest/items/{{this.item2}}.png" /></div>
-                <div class="item"><img class="wrapperImage" src="http://stelar7.no/cdragon/latest/items/{{this.item6}}.png" /></div>
-                <div class="item"><img class="wrapperImage" src="http://stelar7.no/cdragon/latest/items/{{this.item3}}.png" /></div>
-                <div class="item"><img class="wrapperImage" src="http://stelar7.no/cdragon/latest/items/{{this.item4}}.png" /></div>
-                <div class="item"><img class="wrapperImage" src="http://stelar7.no/cdragon/latest/items/{{this.item5}}.png" /></div>
-            </div>
-            <div class="runes-container">
-                <div class="rune"><img class="wrapperImage" src="http://stelar7.no/cdragon/latest/perks/{{this.perk3}}.png" /></div>
-                <div class="rune"><img class="wrapperImage" src="http://stelar7.no/cdragon/latest/perks/{{this.perk2}}.png" /></div>
-                <div class="rune"><img class="wrapperImage" src="http://stelar7.no/cdragon/latest/perks/{{this.perk1}}.png" /></div>
-                <div class="rune"><img class="wrapperImage" src="http://stelar7.no/cdragon/latest/perks/{{this.perk0}}.png" /></div>
-                <div class="rune"><img class="wrapperImage" src="http://stelar7.no/cdragon/latest/perks/{{this.perk5}}.png" /></div>
-                <div class="rune"><img class="wrapperImage" src="http://stelar7.no/cdragon/latest/perks/{{this.perk4}}.png" /></div>
-            </div>
         </div>
-        {{/each}}
-        {{else}}
-        <h2 class="testWhite">{{summoner.name}} has not played enough games on Summoner's Rift recently to get match data</h2>
-        {{/if}}
-        {{else}}
-        <h2 class="testWhite">{{summoner.name}} has not played enough games on Summoner's Rift recently to get data</h2>
-        {{/if}}
-    </div>
-
+        <div>
+    {{else}}
+        <h1 class="mainText">Summoner {{summoner.name}} does not exist on {{summoner.region}}</h1>
+    {{/if}}
+{{else}}
+    <h1 class="mainText">Invalid Region</h1>
+{{/if}}
 </div>
-</div>
-    <div>
-        {{else}}
-        <h1 class="testWhite">Summoner {{summoner.name}} does not exist on {{summoner.region}}</h1>
-        {{/if}}
-        {{else}}
-        <h1 class="testWhite">Invalid Region</h1>
-        {{/if}}
-    </div>
