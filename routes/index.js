@@ -161,6 +161,7 @@ async function getRecentGames(summonerRegion, summonerAccID, noOfGames) {
     //unix timestamp to check if they've played recent enough games - set to midnight 10th November 2017 - 3 days after launch of new runes
     const timestamp = 1510272000;
     var totalWins = 0;
+    var countTest = 0;
     var data = await api.get(summonerRegion, 'match.getMatchlist', summonerAccID)
         .then(async (data) => {
             if (data) {
@@ -169,6 +170,8 @@ async function getRecentGames(summonerRegion, summonerAccID, noOfGames) {
                     //validating games
                     if ((data.matches[i].queue === 400 || data.matches[i].queue === 420 || data.matches[i].queue === 430 || data.matches[i].queue === 440) && data.matches[i].timestamp > 1510272000) {
                         validMatchesCount++;
+                        countTest++;
+                        console.log(summonerAccID + " " + data.matches[i].gameId + " " + countTest);
                         recentGamesData.ids[i] = data.matches[i].gameId;
                         recentGamesData.roles[i] = data.matches[i].role;
                         recentGamesData.lanes[i] = data.matches[i].lane;
@@ -389,7 +392,7 @@ async function retreiveDataCompare(summoner1Region, summoner1Name, summoner2Regi
         var outputMatches1 = await getRecentGames(summoner1Region, outputSummoner1.accountId, 10);
         var outputRanked1 = await getRankedInfo(summoner1Region, outputSummoner1.id);
     }
-    await sleep(1000);
+    //await sleep(1000);
     var outputSummoner2 = await getSummonerID(summoner2Region, summoner2Name);
     if (outputSummoner2.exists) {
         var outputMastery2 = await getHighestMastery(summoner2Region, outputSummoner2.id);

@@ -1,13 +1,17 @@
 @import url('https://fonts.googleapis.com/css?family=Nunito');
 html {
     font-family: 'Nunito', sans-serif;
+    width: 100%;
+    height: 100%;
+    position: relative;
 }
 body {
-    background-image: url("../images/teambuilder-wallpaper.jpg");
-    background-repeat: no-repeat;
     display: block;
     overflow-x: hidden;
     overflow-y: scroll;
+    width: 100%;
+    height: 100%;
+    position: relative;
 }
 .tinted-image {
     background:
@@ -16,8 +20,9 @@ body {
         rgba(0, 0, 0, 0.75)
       ),
       /* bottom, image */
-      url("../images/teambuilder-wallpaper.jpg");
+      //url("../images/teambuilder-wallpaper.jpg");
   }
+
 
 .bodyContainer{
     width: 100%;
@@ -25,6 +30,9 @@ body {
     border-color: red;
     border-width: thin;
     border-style: dotted;
+    margin: 0px;
+    padding: 0px;
+    z-index: 10;
 }
 .mainText{
     color: white;
@@ -122,6 +130,13 @@ th.searchbox {
     border-style: solid;
 }
 
+button::-moz-focus-inner,
+input[type="button"]::-moz-focus-inner,
+input[type="submit"]::-moz-focus-inner,
+input[type="reset"]::-moz-focus-inner {
+  padding: 0;
+  border: 0 none;
+}
 th.button {
     height: 100%;
 }
@@ -134,7 +149,15 @@ th.button {
     border-style: solid;
     font-family: 'Nunito', sans-serif;
     cursor: pointer;
-    transition: background-color 0.25s ease
+    background-color: #4CB284;
+    border-radius: 5px;
+    font-size: 16px;
+    color: white;
+    padding: 0px;
+    margin: 0px;
+    transition: background-color 0.25s ease;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
 }
 .buttonGo.big {
     height: 75px;
@@ -165,6 +188,7 @@ p.title{
     margin-right: auto;
     font-family: inherit;
     min-width: 900px;
+    z-index: 10;
 }
 .rowContainer{
   width: 100%;
@@ -302,14 +326,14 @@ dt {
   &:after {
     content: "";
     display: block;
-    background-color: #3d9970;
+    background-color: #4CB284;
     width: 0px;
     margin-bottom: 10px;
     height: 90%;
     position: relative;
     top: 50%;
     transform: translateY(-50%);
-    transition: background-color .3s ease;
+    transition: background-color 0.5s ease;
   }
   &:hover,
   &:focus {

@@ -1,5 +1,42 @@
 {{#if validRegion}}
     {{#if summoner.exists}}
+        {{#if mastery.valid}}
+        <style type='text/css' scoped>
+        .bgImageContainer {
+            background: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ), url("http://stelar7.no/cdragon/latest/splash-art/{{mastery.championId}}/0.png");
+            background-repeat: no-repeat;
+            width:100%; height:100%;
+            -webkit-filter: blur(5px);
+            z-index:-1;
+            position:fixed;
+            background-position: center;
+            background-attachment: fixed;
+            background-size:cover;
+            -webkit-background-size: cover;
+            -moz-background-size: cover;
+            -o-background-size: cover;
+            transform: scale(1.1);
+          }</style>
+            {{else}}
+            <style type='text/css' scoped>
+            .bgImageContainer {
+                background: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ), url("../../images/teambuilder-wallpaper.jpg");
+                background-repeat: no-repeat;
+                width:100%; height:100%;
+                -webkit-filter: blur(5px);
+                z-index:-1;
+                position:fixed;
+                background-position: center;
+                background-attachment: fixed;
+                background-size:cover;
+                -webkit-background-size: cover;
+                -moz-background-size: cover;
+                -o-background-size: cover;
+                transform: scale(1.1);
+              }</style>
+            {{/if}}
+        <div class="bgImageContainer">
+        </div>
         <div class="bodyContainer">
             <h1 class="mainText">Summoner Stats - {{summoner.name}} - {{summoner.region}}</h1>
             <div class="pageContent">
