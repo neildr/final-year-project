@@ -1,10 +1,12 @@
+<div class="bgImageContainer one">
+</div>
+<a href="/"><image class="logo" src="/../../images/logo.png" alt="LOLSTATS.GG HOME" title="LOLSTATS.GG HOME"/></a>
 {{#if validRegion1}}
     {{#if validRegion2}}
         {{#if summoner1.exists}}
             {{#if summoner2.exists}}
                 <div class="bodyContainer">
                     <div class="pageContent">
-                        <h1 class="mainText">Comparison</h1>
                         <h1 class="mainText">{{summoner1.name}} ({{summoner1.region}}) vs {{summoner2.name}} ({{summoner2.region}}) </h1>
                         </br>
                         {{#if matches1.valid}}
@@ -38,8 +40,8 @@
                                     <img class="wrapperImage rounded" src="http://stelar7.no/cdragon/latest/champion-icons/{{mastery1.championId}}.png" />
                                     <img class="wrapperImage" src="/../../images/mastery/champMasteryLevel_{{mastery1.championLevel}}.png" />
                                     <div class="summaryInfo">
-                                            <div class="mainText">{{mastery1.championName}}, {{mastery1.championTitle}}</div>
-                                            <div class="mainText">Points: {{mastery1.championPoints}}</div>
+                                        <div class="mainText">{{mastery1.championName}}, {{mastery1.championTitle}}</div>
+                                        <div class="mainText">Points: {{mastery1.championPoints}}</div>
                                     </div>
                                 </div>
                             </div>
@@ -114,8 +116,8 @@
                                     <img class="wrapperImage rounded" src="http://stelar7.no/cdragon/latest/champion-icons/{{mastery2.championId}}.png" />
                                     <img class="wrapperImage" src="/../../images/mastery/champMasteryLevel_{{mastery2.championLevel}}.png" />
                                     <div class="summaryInfo">
-                                            <div class="mainText">{{mastery2.championName}}, {{mastery2.championTitle}}</div>
-                                            <div class="mainText">Points: {{mastery2.championPoints}}</div>
+                                        <div class="mainText">{{mastery2.championName}}, {{mastery2.championTitle}}</div>
+                                        <div class="mainText">Points: {{mastery2.championPoints}}</div>
                                     </div>
                                 </div>
                             </div>
@@ -176,6 +178,11 @@
                         {{/if}}
                         </div>
                     </div>
+                </br>
+                </br>
+                <div class="mainText">
+                    <a class="urlStyle" href="/legal">LOLSTATS.GG - Legal Information</a>
+                </div>
                 </div>
             {{else}}
                 <div class="mainText">

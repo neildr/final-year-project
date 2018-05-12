@@ -1,45 +1,34 @@
-{{#if validRegion}}
-    {{#if summoner.exists}}
-        {{#if mastery.valid}}
-        <style type='text/css' scoped>
-        .bgImageContainer {
-            background: linear-gradient( rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3) ), url("http://stelar7.no/cdragon/latest/splash-art/{{mastery.championId}}/0.png");
-            box-shadow: 0 0 500px rgba(0,0,0,1) inset;
-            background-repeat: no-repeat;
-            width:100%; height:100%;
-            -webkit-filter: blur(5px);
-            z-index:-1;
-            position:fixed;
-            background-position: center;
-            background-attachment: fixed;
-            background-size:cover;
-            -webkit-background-size: cover;
-            -moz-background-size: cover;
-            -o-background-size: cover;
-            transform: scale(1.1);
-          }</style>
+<div class="bgImageContainer {{mastery.valid}}">
+</div>
+<a href="/">
+    <image class="logo" src="/../../images/logo.png" alt="LOLSTATS.GG HOME" title="LOLSTATS.GG HOME" />
+</a>
+<div class="bodyContainer">
+    {{#if validRegion}}
+        {{#if summoner.exists}}
+            {{#if mastery.valid}}
+                <style type='text/css' scoped>
+                    .bgImageContainer.true{
+                        background: linear-gradient( rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)),
+                        url("http://stelar7.no/cdragon/latest/splash-art/{{mastery.championId}}/0.png");
+                        box-shadow: 0 0 500px rgba(0, 0, 0, 1) inset;
+                        background-repeat: no-repeat;
+                        width: 100%;
+                        height: 100%;
+                        -webkit-filter: blur(5px);
+                        z-index: -1;
+                        position: fixed;
+                        background-position: center;
+                        background-attachment: fixed;
+                        background-size: cover;
+                        -webkit-background-size: cover;
+                        -moz-background-size: cover;
+                        -o-background-size: cover;
+                        transform: scale(1.1);
+                    }
+                </style>
             {{else}}
-            <style type='text/css' scoped>
-            .bgImageContainer {
-                background: linear-gradient( rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3) ), url("../../images/teambuilder-wallpaper.jpg");
-                box-shadow: 0 0 250px rgba(0,0,0, 1) inset;
-                background-repeat: no-repeat;
-                width:100%; height:100%;
-                -webkit-filter: blur(5px);
-                z-index:-1;
-                position:fixed;
-                background-position: center;
-                background-attachment: fixed;
-                background-size:cover;
-                -webkit-background-size: cover;
-                -moz-background-size: cover;
-                -o-background-size: cover;
-                transform: scale(1.1);
-              }</style>
             {{/if}}
-        <div class="bgImageContainer">
-        </div>
-        <div class="bodyContainer">
             <h1 class="mainText">Summoner Stats - {{summoner.name}} - {{summoner.region}}</h1>
             <div class="pageContent">
                 {{#if mastery.valid}}
@@ -72,8 +61,8 @@
                             <img class="wrapperImage rounded" src="http://stelar7.no/cdragon/latest/champion-icons/{{mastery.championId}}.png" />
                             <img class="wrapperImage" src="/../../images/mastery/champMasteryLevel_{{mastery.championLevel}}.png" />
                             <div class="summaryInfo">
-                                    <div class="mainText">{{mastery.championName}}, {{mastery.championTitle}}</div>
-                                    <div class="mainText">Points: {{mastery.championPoints}}</div>
+                                <div class="mainText">{{mastery.championName}}, {{mastery.championTitle}}</div>
+                                <div class="mainText">Points: {{mastery.championPoints}}</div>
                             </div>
                         </div>
                     </div>
@@ -237,11 +226,11 @@
                             </br>
                             <div class="match-container {{this.outcome}}">
                                 <div class="champion-portrait">
-                                    <img class="wrapperImage rounded" src="http://stelar7.no/cdragon/latest/champion-icons/{{this.championId}}.png" />
+                                    <img class="wrapperImage rounded" src="http://stelar7.no/cdragon/latest/champion-icons/{{this.champion.id}}.png" alt="{{this.champion.name}}" title="{{this.champion.name}}" />
                                 </div>
                                 <div class="ss-container">
-                                    <div class="spell"><img class="wrapperImage rounded" src="http://stelar7.no/cdragon/latest/summoner-spells/{{this.spell1Id}}.png" /></div>
-                                    <div class="spell"><img class="wrapperImage rounded" src="http://stelar7.no/cdragon/latest/summoner-spells/{{this.spell2Id}}.png" /></div>
+                                    <div class="spell"><img class="wrapperImage rounded" src="http://stelar7.no/cdragon/latest/summoner-spells/{{this.spell1.id}}.png" alt="{{this.spell1.name}}" title="{{this.spell1.name}}"/></div>
+                                    <div class="spell"><img class="wrapperImage rounded" src="http://stelar7.no/cdragon/latest/summoner-spells/{{this.spell2.id}}.png" alt="{{this.spell2.name}}" title="{{this.spell2.name}}"/></div>
                                 </div>
                                 <div class="match-data">
                                     <div class="matchDataSplit">
@@ -261,21 +250,21 @@
                                     </div>
                                 </div>
                                 <div class="items-container">
-                                    <div class="item"><img class="wrapperImage rounded" src="http://stelar7.no/cdragon/latest/items/{{this.item0}}.png" /></div>
-                                    <div class="item"><img class="wrapperImage rounded" src="http://stelar7.no/cdragon/latest/items/{{this.item1}}.png" /></div>
-                                    <div class="item"><img class="wrapperImage rounded" src="http://stelar7.no/cdragon/latest/items/{{this.item2}}.png" /></div>
-                                    <div class="item"><img class="wrapperImage rounded" src="http://stelar7.no/cdragon/latest/items/{{this.item6}}.png" /></div>
-                                    <div class="item"><img class="wrapperImage rounded" src="http://stelar7.no/cdragon/latest/items/{{this.item3}}.png" /></div>
-                                    <div class="item"><img class="wrapperImage rounded" src="http://stelar7.no/cdragon/latest/items/{{this.item4}}.png" /></div>
-                                    <div class="item"><img class="wrapperImage rounded" src="http://stelar7.no/cdragon/latest/items/{{this.item5}}.png" /></div>
+                                    <div class="item"><img class="wrapperImage rounded" src="http://stelar7.no/cdragon/latest/items/{{this.item0.id}}.png" alt="{{this.item0.name}}" title="{{this.item0.name}}"/></div>
+                                    <div class="item"><img class="wrapperImage rounded" src="http://stelar7.no/cdragon/latest/items/{{this.item1.id}}.png" alt="{{this.item1.name}}" title="{{this.item1.name}}"/></div>
+                                    <div class="item"><img class="wrapperImage rounded" src="http://stelar7.no/cdragon/latest/items/{{this.item2.id}}.png" alt="{{this.item2.name}}" title="{{this.item2.name}}"/></div>
+                                    <div class="item"><img class="wrapperImage rounded" src="http://stelar7.no/cdragon/latest/items/{{this.item6.id}}.png" alt="{{this.item6.name}}" title="{{this.item6.name}}"/></div>
+                                    <div class="item"><img class="wrapperImage rounded" src="http://stelar7.no/cdragon/latest/items/{{this.item3.id}}.png" alt="{{this.item3.name}}" title="{{this.item3.name}}"/></div>
+                                    <div class="item"><img class="wrapperImage rounded" src="http://stelar7.no/cdragon/latest/items/{{this.item4.id}}.png" alt="{{this.item4.name}}" title="{{this.item4.name}}"/></div>
+                                    <div class="item"><img class="wrapperImage rounded" src="http://stelar7.no/cdragon/latest/items/{{this.item5.id}}.png" alt="{{this.item5.name}}" title="{{this.item5.name}}"/></div>
                                 </div>
                                 <div class="runes-container">
-                                    <div class="rune"><img class="wrapperImage" src="http://stelar7.no/cdragon/latest/perks/{{this.perk3}}.png" /></div>
-                                    <div class="rune"><img class="wrapperImage" src="http://stelar7.no/cdragon/latest/perks/{{this.perk2}}.png" /></div>
-                                    <div class="rune"><img class="wrapperImage" src="http://stelar7.no/cdragon/latest/perks/{{this.perk1}}.png" /></div>
-                                    <div class="rune"><img class="wrapperImage" src="http://stelar7.no/cdragon/latest/perks/{{this.perk0}}.png" /></div>
-                                    <div class="rune"><img class="wrapperImage" src="http://stelar7.no/cdragon/latest/perks/{{this.perk5}}.png" /></div>
-                                    <div class="rune"><img class="wrapperImage" src="http://stelar7.no/cdragon/latest/perks/{{this.perk4}}.png" /></div>
+                                    <div class="rune"><img class="wrapperImage" src="http://stelar7.no/cdragon/latest/perks/{{this.perk3.id}}.png" alt="{{this.perk3.name}}" title="{{this.perk3.name}}"/></div>
+                                    <div class="rune"><img class="wrapperImage" src="http://stelar7.no/cdragon/latest/perks/{{this.perk2.id}}.png" alt="{{this.perk2.name}}" title="{{this.perk2.name}}"/></div>
+                                    <div class="rune"><img class="wrapperImage" src="http://stelar7.no/cdragon/latest/perks/{{this.perk1.id}}.png" alt="{{this.perk1.name}}" title="{{this.perk1.name}}"/></div>
+                                    <div class="rune"><img class="wrapperImage" src="http://stelar7.no/cdragon/latest/perks/{{this.perk0.id}}.png" alt="{{this.perk0.name}}" title="{{this.perk0.name}}"/></div>
+                                    <div class="rune"><img class="wrapperImage" src="http://stelar7.no/cdragon/latest/perks/{{this.perk5.id}}.png" alt="{{this.perk5.name}}" title="{{this.perk5.name}}"/></div>
+                                    <div class="rune"><img class="wrapperImage" src="http://stelar7.no/cdragon/latest/perks/{{this.perk4.id}}.png" alt="{{this.perk4.name}}" title="{{this.perk4.name}}"/></div>
                                 </div>
                             </div>
                         {{/each}}
@@ -286,13 +275,28 @@
                     <h2 class="mainText">{{summoner.name}} has not played enough games on Summoner's Rift recently to get data</h2>
                 {{/if}}
             </div>
-        </div>
-        </div>
-        <div>
+            </br>
+            </br>
+            <div class="mainText">
+                <a class="urlStyle" href="/legal">LOLSTATS.GG - Legal Information</a>
+            </div>
+</div>
+</div>
+<div>
     {{else}}
         <h1 class="mainText">Summoner {{summoner.name}} does not exist on {{summoner.region}}</h1>
-    {{/if}}
-{{else}}
-    <h1 class="mainText">Invalid Region</h1>
-{{/if}}
+        </br>
+        </br>
+        <div class="mainText">
+            <a class="urlStyle" href="/legal">LOLSTATS.GG - Legal Information</a>
+        </div>
+        {{/if}}
+        {{else}}
+            <h1 class="mainText">Invalid Region</h1>
+            </br>
+            </br>
+            <div class="mainText">
+                <a class="urlStyle" href="/legal">LOLSTATS.GG - Legal Information</a>
+            </div>
+            {{/if}}
 </div>

@@ -1,7 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const TeemoJS = require('TeemoJS');
-const championJSON = require('./champions.json');
+const championJSON = require('./json/champions.json');
+const itemsJSON = require('./json/items.json');
+const spellsJSON = require('./json/summoner.json');
+const runesJSON = require('./json/runesReforged.json');
 const apiImport = require('./APIKEY');
 const api = TeemoJS(apiImport.key);
 
@@ -161,7 +164,6 @@ async function getRecentGames(summonerRegion, summonerAccID, noOfGames) {
     //unix timestamp to check if they've played recent enough games - set to midnight 10th November 2017 - 3 days after launch of new runes
     const timestamp = 1510272000;
     var totalWins = 0;
-    var countTest = 0;
     var data = await api.get(summonerRegion, 'match.getMatchlist', summonerAccID)
         .then(async (data) => {
             if (data) {
@@ -170,8 +172,6 @@ async function getRecentGames(summonerRegion, summonerAccID, noOfGames) {
                     //validating games
                     if ((data.matches[i].queue === 400 || data.matches[i].queue === 420 || data.matches[i].queue === 430 || data.matches[i].queue === 440) && data.matches[i].timestamp > 1510272000) {
                         validMatchesCount++;
-                        countTest++;
-                        console.log(summonerAccID + " " + data.matches[i].gameId + " " + countTest);
                         recentGamesData.ids[i] = data.matches[i].gameId;
                         recentGamesData.roles[i] = data.matches[i].role;
                         recentGamesData.lanes[i] = data.matches[i].lane;
@@ -239,22 +239,70 @@ async function getMatchData(summonerRegion, matchID, summonerAccID) {
         "kdaRatio": null,
         "visionScore": null,
         "goldEarned": null,
-        "spell1Id": null,
-        "spell2Id": null,
-        "championId": null,
-        "item0": null,
-        "item1": null,
-        "item2": null,
-        "item3": null,
-        "item4": null,
-        "item5": null,
-        "item6": null,
-        "perk0": null,
-        "perk1": null,
-        "perk2": null,
-        "perk3": null,
-        "perk4": null,
-        "perk5": null,
+        "spell1": {
+            "id": null,
+            "name" : null
+        },
+        "spell2": {
+            "id": null,
+            "name" : null
+        },
+        "champion": {
+            "id": null,
+            "name" : null
+        },
+        "item0": {
+            "id": null,
+            "name" : null
+        },
+        "item1": {
+            "id": null,
+            "name" : null
+        },
+        "item2": {
+            "id": null,
+            "name" : null
+        },
+        "item3": {
+            "id": null,
+            "name" : null
+        },
+        "item4": {
+            "id": null,
+            "name" : null
+        },
+        "item5": {
+            "id": null,
+            "name" : null
+        },
+        "item6": {
+            "id": null,
+            "name" : null
+        },
+        "perk0": {
+            "id": null,
+            "name" : null
+        },
+        "perk1": {
+            "id": null,
+            "name" : null
+        },
+        "perk2": {
+            "id": null,
+            "name" : null
+        },
+        "perk3": {
+            "id": null,
+            "name" : null
+        },
+        "perk4": {
+            "id": null,
+            "name" : null
+        },
+        "perk5": {
+            "id": null,
+            "name" : null
+        },
         "totalDamageDealtToChampions": null,
         "magicDamageDealtToChampions": null,
         "physicalDamageDealtToChampions": null,
@@ -280,7 +328,7 @@ async function getMatchData(summonerRegion, matchID, summonerAccID) {
         "matchSeconds": null,
         "outcome": ""
     };
-    var itemsInJSONMatch = ['kills', 'deaths', 'assists', 'kdaRatio', 'visionScore', 'goldEarned', 'item0', 'item1', 'item2', 'item3', 'item4', 'item5', 'item6', 'perk0', 'perk1', 'perk2', 'perk3', 'perk4', 'perk5',
+    var itemsInJSONMatch = ['kills', 'deaths', 'assists', 'kdaRatio', 'visionScore', 'goldEarned',
         'totalDamageDealtToChampions', 'magicDamageDealtToChampions', 'physicalDamageDealtToChampions',
         'trueDamageDealtToChampions', 'totalHeal', 'timeCCingOthers', 'damageDealtToObjectives', 'damageDealtToTurrets', 'turretKills', 'inhibitorKills', 'totalMinionsKilled', 'neutralMinionsKilled',
         'neutralMinionsKilledTeamJungle', 'neutralMinionsKilledEnemyJungle', 'csDiff', 'csPerMin', 'visionWardsBoughtInGame', 'wardsPlaced', 'wardsKilled'
@@ -300,10 +348,61 @@ async function getMatchData(summonerRegion, matchID, summonerAccID) {
                     for (var j = 0; j < Object.keys(data.participants).length; j++) {
                         //if ID match is found, get data
                         if (data.participants[j].participantId === participantIDExt) {
-                            //gets summone spells and champion played
-                            matchData.spell1Id = data.participants[j].spell1Id;
-                            matchData.spell2Id = data.participants[j].spell2Id;
-                            matchData.championId = data.participants[j].championId;
+                            //gets summone spells, item data, rune data and champion played
+                            matchData.spell1.id = data.participants[j].spell1Id;
+                            matchData.spell2.id = data.participants[j].spell2Id;
+                            matchData.item0.id = data.participants[j].stats.item0;
+                            matchData.item1.id = data.participants[j].stats.item1;
+                            matchData.item2.id = data.participants[j].stats.item2;
+                            matchData.item3.id = data.participants[j].stats.item3;
+                            matchData.item4.id = data.participants[j].stats.item4;
+                            matchData.item5.id = data.participants[j].stats.item5;
+                            matchData.item6.id = data.participants[j].stats.item6;
+                            matchData.perk0.id = data.participants[j].stats.perk0;
+                            matchData.perk1.id = data.participants[j].stats.perk1;
+                            matchData.perk2.id = data.participants[j].stats.perk2;
+                            matchData.perk3.id = data.participants[j].stats.perk3;
+                            matchData.perk4.id = data.participants[j].stats.perk4;
+                            matchData.perk5.id = data.participants[j].stats.perk5;
+                            matchData.champion.id = data.participants[j].championId;
+                            for (var k = 0; k < Object.keys(championJSON.data).length; k++)
+                                if ((matchData.champion.id) === (championJSON.data[Object.keys(championJSON.data)[k]].id)) {
+                                    matchData.champion.name = championJSON.data[Object.keys(championJSON.data)[k]].name;
+                                }
+                            var itemsArray = [matchData.item0, matchData.item1, matchData.item2, matchData.item3,
+                                matchData.item4, matchData.item5, matchData.item6];
+                            var spellsArray = [matchData.spell1, matchData.spell2];
+                            var runesArray = [matchData.perk0, matchData.perk1, matchData.perk2, matchData.perk3, matchData.perk4, matchData.perk5];
+                            for (var k = 0; k < itemsArray.length; k++){
+                                if(itemsArray[k].id != 0){
+                                    //console.log("item " + k + " is "+ itemsArray[k].id + " attempting to get match");
+                                    for (var l = 0; l < Object.keys(itemsJSON.data).length; l++) {
+                                        if(itemsArray[k].id == (Object.keys(itemsJSON.data)[l])) {;
+                                            itemsArray[k].name = itemsJSON.data[Object.keys(itemsJSON.data)[l]].name;
+                                        }
+                                    }
+                                }
+                            }
+                            for (var k = 0; k < spellsArray.length; k++) {
+                                for (var l = 0; l < Object.keys(spellsJSON.data).length; l++) {
+                                    if (spellsArray[k].id == spellsJSON.data[Object.keys(spellsJSON.data)[l]].key) {
+                                        spellsArray[k].name = spellsJSON.data[Object.keys(spellsJSON.data)[l]].name;
+                                    }
+                                }
+                            }
+                            for (var k = 0; k < runesArray.length; k++) {
+                                for (var l = 0; l < runesJSON.length; l++) {
+                                    var slots = runesJSON[l].slots;
+                                    for (var m = 0; m < slots.length; m++) {
+                                        var runes = slots[m].runes;
+                                        for (var n = 0; n < runes.length; n++) {
+                                            if (runesArray[k].id == runes[n].id){
+                                                runesArray[k].name = runes[n].name;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
                             //gets data from matches
                             itemsInJSONMatch.forEach(function(itemsInJSONMatch) {
                                 matchData[itemsInJSONMatch] = data.participants[j].stats[itemsInJSONMatch];
@@ -485,11 +584,13 @@ router.get('/lookup/:summRegion/:summName', async function(req, res, next) {
             outputRanked = data.outputRanked;
             outputMatches = data.outputMatches;
             outputMastery = data.outputMastery;
+            console.log(outputMastery.valid);
             outputSummoner.region = req.params.summRegion;
             title = data.outputSummoner.name + " on " + req.params.summRegion + " - LOLSTATS.GG";
         } else {
             title = req.params.summName + " on " + req.params.summRegion + " - LOLSTATS.GG";
             outputSummoner.region = req.params.summRegion;
+            outputMastery.valid = false;
         }
     }
     //render page with data
