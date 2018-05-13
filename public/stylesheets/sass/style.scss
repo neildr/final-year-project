@@ -202,7 +202,7 @@ th.button {
 }
 
 .buttonGo:hover {
-    background-color: rgba(255, 255, 255, 1);
+    background-color: rgba(255, 255, 255, 0.5);
 }
 
 p.title {
@@ -253,7 +253,7 @@ p.title {
 .summaryRow {
     width: 32%;
     min-width: 280px;
-    height: 100px;
+    height: 110px;
     margin: 3px;
     display: flex;
     flex-direction: row;
@@ -335,7 +335,42 @@ img.masteryImg {
     text-align: right;
     color: #E3DC0B;
 }
+button.distBtn{
+    width: 50%;
+    height: 20px;
+    margin-left: 2px;
+    margin-right: 2px;
+    font-family: inherit;
+    font-size: 12px;
+    background-color: rgb(11, 187, 212);
+    cursor: pointer;
+    padding: 0;
+    border: none;
+    border-radius: 3px;
+    transition: background-color 0.5s ease;
+    z-index: 11;
+}
+button.distBtn.active{
+    background-color: #4CB284;
+}
+button.distBtn:hover{
+    background-color: rgba(255, 255, 255, 0.5);
+}
 
+.displayContent {
+    margin: 0 auto;
+    margin-top: 8px;
+    visibility: hidden;
+    height: 0px;
+    width: 0px;
+    position: absolute;
+
+}
+.pieChart{
+    height: 100px;
+    width: 50%;
+    z-index: 10
+}
 dl {
     margin-top: -1px;
     margin-left: 10px;

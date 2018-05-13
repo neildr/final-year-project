@@ -28,10 +28,10 @@ var defaultPositionObj = {
     "MID": 0,
     "ADC": 0,
     "SUPPORT": 0
-}
+};
 
 //default champion object - stops errors
-var defaultChampionObj = {}
+var defaultChampionObj = {};
 
 
 //default ranked data object - stops errors
@@ -124,6 +124,7 @@ async function getRecentGames(summonerRegion, summonerAccID, noOfGames) {
             "title": "",
         },
         "championCount": [],
+        "championCountUse": [],
         "matchData": [],
         "averages": {
             "kills": 0,
@@ -211,14 +212,28 @@ async function getRecentGames(summonerRegion, summonerAccID, noOfGames) {
                 //more calculations - mode role, mode champion, win ratio, champion count and role count
                 recentGamesData.modePosition = mostCommon(recentGamesData.actualPosition);
                 recentGamesData.modeChampion.info = mostCommon(recentGamesData.champions);
-                for (var i = 0; i < Object.keys(championJSON.data).length; i++)
+                for (var i = 0; i < Object.keys(championJSON.data).length; i++){
                     if ((recentGamesData.modeChampion.info.mode) === (championJSON.data[Object.keys(championJSON.data)[i]].id)) {
                         recentGamesData.modeChampion.name = championJSON.data[Object.keys(championJSON.data)[i]].name;
                         recentGamesData.modeChampion.title = championJSON.data[Object.keys(championJSON.data)[i]].title;
                     }
-
+                }
                 recentGamesData.actualpositionCount = countValuesIn(recentGamesData.actualPosition, defaultPositionObj);
                 recentGamesData.championCount = countValuesIn(recentGamesData.champions, defaultChampionObj);
+                for(var i = 0; i < (Object.keys(recentGamesData.championCount).length); i++){
+                    var tempName = "";
+                    for (var j = 0; j < Object.keys(championJSON.data).length; j++){
+                        if ((Object.keys(recentGamesData.championCount)[i]) == (championJSON.data[Object.keys(championJSON.data)[j]].id)) {
+                            tempName = championJSON.data[Object.keys(championJSON.data)[j]].name;
+                        }
+                    }
+                    recentGamesData.championCountUse[i] = {
+                        "id": Object.keys(recentGamesData.championCount)[i],
+                        "count": recentGamesData.championCount[Object.keys(recentGamesData.championCount)[i]],
+                        "name": tempName
+                    }
+                }
+                console.log(recentGamesData.championCountUse);
                 recentGamesData.winRatio = (totalWins / noOfGames).toFixed(2) * 100;
             }
         })

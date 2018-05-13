@@ -1,5 +1,83 @@
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js" style="display: none"></script>
+<script type="text/javascript">
+google.charts.load('current', {'packages':['corechart']});
+google.charts.setOnLoadCallback(championsPlayed);
+google.charts.setOnLoadCallback(rolesPlayed);
+
+function championsPlayed() {
+
+  var data = google.visualization.arrayToDataTable([
+    ['Champion', 'Times played'],
+    {{#each matches.championCountUse}}
+    ['{{this.name}}', {{this.count}}],
+    {{/each}}
+  ]);
+
+  var options = {
+    pieHole: 1,
+    pieSliceTextStyle: {
+      color: 'white',
+
+    },
+    fontName: 'Nunito',
+    fontSize: '11',
+    backgroundColor:{
+        fill: '#FFFFFF',
+        fillOpacity: 0.0
+    },
+    legend: {
+        textStyle: {
+            color: 'white'
+        }
+    },
+    chartArea:{left:10,bottom:5, width:'80%',height:'80%'}
+  };
+
+  var chart = new google.visualization.PieChart(document.getElementById('pieC'));
+  chart.draw(data, options);
+}
+
+
+function rolesPlayed() {
+
+  var data = google.visualization.arrayToDataTable([
+    ['Roles Played', 'Times played'],
+    ['TOP', {{matches.actualpositionCount.TOP}}],
+    ['JUNGLE', {{matches.actualpositionCount.JUNGLE}}],
+    ['MID', {{matches.actualpositionCount.MID}}],
+    ['ADC', {{matches.actualpositionCount.ADC}}],
+    ['SUPPORT', {{matches.actualpositionCount.SUPPORT}}],
+  ]);
+
+  var options = {
+    pieHole: 1,
+    pieSliceTextStyle: {
+      color: 'white',
+
+    },
+    fontName: 'Nunito',
+    fontSize: '11',
+    colors: ['#e0440e', '#e6693e', '#ec8f6e', '#f3b49f', '#f6c7b6'],
+    backgroundColor:{
+        fill: '#FFFFFF',
+        fillOpacity: 0.0
+    },
+    legend: {
+        textStyle: {
+            color: 'white'
+        }
+    },
+    chartArea:{left:10,bottom:5, width:'80%',height:'80%'}
+  };
+
+  var chart = new google.visualization.PieChart(document.getElementById('pieR'));
+  chart.draw(data, options);
+}
+
+</script>
 <div class="bgImageContainer {{mastery.valid}}">
 </div>
+       <!-- <div id="pieR" class="pieChart"></div><div id="pieC" class="pieChart"></div> -->
 <a href="/">
     <image class="logo" src="/../../images/logo.png" alt="LOLSTATS.GG HOME" title="LOLSTATS.GG HOME" />
 </a>
@@ -61,7 +139,7 @@
                             <img class="wrapperImage rounded" src="http://stelar7.no/cdragon/latest/champion-icons/{{mastery.championId}}.png" />
                             <img class="wrapperImage" src="/../../images/mastery/champMasteryLevel_{{mastery.championLevel}}.png" />
                             <div class="summaryInfo">
-                                <div class="mainText">{{mastery.championName}}, {{mastery.championTitle}}</div>
+                                <div class="mainText">{{mastery.championName}}</div>
                                 <div class="mainText">Points: {{mastery.championPoints}}</div>
                             </div>
                         </div>
@@ -74,7 +152,7 @@
                                 <img class="wrapperImage rounded" src="http://stelar7.no/cdragon/latest/champion-icons/{{matches.modeChampion.info.mode}}.png" />
                                 <div class="summaryInfo">
                                     <div class="mainText underline">Most Played Champion</div>
-                                    <div class="mainText">{{matches.modeChampion.name}}, {{matches.modeChampion.title}}</div>
+                                    <div class="mainText">{{matches.modeChampion.name}}</div>
                                     <div class="mainText">Games played: {{matches.modeChampion.info.count}}</div>
                                 </div>
                             </div>
@@ -87,18 +165,13 @@
                                 </div>
                             </div>
                             <div class="summaryRow">
-                                <dl>
-                                    <dt>
-                                        <div class="mainText underline">
-                                            Role distribution
-                                        </div>
-                                    </dt>
-                                    <dd class="percentage percentage-{{matches.actualpositionCount.TOP}}0"><span class="textBarChart">TOP: {{matches.actualpositionCount.TOP}}</span></dd>
-                                    <dd class="percentage percentage-{{matches.actualpositionCount.JUNGLE}}0"><span class="textBarChart">JUNGLE: {{matches.actualpositionCount.JUNGLE}}</span></dd>
-                                    <dd class="percentage percentage-{{matches.actualpositionCount.MID}}0"><span class="textBarChart">MID: {{matches.actualpositionCount.MID}}</span></dd>
-                                    <dd class="percentage percentage-{{matches.actualpositionCount.ADC}}0"><span class="textBarChart">ADC: {{matches.actualpositionCount.ADC}}</span></dd>
-                                    <dd class="percentage percentage-{{matches.actualpositionCount.SUPPORT}}0"><span class="textBarChart">SUPPORT: {{matches.actualpositionCount.SUPPORT}}</span></dd>
-                                </dl>
+                                <button class="distBtn" id="defaultDist" onclick="changeDist(event, 'roles');">Role distribution</button><button class="distBtn" onclick="changeDist(event, 'champs');">Champion distribution</button>
+                                <div id="roles" class="displayContent">
+                                    <div id="pieR" class="pieChart"></div>
+                                </div>
+                                <div id="champs" class="displayContent">
+                                    <div id="pieC" class="pieChart"></div>
+                                </div>
                             </div>
                         </div>
                         <h2 class="mainText">Performance per game</h2>
