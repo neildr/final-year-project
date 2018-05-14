@@ -1,3 +1,153 @@
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js" style="display: none"></script>
+<script type="text/javascript">
+google.charts.load('current', {'packages':['corechart']});
+{{#if matches1.valid}}
+function championsPlayed1() {
+  var data = google.visualization.arrayToDataTable([
+    ['Champion', 'Times played'],
+    {{#each matches1.championCountUse}}
+    ['{{this.name}}', {{this.count}}],
+    {{/each}}
+  ]);
+
+  var options = {
+    pieHole: 1,
+    pieSliceTextStyle: {
+      color: 'white',
+    },
+    fontName: 'Nunito',
+    fontSize: '11',
+    backgroundColor:{
+        fill: '#FFFFFF',
+        fillOpacity: 0.0
+    },
+    legend: {
+        textStyle: {
+            color: 'white'
+        }
+    },
+    chartArea:{left:10,bottom:5, width:'80%',height:'80%'}
+  };
+
+  var chart = new google.visualization.PieChart(document.getElementById('pieC1'));
+  chart.draw(data, options);
+}
+
+
+function rolesPlayed1() {
+
+  var data = google.visualization.arrayToDataTable([
+    ['Roles Played', 'Times played'],
+    ['TOP', {{matches1.actualpositionCount.TOP}}],
+    ['JUNGLE', {{matches1.actualpositionCount.JUNGLE}}],
+    ['MID', {{matches1.actualpositionCount.MID}}],
+    ['ADC', {{matches1.actualpositionCount.ADC}}],
+    ['SUPPORT', {{matches1.actualpositionCount.SUPPORT}}],
+  ]);
+
+  var options = {
+    pieHole: 1,
+    pieSliceTextStyle: {
+      color: 'white',
+    },
+    fontName: 'Nunito',
+    fontSize: '11',
+    backgroundColor:{
+        fill: '#FFFFFF',
+        fillOpacity: 0.0
+    },
+    legend: {
+        textStyle: {
+            color: 'white'
+        }
+    },
+    chartArea:{left:10,bottom:5, width:'80%',height:'80%'}
+  };
+
+  var chart = new google.visualization.PieChart(document.getElementById('pieR1'));
+  chart.draw(data, options);
+}
+google.charts.setOnLoadCallback(championsPlayed1);
+google.charts.setOnLoadCallback(rolesPlayed1);
+{{else}}
+{{/if}}
+{{#if matches2.valid}}
+function championsPlayed2() {
+
+  var data = google.visualization.arrayToDataTable([
+    ['Champion', 'Times played'],
+    {{#each matches2.championCountUse}}
+    ['{{this.name}}', {{this.count}}],
+    {{/each}}
+  ]);
+
+  var options = {
+    pieHole: 1,
+    pieSliceTextStyle: {
+      color: 'white',
+
+    },
+    fontName: 'Nunito',
+    fontSize: '11',
+    backgroundColor:{
+        fill: '#FFFFFF',
+        fillOpacity: 0.0
+    },
+    legend: {
+        textStyle: {
+            color: 'white'
+        }
+    },
+    chartArea:{left:10,bottom:5, width:'80%',height:'80%'}
+  };
+
+  var chart = new google.visualization.PieChart(document.getElementById('pieC2'));
+  chart.draw(data, options);
+}
+function rolesPlayed2() {
+
+  var data = google.visualization.arrayToDataTable([
+    ['Roles Played', 'Times played'],
+    ['TOP', {{matches2.actualpositionCount.TOP}}],
+    ['JUNGLE', {{matches2.actualpositionCount.JUNGLE}}],
+    ['MID', {{matches2.actualpositionCount.MID}}],
+    ['ADC', {{matches2.actualpositionCount.ADC}}],
+    ['SUPPORT', {{matches2.actualpositionCount.SUPPORT}}],
+  ]);
+
+  var options = {
+    pieHole: 1,
+    pieSliceTextStyle: {
+      color: 'white',
+
+    },
+    fontName: 'Nunito',
+    fontSize: '11',
+    backgroundColor:{
+        fill: '#FFFFFF',
+        fillOpacity: 0.0
+    },
+    legend: {
+        textStyle: {
+            color: 'white'
+        }
+    },
+    chartArea:{left:10,bottom:5, width:'80%',height:'80%'}
+  };
+
+  var chart = new google.visualization.PieChart(document.getElementById('pieR2'));
+  chart.draw(data, options);
+}
+google.charts.setOnLoadCallback(championsPlayed2);
+google.charts.setOnLoadCallback(rolesPlayed2);
+{{else}}
+{{/if}}
+{{#if matches1.valid}}
+    {{#if matches2.valid}}
+    alert("we valid boys");
+    {{/if}}
+{{/if}}
+</script>
 <div class="bgImageContainer one">
 </div>
 <a href="/"><image class="logo" src="/../../images/logo.png" alt="LOLSTATS.GG HOME" title="LOLSTATS.GG HOME"/></a>
@@ -51,7 +201,7 @@
                             </div>
                             <div class="rowContainer bottom">
                                 <div class="summaryRow">
-                                    <img class="wrapperImage" src="http://stelar7.no/cdragon/latest/champion-icons/{{matches1.modeChampion.info.mode}}.png" />
+                                    <img class="wrapperImage rounded" src="http://stelar7.no/cdragon/latest/champion-icons/{{matches1.modeChampion.info.mode}}.png" />
                                     <div class="summaryInfo">
                                         <div class="mainText">Most Played Champion</div>
                                         <div class="mainText">{{matches1.modeChampion.name}}, {{matches1.modeChampion.title}}</div>
@@ -67,16 +217,13 @@
                                     </div>
                                 </div>
                                 <div class="summaryRow">
-                                    <dl>
-                                        <div class="mainText underline">
-                                            Role distribution
-                                        </div>
-                                        <dd class="percentage percentage-{{matches1.actualpositionCount.TOP}}0"><span class="textBarChart">TOP: {{matches1.actualpositionCount.TOP}}</span></dd>
-                                        <dd class="percentage percentage-{{matches1.actualpositionCount.JUNGLE}}0"><span class="textBarChart">JUNGLE: {{matches1.actualpositionCount.JUNGLE}}</span></dd>
-                                        <dd class="percentage percentage-{{matches1.actualpositionCount.MID}}0"><span class="textBarChart">MID: {{matches1.actualpositionCount.MID}}</span></dd>
-                                        <dd class="percentage percentage-{{matches1.actualpositionCount.ADC}}0"><span class="textBarChart">ADC: {{matches1.actualpositionCount.ADC}}</span></dd>
-                                        <dd class="percentage percentage-{{matches1.actualpositionCount.SUPPORT}}0"><span class="textBarChart">SUPPORT: {{matches1.actualpositionCount.SUPPORT}}</span></dd>
-                                    </dl>
+                                    <button class="distBtn" id="defaultDist" onclick="changeDist('roles1', 'champs1');">Role distribution</button><button class="distBtn active" onclick="changeDist('champs1', 'roles1');">Champion distribution</button>
+                                    <div id="roles1" class="displayContent">
+                                        <div id="pieR1" class="pieChart"></div>
+                                    </div>
+                                    <div id="champs1" class="displayContent">
+                                        <div id="pieC1" class="pieChart"></div>
+                                    </div>
                                 </div>
                             </div>
                         {{else}}
@@ -85,7 +232,7 @@
                         </br>
                         <h2 class="mainText">VS</h2>
                         <br />
-                        {{#if mastery2.valid}}
+                        {{#if matches2.valid}}
                             <div class="rowContainer top">
                                 <div class="summaryRow center">
                                     <img class="wrapperImage rounded" src="http://stelar7.no/cdragon/latest/profile-icons/{{ summoner2.profileIconId }}.jpg" />
@@ -127,7 +274,7 @@
                             </div>
                             <div class="rowContainer bottom">
                                 <div class="summaryRow">
-                                    <img class="wrapperImage" src="http://stelar7.no/cdragon/latest/champion-icons/{{matches2.modeChampion.info.mode}}.png" />
+                                    <img class="wrapperImage rounded" src="http://stelar7.no/cdragon/latest/champion-icons/{{matches2.modeChampion.info.mode}}.png" />
                                     <div class="summaryInfo">
                                         <div class="mainText underline">Most Played Champion</div>
                                         <div class="mainText">{{matches2.modeChampion.name}}, {{matches2.modeChampion.title}}</div>
@@ -143,16 +290,13 @@
                                     </div>
                                 </div>
                                 <div class="summaryRow">
-                                    <dl>
-                                        <div class="mainText underline">
-                                            Role distribution
-                                        </div>
-                                        <dd class="percentage percentage-{{matches2.actualpositionCount.TOP}}0"><span class="textBarChart">TOP: {{matches2.actualpositionCount.TOP}}</span></dd>
-                                        <dd class="percentage percentage-{{matches2.actualpositionCount.JUNGLE}}0"><span class="textBarChart">JUNGLE: {{matches2.actualpositionCount.JUNGLE}}</span></dd>
-                                        <dd class="percentage percentage-{{matches2.actualpositionCount.MID}}0"><span class="textBarChart">MID: {{matches2.actualpositionCount.MID}}</span></dd>
-                                        <dd class="percentage percentage-{{matches2.actualpositionCount.ADC}}0"><span class="textBarChart">ADC: {{matches2.actualpositionCount.ADC}}</span></dd>
-                                        <dd class="percentage percentage-{{matches2.actualpositionCount.SUPPORT}}0"><span class="textBarChart">SUPPORT: {{matches2.actualpositionCount.SUPPORT}}</span></dd>
-                                    </dl>
+                                    <button class="distBtn1" id="defaultDist1" onclick="changeDist('roles2', 'champs2');">Role distribution</button><button class="distBtn1 active" onclick="changeDist('champs2', 'roles2');">Champion distribution</button>
+                                    <div id="roles2" class="displayContent">
+                                        <div id="pieR2" class="pieChart"></div>
+                                    </div>
+                                    <div id="champs2" class="displayContent">
+                                        <div id="pieC2" class="pieChart"></div>
+                                    </div>
                                 </div>
                             </div>
                         {{else}}

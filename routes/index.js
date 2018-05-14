@@ -233,7 +233,6 @@ async function getRecentGames(summonerRegion, summonerAccID, noOfGames) {
                         "name": tempName
                     }
                 }
-                console.log(recentGamesData.championCountUse);
                 recentGamesData.winRatio = (totalWins / noOfGames).toFixed(2) * 100;
             }
         })
@@ -838,6 +837,8 @@ router.get('/compare/user1=:summOneRegion/:summOneName/user2=:summTwoRegion/:sum
         outputSummoner1.name = req.params.summOneName;
         outputSummoner1.region = req.params.summOneRegion;
     }
+    console.log(outputSummoner1.name + " is valid " + outputMatches1.valid);
+    console.log(outputSummoner2.name + " is valid " + outputMatches2.valid);
     //render page with data
     res.render('compare', {
         title: title,

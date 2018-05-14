@@ -71,6 +71,7 @@ img.logo{
 
 .matchInfo {
     font-size: 12px;
+    font-weight: bold;
 }
 
 .physDmg {
@@ -202,7 +203,7 @@ th.button {
 }
 
 .buttonGo:hover {
-    background-color: rgba(255, 255, 255, 0.5);
+    background-color: rgb(148, 206, 182);
 }
 
 p.title {
@@ -342,7 +343,8 @@ button.distBtn{
     margin-right: 2px;
     font-family: inherit;
     font-size: 12px;
-    background-color: rgb(11, 187, 212);
+    color: black;
+    background-color: rgb(175, 175, 175);
     cursor: pointer;
     padding: 0;
     border: none;
@@ -350,11 +352,40 @@ button.distBtn{
     transition: background-color 0.5s ease;
     z-index: 11;
 }
+
 button.distBtn.active{
-    background-color: #4CB284;
+    background-color: rgb(76, 178, 132);
+    color: white;
 }
+
 button.distBtn:hover{
-    background-color: rgba(255, 255, 255, 0.5);
+    background-color: rgb(148, 206, 182);
+}
+
+button.distBtn1{
+    width: 50%;
+    height: 20px;
+    margin-left: 2px;
+    margin-right: 2px;
+    font-family: inherit;
+    font-size: 12px;
+    color: black;
+    background-color: rgb(175, 175, 175);
+    cursor: pointer;
+    padding: 0;
+    border: none;
+    border-radius: 3px;
+    transition: background-color 0.5s ease;
+    z-index: 11;
+}
+
+button.distBtn1.active{
+    background-color: rgb(76, 178, 132);
+    color: white;
+}
+
+button.distBtn1:hover{
+    background-color: rgb(148, 206, 182);
 }
 
 .displayContent {
@@ -365,6 +396,9 @@ button.distBtn:hover{
     width: 0px;
     position: absolute;
 
+}
+svg > g > g:last-child{
+    pointer-events: none;
 }
 .pieChart{
     height: 100px;

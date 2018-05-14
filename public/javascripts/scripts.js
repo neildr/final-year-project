@@ -2,24 +2,32 @@ $("div.clickable").click(function() {
    $(this).next().slideToggle();
 });
 
-function changeDist(evt, dist){
+function changeDist(dist, old){
     var displayContent;
     var distBtn;
-
-    //hide displayContent
-    displayContent = document.getElementsByClassName("displayContent");
-    for (var i = 0; i < displayContent.length; i++) {
-        displayContent[i].style.visibility = "hidden";
-    }
-    //remove active from buttons
-    distBtn = document.getElementsByClassName("distBtn");
-    for (var i = 0; i < distBtn.length; i++) {
-        distBtn[i].className =  distBtn[i].className.replace(" active", "");
-    }
-    //show current tab
+    //hide old displayContent
+    document.getElementById(old).style.visibility = "hidden";
+    //show new content
     document.getElementById(dist).style.visibility =  "visible";
-    evt.currentTarget.className += " active";
 }
-
-
-document.getElementById("defaultDist").click();
+//button 1 style toggle
+$(".distBtn").click(function() {
+    if (!$(this).hasClass("active")) {
+        $(".distBtn").toggleClass(" active");
+    }
+});
+//button 2 style toggle
+$(".distBtn1").click(function() {
+    if (!$(this).hasClass("active")) {
+        $(".distBtn1").toggleClass(" active");
+    }
+});
+//initialises buttons
+var defaultDist = document.getElementById("defaultDist");
+if (defaultDist != null){
+    defaultDist.click();
+}
+var defaultDist1 = document.getElementById("defaultDist1");
+if (defaultDist1 != null){
+    defaultDist1.click();
+}
