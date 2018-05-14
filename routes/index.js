@@ -171,7 +171,7 @@ async function getRecentGames(summonerRegion, summonerAccID, noOfGames) {
                 var validMatchesCount = 0;
                 for (i = 0; i < data.matches.length; i++) {
                     //validating games
-                    if ((data.matches[i].queue === 400 || data.matches[i].queue === 420 || data.matches[i].queue === 430 || data.matches[i].queue === 440) && data.matches[i].timestamp > 1510272000) {
+                    if ((data.matches[i].queue === 400 || data.matches[i].queue === 420 || data.matches[i].queue === 430 || data.matches[i].queue === 440) && data.matches[i].timestamp > 1510272000000) {
                         validMatchesCount++;
                         recentGamesData.ids[i] = data.matches[i].gameId;
                         recentGamesData.roles[i] = data.matches[i].role;
