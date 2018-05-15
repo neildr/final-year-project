@@ -1,80 +1,26 @@
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js" style="display: none"></script>
+<script type="text/javascript" src="/../../javascripts/graphs.js"></script>
 <script type="text/javascript">
 google.charts.load('current', {'packages':['corechart']});
-google.charts.setOnLoadCallback(championsPlayed);
-google.charts.setOnLoadCallback(rolesPlayed);
-
-function championsPlayed() {
-
-  var data = google.visualization.arrayToDataTable([
+{{#if matches.valid}}
+  var dataC = [
     ['Champion', 'Times played'],
     {{#each matches.championCountUse}}
     ['{{this.name}}', {{this.count}}],
     {{/each}}
-  ]);
-
-  var options = {
-    pieHole: 1,
-    pieSliceTextStyle: {
-      color: 'white',
-
-    },
-    fontName: 'Nunito',
-    fontSize: '11',
-    // colors: ['#0997AA', '#0AACC2', '#0BBBD4', '#0BC2DA', '#0DD7F2', '#25DBF2', '#3DDFF5','#55E3F6', '#6EE7F7', '#86EBF9'],
-    backgroundColor:{
-        fill: '#FFFFFF',
-        fillOpacity: 0.0
-    },
-    legend: {
-        textStyle: {
-            color: 'white'
-        }
-    },
-    chartArea:{left:10,bottom:5, width:'80%',height:'80%'}
-  };
-
-  var chart = new google.visualization.PieChart(document.getElementById('pieC'));
-  chart.draw(data, options);
-}
-
-
-function rolesPlayed() {
-
-  var data = google.visualization.arrayToDataTable([
+];
+ var dataR = [
     ['Roles Played', 'Times played'],
     ['TOP', {{matches.actualpositionCount.TOP}}],
     ['JUNGLE', {{matches.actualpositionCount.JUNGLE}}],
     ['MID', {{matches.actualpositionCount.MID}}],
     ['ADC', {{matches.actualpositionCount.ADC}}],
     ['SUPPORT', {{matches.actualpositionCount.SUPPORT}}],
-  ]);
-
-  var options = {
-    pieHole: 1,
-    pieSliceTextStyle: {
-      color: 'white',
-
-    },
-    fontName: 'Nunito',
-    fontSize: '11',
-    // colors: ['#0997AA', '#0AACC2', '#0BBBD4', '#0BC2DA', '#0DD7F2'],
-    backgroundColor:{
-        fill: '#FFFFFF',
-        fillOpacity: 0.0
-    },
-    legend: {
-        textStyle: {
-            color: 'white'
-        }
-    },
-    chartArea:{left:10,bottom:5, width:'80%',height:'80%'}
-  };
-
-  var chart = new google.visualization.PieChart(document.getElementById('pieR'));
-  chart.draw(data, options);
-}
-
+];
+drawChamps(dataC, "pieC");
+drawRoles(dataR, "pieR");
+{{else}}
+{{/if}}
 </script>
 <div class="bgImageContainer {{mastery.valid}}">
 </div>
@@ -202,7 +148,7 @@ function rolesPlayed() {
                                     <div class="statsBox title">Gold</div>
                                     <div class="row">
                                         <div class="statsBox label">Gold Earned:</div>
-                                        <div class="statsBox value">{{matches.averages.goldEarned}}</div>
+                                        <div class="statsBox value">{{matches.averages.goldEarned}} ({{matches.averages.goldPerMin}}/min)</div>
                                     </div>
                                     <div class="row">
                                         <div class="statsBox label">Creep Score:</div>
@@ -219,7 +165,7 @@ function rolesPlayed() {
                                     <div class="statsBox title">Damage, Healing and Crowd Control:</div>
                                     <div class="row">
                                         <div class="statsBox label">Total Damage Dealt:</div>
-                                        <div class="statsBox value">{{matches.averages.totalDamageDealtToChampions}}</div>
+                                        <div class="statsBox value">{{matches.averages.totalDamageDealtToChampions}} ({{matches.averages.damagePerMin}}/min)</div>
                                     </div>
                                     <div class="row">
                                         <div class="statsBox label">Damage Types:</div>

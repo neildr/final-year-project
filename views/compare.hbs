@@ -1,156 +1,117 @@
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js" style="display: none"></script>
+<script type="text/javascript" src="/../../javascripts/graphs.js"></script>
 <script type="text/javascript">
 google.charts.load('current', {'packages':['corechart']});
 {{#if matches1.valid}}
-function championsPlayed1() {
-  var data = google.visualization.arrayToDataTable([
-    ['Champion', 'Times played'],
-    {{#each matches1.championCountUse}}
-    ['{{this.name}}', {{this.count}}],
-    {{/each}}
-  ]);
-
-  var options = {
-    pieHole: 1,
-    pieSliceTextStyle: {
-      color: 'white',
-    },
-    fontName: 'Nunito',
-    fontSize: '11',
-    backgroundColor:{
-        fill: '#FFFFFF',
-        fillOpacity: 0.0
-    },
-    legend: {
-        textStyle: {
-            color: 'white'
-        }
-    },
-    chartArea:{left:10,bottom:5, width:'80%',height:'80%'}
-  };
-
-  var chart = new google.visualization.PieChart(document.getElementById('pieC1'));
-  chart.draw(data, options);
-}
-
-
-function rolesPlayed1() {
-
-  var data = google.visualization.arrayToDataTable([
+//champs
+var dataC1 = [
+  ['Champion', 'Times played'],
+  {{#each matches1.championCountUse}}
+  ['{{this.name}}', {{this.count}}],
+  {{/each}}
+];
+//roles
+  var dataR1 = [
     ['Roles Played', 'Times played'],
     ['TOP', {{matches1.actualpositionCount.TOP}}],
     ['JUNGLE', {{matches1.actualpositionCount.JUNGLE}}],
     ['MID', {{matches1.actualpositionCount.MID}}],
     ['ADC', {{matches1.actualpositionCount.ADC}}],
     ['SUPPORT', {{matches1.actualpositionCount.SUPPORT}}],
-  ]);
-
-  var options = {
-    pieHole: 1,
-    pieSliceTextStyle: {
-      color: 'white',
-    },
-    fontName: 'Nunito',
-    fontSize: '11',
-    backgroundColor:{
-        fill: '#FFFFFF',
-        fillOpacity: 0.0
-    },
-    legend: {
-        textStyle: {
-            color: 'white'
-        }
-    },
-    chartArea:{left:10,bottom:5, width:'80%',height:'80%'}
-  };
-
-  var chart = new google.visualization.PieChart(document.getElementById('pieR1'));
-  chart.draw(data, options);
-}
-google.charts.setOnLoadCallback(championsPlayed1);
-google.charts.setOnLoadCallback(rolesPlayed1);
+];
+drawChamps(dataC1, "pieC1");
+drawRoles(dataR1, "pieR1");
 {{else}}
 {{/if}}
 {{#if matches2.valid}}
-function championsPlayed2() {
-
-  var data = google.visualization.arrayToDataTable([
+//champion data
+  var dataC2 = [
     ['Champion', 'Times played'],
     {{#each matches2.championCountUse}}
     ['{{this.name}}', {{this.count}}],
     {{/each}}
-  ]);
-
-  var options = {
-    pieHole: 1,
-    pieSliceTextStyle: {
-      color: 'white',
-
-    },
-    fontName: 'Nunito',
-    fontSize: '11',
-    backgroundColor:{
-        fill: '#FFFFFF',
-        fillOpacity: 0.0
-    },
-    legend: {
-        textStyle: {
-            color: 'white'
-        }
-    },
-    chartArea:{left:10,bottom:5, width:'80%',height:'80%'}
-  };
-
-  var chart = new google.visualization.PieChart(document.getElementById('pieC2'));
-  chart.draw(data, options);
-}
-function rolesPlayed2() {
-
-  var data = google.visualization.arrayToDataTable([
+  ];
+//role data
+  var dataR2 = [
     ['Roles Played', 'Times played'],
     ['TOP', {{matches2.actualpositionCount.TOP}}],
     ['JUNGLE', {{matches2.actualpositionCount.JUNGLE}}],
     ['MID', {{matches2.actualpositionCount.MID}}],
     ['ADC', {{matches2.actualpositionCount.ADC}}],
     ['SUPPORT', {{matches2.actualpositionCount.SUPPORT}}],
-  ]);
-
-  var options = {
-    pieHole: 1,
-    pieSliceTextStyle: {
-      color: 'white',
-
-    },
-    fontName: 'Nunito',
-    fontSize: '11',
-    backgroundColor:{
-        fill: '#FFFFFF',
-        fillOpacity: 0.0
-    },
-    legend: {
-        textStyle: {
-            color: 'white'
-        }
-    },
-    chartArea:{left:10,bottom:5, width:'80%',height:'80%'}
-  };
-
-  var chart = new google.visualization.PieChart(document.getElementById('pieR2'));
-  chart.draw(data, options);
-}
-google.charts.setOnLoadCallback(championsPlayed2);
-google.charts.setOnLoadCallback(rolesPlayed2);
+];
+drawChamps(dataC2, "pieC2");
+drawRoles(dataR2, "pieR2");
 {{else}}
 {{/if}}
 {{#if matches1.valid}}
     {{#if matches2.valid}}
-    alert("we valid boys");
+    var dataDamage = [
+        ['Match', '{{summoner1.name}}','{{summoner2.name}}',"{{summoner1.name}}'s average","{{summoner1.name}}'s average"],
+        ['1',{{matches1.matchData.0.damagePerMin}},{{matches2.matchData.0.damagePerMin}},{{averages.damagePerMin.summOne}},{{averages.damagePerMin.summTwo}}],
+        ['2',{{matches1.matchData.1.damagePerMin}},{{matches2.matchData.1.damagePerMin}},{{averages.damagePerMin.summOne}},{{averages.damagePerMin.summTwo}}],
+        ['3',{{matches1.matchData.2.damagePerMin}},{{matches2.matchData.2.damagePerMin}},{{averages.damagePerMin.summOne}},{{averages.damagePerMin.summTwo}}],
+        ['4',{{matches1.matchData.3.damagePerMin}},{{matches2.matchData.3.damagePerMin}},{{averages.damagePerMin.summOne}},{{averages.damagePerMin.summTwo}}],
+        ['5',{{matches1.matchData.4.damagePerMin}},{{matches2.matchData.4.damagePerMin}},{{averages.damagePerMin.summOne}},{{averages.damagePerMin.summTwo}}],
+        ['6',{{matches1.matchData.5.damagePerMin}},{{matches2.matchData.5.damagePerMin}},{{averages.damagePerMin.summOne}},{{averages.damagePerMin.summTwo}}],
+        ['7',{{matches1.matchData.6.damagePerMin}},{{matches2.matchData.6.damagePerMin}},{{averages.damagePerMin.summOne}},{{averages.damagePerMin.summTwo}}],
+        ['8',{{matches1.matchData.7.damagePerMin}},{{matches2.matchData.7.damagePerMin}},{{averages.damagePerMin.summOne}},{{averages.damagePerMin.summTwo}}],
+        ['9',{{matches1.matchData.8.damagePerMin}},{{matches2.matchData.8.damagePerMin}},{{averages.damagePerMin.summOne}},{{averages.damagePerMin.summTwo}}],
+        ['10',{{matches1.matchData.9.damagePerMin}},{{matches2.matchData.9.damagePerMin}},{{averages.damagePerMin.summOne}},{{averages.damagePerMin.summTwo}}]
+    ];
+    drawDamage(dataDamage, "damageChart");
+    var dataGold = [
+        ['Match', '{{summoner1.name}}','{{summoner2.name}}',"{{summoner1.name}}'s average","{{summoner2.name}}'s average"],
+        ['1',{{matches1.matchData.0.goldPerMin}},{{matches2.matchData.0.goldPerMin}},{{averages.goldPerMin.summOne}},{{averages.goldPerMin.summTwo}}],
+        ['2',{{matches1.matchData.1.goldPerMin}},{{matches2.matchData.1.goldPerMin}},{{averages.goldPerMin.summOne}},{{averages.goldPerMin.summTwo}}],
+        ['3',{{matches1.matchData.2.goldPerMin}},{{matches2.matchData.2.goldPerMin}},{{averages.goldPerMin.summOne}},{{averages.goldPerMin.summTwo}}],
+        ['4',{{matches1.matchData.3.goldPerMin}},{{matches2.matchData.3.goldPerMin}},{{averages.goldPerMin.summOne}},{{averages.goldPerMin.summTwo}}],
+        ['5',{{matches1.matchData.4.goldPerMin}},{{matches2.matchData.4.goldPerMin}},{{averages.goldPerMin.summOne}},{{averages.goldPerMin.summTwo}}],
+        ['6',{{matches1.matchData.5.goldPerMin}},{{matches2.matchData.5.goldPerMin}},{{averages.goldPerMin.summOne}},{{averages.goldPerMin.summTwo}}],
+        ['7',{{matches1.matchData.6.goldPerMin}},{{matches2.matchData.6.goldPerMin}},{{averages.goldPerMin.summOne}},{{averages.goldPerMin.summTwo}}],
+        ['8',{{matches1.matchData.7.goldPerMin}},{{matches2.matchData.7.goldPerMin}},{{averages.goldPerMin.summOne}},{{averages.goldPerMin.summTwo}}],
+        ['9',{{matches1.matchData.8.goldPerMin}},{{matches2.matchData.8.goldPerMin}},{{averages.goldPerMin.summOne}},{{averages.goldPerMin.summTwo}}],
+        ['10',{{matches1.matchData.9.goldPerMin}},{{matches2.matchData.9.goldPerMin}},{{averages.goldPerMin.summOne}},{{averages.goldPerMin.summTwo}}]
+    ];
+    drawGold(dataGold, "goldChart");
+    var dataCS = [
+        ['Match', '{{summoner1.name}}','{{summoner2.name}}',"{{summoner1.name}}'s average","{{summoner2.name}}'s average"],
+        ['1',{{matches1.matchData.0.csPerMin}},{{matches2.matchData.0.csPerMin}},{{averages.csPerMin.summOne}},{{averages.csPerMin.summTwo}}],
+        ['2',{{matches1.matchData.1.csPerMin}},{{matches2.matchData.1.csPerMin}},{{averages.csPerMin.summOne}},{{averages.csPerMin.summTwo}}],
+        ['3',{{matches1.matchData.2.csPerMin}},{{matches2.matchData.2.csPerMin}},{{averages.csPerMin.summOne}},{{averages.csPerMin.summTwo}}],
+        ['4',{{matches1.matchData.3.csPerMin}},{{matches2.matchData.3.csPerMin}},{{averages.csPerMin.summOne}},{{averages.csPerMin.summTwo}}],
+        ['5',{{matches1.matchData.4.csPerMin}},{{matches2.matchData.4.csPerMin}},{{averages.csPerMin.summOne}},{{averages.csPerMin.summTwo}}],
+        ['6',{{matches1.matchData.5.csPerMin}},{{matches2.matchData.5.csPerMin}},{{averages.csPerMin.summOne}},{{averages.csPerMin.summTwo}}],
+        ['7',{{matches1.matchData.6.csPerMin}},{{matches2.matchData.6.csPerMin}},{{averages.csPerMin.summOne}},{{averages.csPerMin.summTwo}}],
+        ['8',{{matches1.matchData.7.csPerMin}},{{matches2.matchData.7.csPerMin}},{{averages.csPerMin.summOne}},{{averages.csPerMin.summTwo}}],
+        ['9',{{matches1.matchData.8.csPerMin}},{{matches2.matchData.8.csPerMin}},{{averages.csPerMin.summOne}},{{averages.csPerMin.summTwo}}],
+        ['10',{{matches1.matchData.9.csPerMin}},{{matches2.matchData.9.csPerMin}},{{averages.csPerMin.summOne}},{{averages.csPerMin.summTwo}}]
+    ];
+    drawCS(dataCS, "CSChart");
+    var dataKD = [
+        ['Match', '{{summoner1.name}}','{{summoner2.name}}',"{{summoner1.name}}'s average","{{summoner2.name}}'s average"],
+        ['1',{{matches1.matchData.0.kdaRatio}},{{matches2.matchData.0.kdaRatio}},{{averages.kdaRatio.summOne}},{{averages.kdaRatio.summTwo}}],
+        ['2',{{matches1.matchData.1.kdaRatio}},{{matches2.matchData.1.kdaRatio}},{{averages.kdaRatio.summOne}},{{averages.kdaRatio.summTwo}}],
+        ['3',{{matches1.matchData.2.kdaRatio}},{{matches2.matchData.2.kdaRatio}},{{averages.kdaRatio.summOne}},{{averages.kdaRatio.summTwo}}],
+        ['4',{{matches1.matchData.3.kdaRatio}},{{matches2.matchData.3.kdaRatio}},{{averages.kdaRatio.summOne}},{{averages.kdaRatio.summTwo}}],
+        ['5',{{matches1.matchData.4.kdaRatio}},{{matches2.matchData.4.kdaRatio}},{{averages.kdaRatio.summOne}},{{averages.kdaRatio.summTwo}}],
+        ['6',{{matches1.matchData.5.kdaRatio}},{{matches2.matchData.5.kdaRatio}},{{averages.kdaRatio.summOne}},{{averages.kdaRatio.summTwo}}],
+        ['7',{{matches1.matchData.6.kdaRatio}},{{matches2.matchData.6.kdaRatio}},{{averages.kdaRatio.summOne}},{{averages.kdaRatio.summTwo}}],
+        ['8',{{matches1.matchData.7.kdaRatio}},{{matches2.matchData.7.kdaRatio}},{{averages.kdaRatio.summOne}},{{averages.kdaRatio.summTwo}}],
+        ['9',{{matches1.matchData.8.kdaRatio}},{{matches2.matchData.8.kdaRatio}},{{averages.kdaRatio.summOne}},{{averages.kdaRatio.summTwo}}],
+        ['10',{{matches1.matchData.9.kdaRatio}},{{matches2.matchData.9.kdaRatio}},{{averages.kdaRatio.summOne}},{{averages.kdaRatio.summTwo}}]
+    ];
+    drawKD(dataKD, "KDChart");
     {{/if}}
 {{/if}}
 </script>
 <div class="bgImageContainer one">
 </div>
 <a href="/"><image class="logo" src="/../../images/logo.png" alt="LOLSTATS.GG HOME" title="LOLSTATS.GG HOME"/></a>
+<div id="damageChart"></div>
+<div id="goldChart"></div>
+<div id="CSChart"></div>
+<div id="KDChart"></div>
 {{#if validRegion1}}
     {{#if validRegion2}}
         {{#if summoner1.exists}}
@@ -159,6 +120,7 @@ google.charts.setOnLoadCallback(rolesPlayed2);
                     <div class="pageContent">
                         <h1 class="mainText">{{summoner1.name}} ({{summoner1.region}}) vs {{summoner2.name}} ({{summoner2.region}}) </h1>
                         </br>
+
                         {{#if matches1.valid}}
                             <div class="rowContainer top">
                                 <div class="summaryRow center">

@@ -1,14 +1,14 @@
 $("div.clickable").click(function() {
-   $(this).next().slideToggle();
+    $(this).next().slideToggle();
 });
 
-function changeDist(dist, old){
+function changeDist(dist, old) {
     var displayContent;
     var distBtn;
     //hide old displayContent
     document.getElementById(old).style.visibility = "hidden";
     //show new content
-    document.getElementById(dist).style.visibility =  "visible";
+    document.getElementById(dist).style.visibility = "visible";
 }
 //button 1 style toggle
 $(".distBtn").click(function() {
@@ -24,10 +24,10 @@ $(".distBtn1").click(function() {
 });
 //initialises buttons
 var defaultDist = document.getElementById("defaultDist");
-if (defaultDist != null){
+if (defaultDist != null) {
     defaultDist.click();
 }
 var defaultDist1 = document.getElementById("defaultDist1");
-if (defaultDist1 != null){
+if (defaultDist1 != null) {
     defaultDist1.click();
 }

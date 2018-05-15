@@ -133,7 +133,9 @@ async function getRecentGames(summonerRegion, summonerAccID, noOfGames) {
             "kdaRatio": 0,
             "visionScore": 0,
             "goldEarned": 0,
+            "goldPerMin": 0,
             "totalDamageDealtToChampions": 0,
+            "damagePerMin": 0,
             "magicDamageDealtToChampions": 0,
             "physicalDamageDealtToChampions": 0,
             "trueDamageDealtToChampions": 0,
@@ -158,7 +160,7 @@ async function getRecentGames(summonerRegion, summonerAccID, noOfGames) {
     };
     //variable template for easier processing
     var itemsInJSONAverage = ['kills', 'deaths', 'assists', 'kdaRatio', 'visionScore',
-        'goldEarned', 'totalDamageDealtToChampions', 'magicDamageDealtToChampions', 'physicalDamageDealtToChampions',
+        'goldEarned', 'goldPerMin', 'totalDamageDealtToChampions', 'damagePerMin', 'magicDamageDealtToChampions', 'physicalDamageDealtToChampions',
         'trueDamageDealtToChampions', 'totalHeal', 'timeCCingOthers', 'damageDealtToObjectives', 'damageDealtToTurrets', 'turretKills', 'inhibitorKills', 'creepScore', 'neutralMinionsKilled',
         'neutralMinionsKilledTeamJungle', 'neutralMinionsKilledEnemyJungle', 'csDiff', 'csPerMin', 'visionWardsBoughtInGame', 'wardsPlaced', 'wardsKilled'
     ];
@@ -253,6 +255,7 @@ async function getMatchData(summonerRegion, matchID, summonerAccID) {
         "kdaRatio": null,
         "visionScore": null,
         "goldEarned": null,
+        "goldPerMin": null,
         "spell1": {
             "id": null,
             "name" : null
@@ -318,6 +321,7 @@ async function getMatchData(summonerRegion, matchID, summonerAccID) {
             "name" : null
         },
         "totalDamageDealtToChampions": null,
+        "damagePerMin": null,
         "magicDamageDealtToChampions": null,
         "physicalDamageDealtToChampions": null,
         "trueDamageDealtToChampions": null,
@@ -342,7 +346,7 @@ async function getMatchData(summonerRegion, matchID, summonerAccID) {
         "matchSeconds": null,
         "outcome": ""
     };
-    var itemsInJSONMatch = ['kills', 'deaths', 'assists', 'kdaRatio', 'visionScore', 'goldEarned',
+    var itemsInJSONMatch = ['kills', 'deaths', 'assists', 'kdaRatio', 'visionScore', 'goldEarned','goldPerMin',
         'totalDamageDealtToChampions', 'magicDamageDealtToChampions', 'physicalDamageDealtToChampions',
         'trueDamageDealtToChampions', 'totalHeal', 'timeCCingOthers', 'damageDealtToObjectives', 'damageDealtToTurrets', 'turretKills', 'inhibitorKills', 'totalMinionsKilled', 'neutralMinionsKilled',
         'neutralMinionsKilledTeamJungle', 'neutralMinionsKilledEnemyJungle', 'csDiff', 'csPerMin', 'visionWardsBoughtInGame', 'wardsPlaced', 'wardsKilled'
@@ -442,6 +446,8 @@ async function getMatchData(summonerRegion, matchID, summonerAccID) {
                             }
                             matchData.creepScore = data.participants[j].stats.totalMinionsKilled + data.participants[j].stats.neutralMinionsKilled;
                             matchData.csPerMin = ((matchData.creepScore / data.gameDuration) * 60).toFixed(2);
+                            matchData.damagePerMin = ((matchData.totalDamageDealtToChampions / data.gameDuration) * 60).toFixed(2);
+                            matchData.goldPerMin = ((matchData.goldEarned / data.gameDuration) * 60).toFixed(2);
 
                         }
                     }
@@ -642,7 +648,7 @@ router.get('/compare/user1=:summOneRegion/:summOneName/user2=:summTwoRegion/:sum
     var validRegion2 = false;
     var noValidMatches = false;
     var itemsInJSONShow = ['kills', 'deaths', 'assists', 'kdaRatio', 'visionScore',
-        'goldEarned', 'totalDamageDealtToChampions', 'magicDamageDealtToChampions', 'physicalDamageDealtToChampions',
+        'goldEarned', 'goldPerMin','totalDamageDealtToChampions', 'damagePerMin', 'magicDamageDealtToChampions', 'physicalDamageDealtToChampions',
         'trueDamageDealtToChampions', 'totalHeal', 'timeCCingOthers', 'damageDealtToObjectives', 'damageDealtToTurrets', 'turretKills', 'inhibitorKills', 'creepScore', 'neutralMinionsKilled',
         'neutralMinionsKilledTeamJungle', 'neutralMinionsKilledEnemyJungle', 'csDiff', 'csPerMin', 'visionWardsBoughtInGame', 'wardsPlaced', 'wardsKilled'
     ];
@@ -683,8 +689,20 @@ router.get('/compare/user1=:summOneRegion/:summOneName/user2=:summTwoRegion/:sum
             "summTwo": 0,
             "delta": 0
         },
+        "goldPerMin": {
+            "statName": "Gold/min",
+            "summOne": 0,
+            "summTwo": 0,
+            "delta": 0
+        },
         "totalDamageDealtToChampions": {
             "statName": "Total Damage Dealt to Champions",
+            "summOne": 0,
+            "summTwo": 0,
+            "delta": 0
+        },
+        "damagePerMin": {
+            "statName": "Damage Dealt/min",
             "summOne": 0,
             "summTwo": 0,
             "delta": 0
