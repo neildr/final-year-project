@@ -166,13 +166,6 @@ th.searchbox {
     border-style: solid;
 }
 
-button::-moz-focus-inner,
-input[type="button"]::-moz-focus-inner,
-input[type="submit"]::-moz-focus-inner,
-input[type="reset"]::-moz-focus-inner {
-    padding: 0;
-    border: 0 none;
-}
 
 th.button {
     height: 100%;
@@ -241,6 +234,17 @@ p.title {
     justify-content: center;
     background-color: rgba(150, 150, 150, 0.6);
     border-radius: 5px;
+}
+.rowContainerNF {
+    width: 100%;
+    background-color: rgba(150, 150, 150, 0.6);
+    border-radius: 5px;
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    flex-flow: row;
+    justify-content: center;
+    border-radius: 5px 5px 0 0;
 }
 
 .rowContainer.top {
@@ -388,6 +392,30 @@ button.distBtn1:hover{
     background-color: rgb(148, 206, 182);
 }
 
+button.graphBtn{
+    width: 24%;
+    height: 35px;
+    font-family: inherit;
+    font-size: 16px;
+    color: black;
+    background-color: rgb(175, 175, 175);
+    cursor: pointer;
+    padding: 0;
+    border: none;
+    border-radius: 3px;
+    transition: background-color 0.5s ease;
+    z-index: 11;
+    box-sizing: border-box;
+    margin-right: 5px;
+}
+button.graphBtn.active{
+    background-color: rgb(76, 178, 132);
+    color: white;
+}
+
+button.graphBtn:hover{
+    background-color: rgb(148, 206, 182);
+}
 .displayContent {
     margin: 0 auto;
     margin-top: 8px;
@@ -395,6 +423,16 @@ button.distBtn1:hover{
     height: 0px;
     width: 0px;
     position: absolute;
+
+}
+.displayGraph {
+    visibility: hidden;
+    position: absolute;
+    margin-top: 35px;
+    margin-left: 0px;
+    width: 100%;
+    display: block;
+    border-radius: 3px;
 
 }
 svg > g > g:last-child{

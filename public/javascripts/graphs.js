@@ -79,7 +79,25 @@ function averageDamageChart(data, id){
     var data = google.visualization.arrayToDataTable(data);
 
     var options = {
-        legend: {position: 'bottom'}
+        fontName: 'Nunito',
+        fontSize: '12',
+        backgroundColor: {
+            fill: '#969696',
+            fillOpacity: 0.6
+        },
+        legend: {
+            position: 'bottom',
+            textStyle: {
+                color: 'white',
+            }
+        },
+        hAxis: {
+            textStyle:{color: 'white'}
+        },
+        vAxis: {
+            textStyle:{color: 'white'}
+        },
+         colors: ['blue', 'red', 'yellow', 'orange']
     }
     var chart = new google.visualization.LineChart(document.getElementById(id));
     chart.draw(data, options);
@@ -94,7 +112,25 @@ function averageGoldChart(data, id){
     var data = google.visualization.arrayToDataTable(data);
 
     var options = {
-        legend: {position: 'bottom'}
+        fontName: 'Nunito',
+        fontSize: '12',
+        backgroundColor: {
+            fill: '#969696',
+            fillOpacity: 0.6
+        },
+        legend: {
+            position: 'bottom',
+            textStyle: {
+                color: 'white',
+            }
+        },
+        hAxis: {
+            textStyle:{color: 'white'}
+        },
+        vAxis: {
+            textStyle:{color: 'white'}
+        },
+         colors: ['blue', 'red', 'yellow', 'orange']
     }
     var chart = new google.visualization.LineChart(document.getElementById(id));
     chart.draw(data, options);
@@ -108,7 +144,25 @@ function averageCSChart(data, id){
     var data = google.visualization.arrayToDataTable(data);
 
     var options = {
-        legend: {position: 'bottom'}
+        fontName: 'Nunito',
+        fontSize: '12',
+        backgroundColor: {
+            fill: '#969696',
+            fillOpacity: 0.6
+        },
+        legend: {
+            position: 'bottom',
+            textStyle: {
+                color: 'white',
+            }
+        },
+        hAxis: {
+            textStyle:{color: 'white'}
+        },
+        vAxis: {
+            textStyle:{color: 'white'}
+        },
+         colors: ['blue', 'red', 'yellow', 'orange']
     }
     var chart = new google.visualization.LineChart(document.getElementById(id));
     chart.draw(data, options);
@@ -122,7 +176,25 @@ function averageKDChart(data, id){
     var data = google.visualization.arrayToDataTable(data);
 
     var options = {
-        legend: {position: 'bottom'}
+        fontName: 'Nunito',
+        fontSize: '12',
+        backgroundColor: {
+            fill: '#969696',
+            fillOpacity: 0.6
+        },
+        legend: {
+            position: 'bottom',
+            textStyle: {
+                color: 'white',
+            }
+        },
+        hAxis: {
+            textStyle:{color: 'white'}
+        },
+        vAxis: {
+            textStyle:{color: 'white'}
+        },
+         colors: ['blue', 'red', 'yellow', 'orange']
     }
     var chart = new google.visualization.LineChart(document.getElementById(id));
     chart.draw(data, options);

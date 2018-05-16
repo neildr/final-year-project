@@ -47,59 +47,60 @@ drawRoles(dataR2, "pieR2");
 {{#if matches1.valid}}
     {{#if matches2.valid}}
     var dataDamage = [
-        ['Match', '{{summoner1.name}}','{{summoner2.name}}',"{{summoner1.name}}'s average","{{summoner1.name}}'s average"],
-        ['1',{{matches1.matchData.0.damagePerMin}},{{matches2.matchData.0.damagePerMin}},{{averages.damagePerMin.summOne}},{{averages.damagePerMin.summTwo}}],
-        ['2',{{matches1.matchData.1.damagePerMin}},{{matches2.matchData.1.damagePerMin}},{{averages.damagePerMin.summOne}},{{averages.damagePerMin.summTwo}}],
-        ['3',{{matches1.matchData.2.damagePerMin}},{{matches2.matchData.2.damagePerMin}},{{averages.damagePerMin.summOne}},{{averages.damagePerMin.summTwo}}],
-        ['4',{{matches1.matchData.3.damagePerMin}},{{matches2.matchData.3.damagePerMin}},{{averages.damagePerMin.summOne}},{{averages.damagePerMin.summTwo}}],
-        ['5',{{matches1.matchData.4.damagePerMin}},{{matches2.matchData.4.damagePerMin}},{{averages.damagePerMin.summOne}},{{averages.damagePerMin.summTwo}}],
-        ['6',{{matches1.matchData.5.damagePerMin}},{{matches2.matchData.5.damagePerMin}},{{averages.damagePerMin.summOne}},{{averages.damagePerMin.summTwo}}],
-        ['7',{{matches1.matchData.6.damagePerMin}},{{matches2.matchData.6.damagePerMin}},{{averages.damagePerMin.summOne}},{{averages.damagePerMin.summTwo}}],
-        ['8',{{matches1.matchData.7.damagePerMin}},{{matches2.matchData.7.damagePerMin}},{{averages.damagePerMin.summOne}},{{averages.damagePerMin.summTwo}}],
-        ['9',{{matches1.matchData.8.damagePerMin}},{{matches2.matchData.8.damagePerMin}},{{averages.damagePerMin.summOne}},{{averages.damagePerMin.summTwo}}],
-        ['10',{{matches1.matchData.9.damagePerMin}},{{matches2.matchData.9.damagePerMin}},{{averages.damagePerMin.summOne}},{{averages.damagePerMin.summTwo}}]
+        ['Match', '{{summoner1.name}}',"{{summoner1.name}}'s average",'{{summoner2.name}}',"{{summoner2.name}}'s average"],
+        ['Match 1',{{matches1.matchData.0.damagePerMin}},{{averages.damagePerMin.summOne}},{{matches2.matchData.0.damagePerMin}},{{averages.damagePerMin.summTwo}}],
+        ['Match 2',{{matches1.matchData.1.damagePerMin}},{{averages.damagePerMin.summOne}},{{matches2.matchData.1.damagePerMin}},{{averages.damagePerMin.summTwo}}],
+        ['Match 3',{{matches1.matchData.2.damagePerMin}},{{averages.damagePerMin.summOne}},{{matches2.matchData.2.damagePerMin}},{{averages.damagePerMin.summTwo}}],
+        ['Match 4',{{matches1.matchData.3.damagePerMin}},{{averages.damagePerMin.summOne}},{{matches2.matchData.3.damagePerMin}},{{averages.damagePerMin.summTwo}}],
+        ['Match 5',{{matches1.matchData.4.damagePerMin}},{{averages.damagePerMin.summOne}},{{matches2.matchData.4.damagePerMin}},{{averages.damagePerMin.summTwo}}],
+        ['Match 6',{{matches1.matchData.5.damagePerMin}},{{averages.damagePerMin.summOne}},{{matches2.matchData.5.damagePerMin}},{{averages.damagePerMin.summTwo}}],
+        ['Match 7',{{matches1.matchData.6.damagePerMin}},{{averages.damagePerMin.summOne}},{{matches2.matchData.6.damagePerMin}},{{averages.damagePerMin.summTwo}}],
+        ['Match 8',{{matches1.matchData.7.damagePerMin}},{{averages.damagePerMin.summOne}},{{matches2.matchData.7.damagePerMin}},{{averages.damagePerMin.summTwo}}],
+        ['Match 9',{{matches1.matchData.8.damagePerMin}},{{averages.damagePerMin.summOne}},{{matches2.matchData.8.damagePerMin}},{{averages.damagePerMin.summTwo}}],
+        ['Match 10',{{matches1.matchData.9.damagePerMin}},{{averages.damagePerMin.summOne}},{{matches2.matchData.9.damagePerMin}},{{averages.damagePerMin.summTwo}}]
     ];
+
     drawDamage(dataDamage, "damageChart");
     var dataGold = [
-        ['Match', '{{summoner1.name}}','{{summoner2.name}}',"{{summoner1.name}}'s average","{{summoner2.name}}'s average"],
-        ['1',{{matches1.matchData.0.goldPerMin}},{{matches2.matchData.0.goldPerMin}},{{averages.goldPerMin.summOne}},{{averages.goldPerMin.summTwo}}],
-        ['2',{{matches1.matchData.1.goldPerMin}},{{matches2.matchData.1.goldPerMin}},{{averages.goldPerMin.summOne}},{{averages.goldPerMin.summTwo}}],
-        ['3',{{matches1.matchData.2.goldPerMin}},{{matches2.matchData.2.goldPerMin}},{{averages.goldPerMin.summOne}},{{averages.goldPerMin.summTwo}}],
-        ['4',{{matches1.matchData.3.goldPerMin}},{{matches2.matchData.3.goldPerMin}},{{averages.goldPerMin.summOne}},{{averages.goldPerMin.summTwo}}],
-        ['5',{{matches1.matchData.4.goldPerMin}},{{matches2.matchData.4.goldPerMin}},{{averages.goldPerMin.summOne}},{{averages.goldPerMin.summTwo}}],
-        ['6',{{matches1.matchData.5.goldPerMin}},{{matches2.matchData.5.goldPerMin}},{{averages.goldPerMin.summOne}},{{averages.goldPerMin.summTwo}}],
-        ['7',{{matches1.matchData.6.goldPerMin}},{{matches2.matchData.6.goldPerMin}},{{averages.goldPerMin.summOne}},{{averages.goldPerMin.summTwo}}],
-        ['8',{{matches1.matchData.7.goldPerMin}},{{matches2.matchData.7.goldPerMin}},{{averages.goldPerMin.summOne}},{{averages.goldPerMin.summTwo}}],
-        ['9',{{matches1.matchData.8.goldPerMin}},{{matches2.matchData.8.goldPerMin}},{{averages.goldPerMin.summOne}},{{averages.goldPerMin.summTwo}}],
-        ['10',{{matches1.matchData.9.goldPerMin}},{{matches2.matchData.9.goldPerMin}},{{averages.goldPerMin.summOne}},{{averages.goldPerMin.summTwo}}]
+        ['Match', '{{summoner1.name}}',"{{summoner1.name}}'s average",'{{summoner2.name}}',"{{summoner2.name}}'s average"],
+        ['Match 1',{{matches1.matchData.0.goldPerMin}},{{averages.goldPerMin.summOne}},{{matches2.matchData.0.goldPerMin}},{{averages.goldPerMin.summTwo}}],
+        ['Match 2',{{matches1.matchData.1.goldPerMin}},{{averages.goldPerMin.summOne}},{{matches2.matchData.1.goldPerMin}},{{averages.goldPerMin.summTwo}}],
+        ['Match 3',{{matches1.matchData.2.goldPerMin}},{{averages.goldPerMin.summOne}},{{matches2.matchData.2.goldPerMin}},{{averages.goldPerMin.summTwo}}],
+        ['Match 4',{{matches1.matchData.3.goldPerMin}},{{averages.goldPerMin.summOne}},{{matches2.matchData.3.goldPerMin}},{{averages.goldPerMin.summTwo}}],
+        ['Match 5',{{matches1.matchData.4.goldPerMin}},{{averages.goldPerMin.summOne}},{{matches2.matchData.4.goldPerMin}},{{averages.goldPerMin.summTwo}}],
+        ['Match 6',{{matches1.matchData.5.goldPerMin}},{{averages.goldPerMin.summOne}},{{matches2.matchData.5.goldPerMin}},{{averages.goldPerMin.summTwo}}],
+        ['Match 7',{{matches1.matchData.6.goldPerMin}},{{averages.goldPerMin.summOne}},{{matches2.matchData.6.goldPerMin}},{{averages.goldPerMin.summTwo}}],
+        ['Match 8',{{matches1.matchData.7.goldPerMin}},{{averages.goldPerMin.summOne}},{{matches2.matchData.7.goldPerMin}},{{averages.goldPerMin.summTwo}}],
+        ['Match 9',{{matches1.matchData.8.goldPerMin}},{{averages.goldPerMin.summOne}},{{matches2.matchData.8.goldPerMin}},{{averages.goldPerMin.summTwo}}],
+        ['Match 10',{{matches1.matchData.9.goldPerMin}},{{averages.goldPerMin.summOne}},{{matches2.matchData.9.goldPerMin}},{{averages.goldPerMin.summTwo}}]
     ];
     drawGold(dataGold, "goldChart");
     var dataCS = [
-        ['Match', '{{summoner1.name}}','{{summoner2.name}}',"{{summoner1.name}}'s average","{{summoner2.name}}'s average"],
-        ['1',{{matches1.matchData.0.csPerMin}},{{matches2.matchData.0.csPerMin}},{{averages.csPerMin.summOne}},{{averages.csPerMin.summTwo}}],
-        ['2',{{matches1.matchData.1.csPerMin}},{{matches2.matchData.1.csPerMin}},{{averages.csPerMin.summOne}},{{averages.csPerMin.summTwo}}],
-        ['3',{{matches1.matchData.2.csPerMin}},{{matches2.matchData.2.csPerMin}},{{averages.csPerMin.summOne}},{{averages.csPerMin.summTwo}}],
-        ['4',{{matches1.matchData.3.csPerMin}},{{matches2.matchData.3.csPerMin}},{{averages.csPerMin.summOne}},{{averages.csPerMin.summTwo}}],
-        ['5',{{matches1.matchData.4.csPerMin}},{{matches2.matchData.4.csPerMin}},{{averages.csPerMin.summOne}},{{averages.csPerMin.summTwo}}],
-        ['6',{{matches1.matchData.5.csPerMin}},{{matches2.matchData.5.csPerMin}},{{averages.csPerMin.summOne}},{{averages.csPerMin.summTwo}}],
-        ['7',{{matches1.matchData.6.csPerMin}},{{matches2.matchData.6.csPerMin}},{{averages.csPerMin.summOne}},{{averages.csPerMin.summTwo}}],
-        ['8',{{matches1.matchData.7.csPerMin}},{{matches2.matchData.7.csPerMin}},{{averages.csPerMin.summOne}},{{averages.csPerMin.summTwo}}],
-        ['9',{{matches1.matchData.8.csPerMin}},{{matches2.matchData.8.csPerMin}},{{averages.csPerMin.summOne}},{{averages.csPerMin.summTwo}}],
-        ['10',{{matches1.matchData.9.csPerMin}},{{matches2.matchData.9.csPerMin}},{{averages.csPerMin.summOne}},{{averages.csPerMin.summTwo}}]
+        ['Match', '{{summoner1.name}}',"{{summoner1.name}}'s average",'{{summoner2.name}}',"{{summoner2.name}}'s average"],
+        ['Match 1',{{matches1.matchData.0.csPerMin}},{{averages.csPerMin.summOne}},{{matches2.matchData.0.csPerMin}},{{averages.csPerMin.summTwo}}],
+        ['Match 2',{{matches1.matchData.1.csPerMin}},{{averages.csPerMin.summOne}},{{matches2.matchData.1.csPerMin}},{{averages.csPerMin.summTwo}}],
+        ['Match 3',{{matches1.matchData.2.csPerMin}},{{averages.csPerMin.summOne}},{{matches2.matchData.2.csPerMin}},{{averages.csPerMin.summTwo}}],
+        ['Match 4',{{matches1.matchData.3.csPerMin}},{{averages.csPerMin.summOne}},{{matches2.matchData.3.csPerMin}},{{averages.csPerMin.summTwo}}],
+        ['Match 5',{{matches1.matchData.4.csPerMin}},{{averages.csPerMin.summOne}},{{matches2.matchData.4.csPerMin}},{{averages.csPerMin.summTwo}}],
+        ['Match 6',{{matches1.matchData.5.csPerMin}},{{averages.csPerMin.summOne}},{{matches2.matchData.5.csPerMin}},{{averages.csPerMin.summTwo}}],
+        ['Match 7',{{matches1.matchData.6.csPerMin}},{{averages.csPerMin.summOne}},{{matches2.matchData.6.csPerMin}},{{averages.csPerMin.summTwo}}],
+        ['Match 8',{{matches1.matchData.7.csPerMin}},{{averages.csPerMin.summOne}},{{matches2.matchData.7.csPerMin}},{{averages.csPerMin.summTwo}}],
+        ['Match 9',{{matches1.matchData.8.csPerMin}},{{averages.csPerMin.summOne}},{{matches2.matchData.8.csPerMin}},{{averages.csPerMin.summTwo}}],
+        ['Match 10',{{matches1.matchData.9.csPerMin}},{{averages.csPerMin.summOne}},{{matches2.matchData.9.csPerMin}},{{averages.csPerMin.summTwo}}]
     ];
     drawCS(dataCS, "CSChart");
     var dataKD = [
-        ['Match', '{{summoner1.name}}','{{summoner2.name}}',"{{summoner1.name}}'s average","{{summoner2.name}}'s average"],
-        ['1',{{matches1.matchData.0.kdaRatio}},{{matches2.matchData.0.kdaRatio}},{{averages.kdaRatio.summOne}},{{averages.kdaRatio.summTwo}}],
-        ['2',{{matches1.matchData.1.kdaRatio}},{{matches2.matchData.1.kdaRatio}},{{averages.kdaRatio.summOne}},{{averages.kdaRatio.summTwo}}],
-        ['3',{{matches1.matchData.2.kdaRatio}},{{matches2.matchData.2.kdaRatio}},{{averages.kdaRatio.summOne}},{{averages.kdaRatio.summTwo}}],
-        ['4',{{matches1.matchData.3.kdaRatio}},{{matches2.matchData.3.kdaRatio}},{{averages.kdaRatio.summOne}},{{averages.kdaRatio.summTwo}}],
-        ['5',{{matches1.matchData.4.kdaRatio}},{{matches2.matchData.4.kdaRatio}},{{averages.kdaRatio.summOne}},{{averages.kdaRatio.summTwo}}],
-        ['6',{{matches1.matchData.5.kdaRatio}},{{matches2.matchData.5.kdaRatio}},{{averages.kdaRatio.summOne}},{{averages.kdaRatio.summTwo}}],
-        ['7',{{matches1.matchData.6.kdaRatio}},{{matches2.matchData.6.kdaRatio}},{{averages.kdaRatio.summOne}},{{averages.kdaRatio.summTwo}}],
-        ['8',{{matches1.matchData.7.kdaRatio}},{{matches2.matchData.7.kdaRatio}},{{averages.kdaRatio.summOne}},{{averages.kdaRatio.summTwo}}],
-        ['9',{{matches1.matchData.8.kdaRatio}},{{matches2.matchData.8.kdaRatio}},{{averages.kdaRatio.summOne}},{{averages.kdaRatio.summTwo}}],
-        ['10',{{matches1.matchData.9.kdaRatio}},{{matches2.matchData.9.kdaRatio}},{{averages.kdaRatio.summOne}},{{averages.kdaRatio.summTwo}}]
+        ['Match', '{{summoner1.name}}',"{{summoner1.name}}'s average",'{{summoner2.name}}',"{{summoner2.name}}'s average"],
+        ['Match 1',{{matches1.matchData.0.kdaRatio}},{{averages.kdaRatio.summOne}},{{matches2.matchData.0.kdaRatio}},{{averages.kdaRatio.summTwo}}],
+        ['Match 2',{{matches1.matchData.1.kdaRatio}},{{averages.kdaRatio.summOne}},{{matches2.matchData.1.kdaRatio}},{{averages.kdaRatio.summTwo}}],
+        ['Match 3',{{matches1.matchData.2.kdaRatio}},{{averages.kdaRatio.summOne}},{{matches2.matchData.2.kdaRatio}},{{averages.kdaRatio.summTwo}}],
+        ['Match 4',{{matches1.matchData.3.kdaRatio}},{{averages.kdaRatio.summOne}},{{matches2.matchData.3.kdaRatio}},{{averages.kdaRatio.summTwo}}],
+        ['Match 5',{{matches1.matchData.4.kdaRatio}},{{averages.kdaRatio.summOne}},{{matches2.matchData.4.kdaRatio}},{{averages.kdaRatio.summTwo}}],
+        ['Match 6',{{matches1.matchData.5.kdaRatio}},{{averages.kdaRatio.summOne}},{{matches2.matchData.5.kdaRatio}},{{averages.kdaRatio.summTwo}}],
+        ['Match 7',{{matches1.matchData.6.kdaRatio}},{{averages.kdaRatio.summOne}},{{matches2.matchData.6.kdaRatio}},{{averages.kdaRatio.summTwo}}],
+        ['Match 8',{{matches1.matchData.7.kdaRatio}},{{averages.kdaRatio.summOne}},{{matches2.matchData.7.kdaRatio}},{{averages.kdaRatio.summTwo}}],
+        ['Match 9',{{matches1.matchData.8.kdaRatio}},{{averages.kdaRatio.summOne}},{{matches2.matchData.8.kdaRatio}},{{averages.kdaRatio.summTwo}}],
+        ['Match 10',{{matches1.matchData.9.kdaRatio}},{{averages.kdaRatio.summOne}},{{matches2.matchData.9.kdaRatio}},{{averages.kdaRatio.summTwo}}]
     ];
     drawKD(dataKD, "KDChart");
     {{/if}}
@@ -108,10 +109,6 @@ drawRoles(dataR2, "pieR2");
 <div class="bgImageContainer one">
 </div>
 <a href="/"><image class="logo" src="/../../images/logo.png" alt="LOLSTATS.GG HOME" title="LOLSTATS.GG HOME"/></a>
-<div id="damageChart"></div>
-<div id="goldChart"></div>
-<div id="CSChart"></div>
-<div id="KDChart"></div>
 {{#if validRegion1}}
     {{#if validRegion2}}
         {{#if summoner1.exists}}
@@ -271,6 +268,45 @@ drawRoles(dataR2, "pieR2");
                             {{#if matches1.valid}}
                                 {{#if matches2.valid}}
                                     <h4 class="mainText">{{summoner1.name}} vs {{summoner2.name}} over last {{matches1.ids.length}} games</h4>
+                                    <div class="rowContainerNF">
+                                        <button class="graphBtn" id="graphBtn" onclick="changeGraph('dmgG')">Damage Dealt/min</button>
+                                        <button class="graphBtn" id="graphBtn1" onclick="changeGraph('goldG')">Gold Earned/min</button>
+                                        <button class="graphBtn" id="graphBtn2" onclick="changeGraph('csG')">Creep Score/min</button>
+                                        <button class="graphBtn active" id="graphBtn3" onclick="changeGraph('kdaG')">KDA Ratio</button>
+                                        <div class="displayGraph" id="dmgG">
+                                            <div class="mainText">
+                                                <div id="damageChart"></div>
+                                            </div>
+                                        </div>
+                                        <div class="displayGraph" id="goldG">
+                                            <div class="mainText">
+                                                <div id="goldChart"></div>
+
+                                            </div>
+                                        </div>
+                                        <div class="displayGraph" id="csG">
+                                            <div class="mainText">
+                                                <div id="CSChart"></div>
+                                            </div>
+                                        </div>
+                                        <div class="displayGraph" id="kdaG">
+                                            <div class="mainText">
+                                                <div id="KDChart"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    </br>
+                                    </br>
+                                    </br>
+                                    </br>
+                                    </br>
+                                    </br>
+                                    </br>
+                                    </br>
+                                    </br>
+                                    </br>
+                                    </br>
+                                    </br>
                                     <div class="mainText">
                                         {{#each averages}}
                                             {{this.statName}}: {{this.summOne}} / {{this.summTwo}} / {{this.delta}}</br>
