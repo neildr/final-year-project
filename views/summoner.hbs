@@ -17,6 +17,64 @@ google.charts.load('current', {'packages':['corechart']});
     ['ADC', {{matches.actualpositionCount.ADC}}],
     ['SUPPORT', {{matches.actualpositionCount.SUPPORT}}],
 ];
+
+var dataDamage = [
+    ['Match', '{{summoner.name}}',"{{summoner.name}}'s average"],
+    ['Match 1',{{matches.matchData.0.damagePerMin}},{{matches.averages.damagePerMin}}],
+    ['Match 2',{{matches.matchData.1.damagePerMin}},{{matches.averages.damagePerMin}}],
+    ['Match 3',{{matches.matchData.2.damagePerMin}},{{matches.averages.damagePerMin}}],
+    ['Match 4',{{matches.matchData.3.damagePerMin}},{{matches.averages.damagePerMin}}],
+    ['Match 5',{{matches.matchData.4.damagePerMin}},{{matches.averages.damagePerMin}}],
+    ['Match 6',{{matches.matchData.5.damagePerMin}},{{matches.averages.damagePerMin}}],
+    ['Match 7',{{matches.matchData.6.damagePerMin}},{{matches.averages.damagePerMin}}],
+    ['Match 8',{{matches.matchData.7.damagePerMin}},{{matches.averages.damagePerMin}}],
+    ['Match 9',{{matches.matchData.8.damagePerMin}},{{matches.averages.damagePerMin}}],
+    ['Match 10',{{matches.matchData.9.damagePerMin}},{{matches.averages.damagePerMin}}]
+];
+
+drawDamage(dataDamage, "damageChart");
+var dataGold = [
+    ['Match', '{{summoner.name}}',"{{summoner.name}}'s average"],
+    ['Match 1',{{matches.matchData.0.goldPerMin}},{{matches.averages.goldPerMin}}],
+    ['Match 2',{{matches.matchData.1.goldPerMin}},{{matches.averages.goldPerMin}}],
+    ['Match 3',{{matches.matchData.2.goldPerMin}},{{matches.averages.goldPerMin}}],
+    ['Match 4',{{matches.matchData.3.goldPerMin}},{{matches.averages.goldPerMin}}],
+    ['Match 5',{{matches.matchData.4.goldPerMin}},{{matches.averages.goldPerMin}}],
+    ['Match 6',{{matches.matchData.5.goldPerMin}},{{matches.averages.goldPerMin}}],
+    ['Match 7',{{matches.matchData.6.goldPerMin}},{{matches.averages.goldPerMin}}],
+    ['Match 8',{{matches.matchData.7.goldPerMin}},{{matches.averages.goldPerMin}}],
+    ['Match 9',{{matches.matchData.8.goldPerMin}},{{matches.averages.goldPerMin}}],
+    ['Match 10',{{matches.matchData.9.goldPerMin}},{{matches.averages.goldPerMin}}]
+];
+drawGold(dataGold, "goldChart");
+var dataCS = [
+    ['Match', '{{summoner.name}}',"{{summoner.name}}'s average"],
+    ['Match 1',{{matches.matchData.0.csPerMin}},{{matches.averages.csPerMin}}],
+    ['Match 2',{{matches.matchData.1.csPerMin}},{{matches.averages.csPerMin}}],
+    ['Match 3',{{matches.matchData.2.csPerMin}},{{matches.averages.csPerMin}}],
+    ['Match 4',{{matches.matchData.3.csPerMin}},{{matches.averages.csPerMin}}],
+    ['Match 5',{{matches.matchData.4.csPerMin}},{{matches.averages.csPerMin}}],
+    ['Match 6',{{matches.matchData.5.csPerMin}},{{matches.averages.csPerMin}}],
+    ['Match 7',{{matches.matchData.6.csPerMin}},{{matches.averages.csPerMin}}],
+    ['Match 8',{{matches.matchData.7.csPerMin}},{{matches.averages.csPerMin}}],
+    ['Match 9',{{matches.matchData.8.csPerMin}},{{matches.averages.csPerMin}}],
+    ['Match 10',{{matches.matchData.9.csPerMin}},{{matches.averages.csPerMin}}]
+];
+drawCS(dataCS, "CSChart");
+var dataKD = [
+    ['Match', '{{summoner.name}}',"{{summoner.name}}'s average"],
+    ['Match 1',{{matches.matchData.0.kdaRatio}},{{matches.averages.kdaRatio}}],
+    ['Match 2',{{matches.matchData.1.kdaRatio}},{{matches.averages.kdaRatio}}],
+    ['Match 3',{{matches.matchData.2.kdaRatio}},{{matches.averages.kdaRatio}}],
+    ['Match 4',{{matches.matchData.3.kdaRatio}},{{matches.averages.kdaRatio}}],
+    ['Match 5',{{matches.matchData.4.kdaRatio}},{{matches.averages.kdaRatio}}],
+    ['Match 6',{{matches.matchData.5.kdaRatio}},{{matches.averages.kdaRatio}}],
+    ['Match 7',{{matches.matchData.6.kdaRatio}},{{matches.averages.kdaRatio}}],
+    ['Match 8',{{matches.matchData.7.kdaRatio}},{{matches.averages.kdaRatio}}],
+    ['Match 9',{{matches.matchData.8.kdaRatio}},{{matches.averages.kdaRatio}}],
+    ['Match 10',{{matches.matchData.9.kdaRatio}},{{matches.averages.kdaRatio}}]
+];
+drawKD(dataKD, "KDChart");
 drawChamps(dataC, "pieC");
 drawRoles(dataR, "pieR");
 {{else}}
@@ -165,7 +223,7 @@ drawRoles(dataR, "pieR");
                                     <div class="statsBox title">Damage, Healing and Crowd Control:</div>
                                     <div class="row">
                                         <div class="statsBox label">Total Damage Dealt:</div>
-                                        <div class="statsBox value">{{matches.averages.totalDamageDealtToChampions}} ({{matches.averages.damagePerMin}}/min)</div>
+                                        <div class="statsBox value">{{matches.averages.totalDamageDealtToChampions}} ({{matches.matches.averages.damagePerMin}}/min)</div>
                                     </div>
                                     <div class="row">
                                         <div class="statsBox label">Damage Types:</div>
@@ -239,6 +297,45 @@ drawRoles(dataR, "pieR");
                                 </div>
                             </div>
                         </div>
+                        <div class="rowContainerNF">
+                            <button class="graphBtn" id="graphBtn" onclick="changeGraph('dmgG')">Damage Dealt/min</button>
+                            <button class="graphBtn" id="graphBtn1" onclick="changeGraph('goldG')">Gold Earned/min</button>
+                            <button class="graphBtn" id="graphBtn2" onclick="changeGraph('csG')">Creep Score/min</button>
+                            <button class="graphBtn active" id="graphBtn3" onclick="changeGraph('kdaG')">KDA Ratio</button>
+                            <div class="displayGraph" id="dmgG">
+                                <div class="mainText">
+                                    <div id="damageChart"></div>
+                                </div>
+                            </div>
+                            <div class="displayGraph" id="goldG">
+                                <div class="mainText">
+                                    <div id="goldChart"></div>
+
+                                </div>
+                            </div>
+                            <div class="displayGraph" id="csG">
+                                <div class="mainText">
+                                    <div id="CSChart"></div>
+                                </div>
+                            </div>
+                            <div class="displayGraph" id="kdaG">
+                                <div class="mainText">
+                                    <div id="KDChart"></div>
+                                </div>
+                            </div>
+                        </div>
+                        </br>
+                        </br>
+                        </br>
+                        </br>
+                        </br>
+                        </br>
+                        </br>
+                        </br>
+                        </br>
+                        </br>
+                        </br>
+                        </br>
 
                         <h2 class="mainText">Match History</h2>
                         {{#each matches.matchData}}
