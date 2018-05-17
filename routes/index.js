@@ -55,7 +55,7 @@ router.get('/lookup/:summRegion/:summName', async function(req, res, next) {
             outputSummoner.region = req.params.summRegion;
             title = data.outputSummoner.name + " on " + req.params.summRegion + " - LOLSTATS.GG";
         } else {
-            title = req.params.summName + " on " + req.params.summRegion + " - LOLSTATS.GG";
+            title = "Summoner does not exist - LOLSTATS.GG";
             outputSummoner.region = req.params.summRegion;
             outputMastery.valid = false;
         }
@@ -290,9 +290,11 @@ router.get('/compare/user1=:summOneRegion/:summOneName/user2=:summTwoRegion/:sum
                     outputAverages[itemsInJSONShow].delta = (outputAverages[itemsInJSONShow].summOne - outputAverages[itemsInJSONShow].summTwo).toFixed(2);
                     title = "Comparion between " + outputSummoner1.name + " (" + req.params.summOneRegion + ") and " + outputSummoner2.name + " (" + req.params.summTwoRegion + ") - LOLSTATS.GG";
                 });
-            }
-            if ((outputMatches1.valid == false) && (outputMatches2.valid == false)){
-                noValidMatches = true;
+                if ((outputMatches1.valid == false) && (outputMatches2.valid == false)){
+                    noValidMatches = true;
+                }
+            } else {
+                title = "Summoner does not exist - LOLSTATS.GG";
             }
         } else {
             outputSummoner2.name = req.params.summTwoName;
@@ -302,8 +304,6 @@ router.get('/compare/user1=:summOneRegion/:summOneName/user2=:summTwoRegion/:sum
         outputSummoner1.name = req.params.summOneName;
         outputSummoner1.region = req.params.summOneRegion;
     }
-    console.log(outputSummoner1.name + " is valid " + outputMatches1.valid);
-    console.log(outputSummoner2.name + " is valid " + outputMatches2.valid);
     //render page with data
     res.render('compare', {
         title: title,
@@ -343,6 +343,7 @@ router.get('/live/:summRegionLive/:summNameLive', async function(req, res, next)
         var outputSummoner = await functions.getSummonerID(lookupPlatform, req.params.summNameLive);
         outputSummoner.region = req.params.summRegionLive;
         outputLiveGame = await functions.getLiveGame(lookupPlatform, outputSummoner.id);
+        var title = outputSummoner.name + " Live Game Lookup - LOLSTATS.GG";
     }
     //render page with data
     res.render('livegame', {

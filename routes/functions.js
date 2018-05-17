@@ -1,11 +1,9 @@
-const TeemoJS = require('TeemoJS');
 const championJSON = require('./json/champions.json');
 const itemsJSON = require('./json/items.json');
 const spellsJSON = require('./json/summoner.json');
 const runesJSON = require('./json/runesReforged.json');
 const tempLiveGame = require('./json/templivegame.json');
 const apiImport = require('./APIKEY');
-const api = TeemoJS(apiImport.key);
 const fetch = require('node-fetch');
 
 //**********************//
@@ -60,24 +58,26 @@ async function getSummonerID(summonerRegion, summonerName) {
 //GETS A USERS HIGHEST MASTERY CHAMPION
 async function getHighestMastery(summonerRegion, summonerID) {
     var masteryData = {};
-    var data = await api.get(summonerRegion, 'championMastery.getAllChampionMasteries', summonerID)
-        .then((data) => {
-            if (data.length != 0) {
-                masteryData.championId = data[0].championId;
-                masteryData.championLevel = data[0].championLevel;
-                masteryData.championPoints = data[0].championPoints;
-                //loop through champions.JSON to find an ID match
-                for (var i = 0; i < Object.keys(championJSON.data).length; i++)
-                    if ((masteryData.championId) === (championJSON.data[Object.keys(championJSON.data)[i]].id)) {
-                        masteryData.championName = championJSON.data[Object.keys(championJSON.data)[i]].name;
-                        masteryData.championTitle = championJSON.data[Object.keys(championJSON.data)[i]].title;
-                    }
-                masteryData.valid = true;
-            } else {
-                masteryData.valid = false;
-            }
-        })
-        .catch(error => console.log(error));
+    const url = "https://" + summonerRegion + ".api.riotgames.com/lol/champion-mastery/v3/champion-masteries/by-summoner/" + summonerID + "?api_key=" + apiImport.key;
+    const request = await fetch(url);
+    if (request.status !== 200) {
+        masteryData.valid = false;
+    }
+    const data = await request.json();
+    if (!masteryData.valid){
+        if (data.length != 0) {
+            masteryData.championId = data[0].championId;
+            masteryData.championLevel = data[0].championLevel;
+            masteryData.championPoints = data[0].championPoints;
+            //loop through champions.JSON to find an ID match
+            for (var i = 0; i < Object.keys(championJSON.data).length; i++)
+                if ((masteryData.championId) === (championJSON.data[Object.keys(championJSON.data)[i]].id)) {
+                    masteryData.championName = championJSON.data[Object.keys(championJSON.data)[i]].name;
+                    masteryData.championTitle = championJSON.data[Object.keys(championJSON.data)[i]].title;
+                }
+            masteryData.valid = true;
+        }
+    }
     return masteryData;
 }
 
@@ -150,78 +150,82 @@ async function getRecentGames(summonerRegion, summonerAccID, noOfGames) {
     //unix timestamp to check if they've played recent enough games - set to midnight 10th November 2017 - 3 days after launch of new runes
     const timestamp = 1510272000;
     var totalWins = 0;
-    var data = await api.get(summonerRegion, 'match.getMatchlist', summonerAccID)
-        .then(async (data) => {
-            if (data) {
-                var validMatchesCount = 0;
-                for (i = 0; i < data.matches.length; i++) {
-                    //validating games
-                    if ((data.matches[i].queue === 400 || data.matches[i].queue === 420 || data.matches[i].queue === 430 || data.matches[i].queue === 440) && data.matches[i].timestamp > 1510272000000) {
-                        validMatchesCount++;
-                        recentGamesData.ids[i] = data.matches[i].gameId;
-                        recentGamesData.roles[i] = data.matches[i].role;
-                        recentGamesData.lanes[i] = data.matches[i].lane;
-                        recentGamesData.queues[i] = data.matches[i].queue;
-                        recentGamesData.champions[i] = data.matches[i].champion;
-                        recentGamesData.timestamps[i] = data.matches[i].timestamp;
-                        //calculating actual position - can have errors on Riot's end
-                        if (recentGamesData.roles[i] === "SOLO" || recentGamesData.roles[i] === "DUO" || recentGamesData.roles[i] === "NONE") {
-                            if (recentGamesData.lanes[i] === "TOP") {
-                                recentGamesData.actualPosition[i] = "TOP";
-                            } else if (recentGamesData.lanes[i] === "MID") {
-                                recentGamesData.actualPosition[i] = "MID";
-                            } else if (recentGamesData.lanes[i] === "JUNGLE") {
-                                recentGamesData.actualPosition[i] = "JUNGLE";
-                            }
-                        } else if (recentGamesData.roles[i] === "DUO_CARRY") {
-                            recentGamesData.actualPosition[i] = "ADC";
-                        } else if (recentGamesData.roles[i] === "DUO_SUPPORT") {
-                            recentGamesData.actualPosition[i] = "SUPPORT";
-                        }
-                        //gets the game data from each match
-                        recentGamesData.matchData[i] = await getMatchData(summonerRegion, data.matches[i].gameId, summonerAccID);
-                        if (recentGamesData.matchData[i].outcome === "WIN") {
-                            totalWins++;
-                        }
-                        //calculates average
-                        itemsInJSONAverage.forEach(function(itemsInJSONAverage) {
-                            recentGamesData.averages[itemsInJSONAverage] += parseFloat(((recentGamesData.matchData[i][itemsInJSONAverage]) / noOfGames));
-                            recentGamesData.averages[itemsInJSONAverage] = parseFloat((recentGamesData.averages[itemsInJSONAverage]).toFixed(2));
-                        })
+    var recentGames = true;
+    const url = "https://" + summonerRegion + ".api.riotgames.com/lol/match/v3/matchlists/by-account/" + summonerAccID + "?api_key=" + apiImport.key;
+    const request = await fetch(url);
+    if (request.status !== 200) {
+        recentGames = false;
+    }
+    const data = await request.json();
+    if (recentGames){
+        var validMatchesCount = 0;
+        for (i = 0; i < data.matches.length; i++) {
+            //validating games
+            if ((data.matches[i].queue === 400 || data.matches[i].queue === 420 || data.matches[i].queue === 430 || data.matches[i].queue === 440) && data.matches[i].timestamp > 1510272000000) {
+                validMatchesCount++;
+                recentGamesData.ids[i] = data.matches[i].gameId;
+                recentGamesData.roles[i] = data.matches[i].role;
+                recentGamesData.lanes[i] = data.matches[i].lane;
+                recentGamesData.queues[i] = data.matches[i].queue;
+                recentGamesData.champions[i] = data.matches[i].champion;
+                recentGamesData.timestamps[i] = data.matches[i].timestamp;
+                //calculating actual position - can have errors on Riot's end
+                if (recentGamesData.roles[i] === "SOLO" || recentGamesData.roles[i] === "DUO" || recentGamesData.roles[i] === "NONE") {
+                    if (recentGamesData.lanes[i] === "TOP") {
+                        recentGamesData.actualPosition[i] = "TOP";
+                    } else if (recentGamesData.lanes[i] === "MID") {
+                        recentGamesData.actualPosition[i] = "MID";
+                    } else if (recentGamesData.lanes[i] === "JUNGLE") {
+                        recentGamesData.actualPosition[i] = "JUNGLE";
                     }
-                    if (validMatchesCount >= noOfGames) {
-                        recentGamesData.valid = true;
-                        break;
-                    }
+                } else if (recentGamesData.roles[i] === "DUO_CARRY") {
+                    recentGamesData.actualPosition[i] = "ADC";
+                } else if (recentGamesData.roles[i] === "DUO_SUPPORT") {
+                    recentGamesData.actualPosition[i] = "SUPPORT";
                 }
-                //more calculations - mode role, mode champion, win ratio, champion count and role count
-                recentGamesData.modePosition = mostCommon(recentGamesData.actualPosition);
-                recentGamesData.modeChampion.info = mostCommon(recentGamesData.champions);
-                for (var i = 0; i < Object.keys(championJSON.data).length; i++) {
-                    if ((recentGamesData.modeChampion.info.mode) === (championJSON.data[Object.keys(championJSON.data)[i]].id)) {
-                        recentGamesData.modeChampion.name = championJSON.data[Object.keys(championJSON.data)[i]].name;
-                        recentGamesData.modeChampion.title = championJSON.data[Object.keys(championJSON.data)[i]].title;
-                    }
+                //gets the game data from each match
+                recentGamesData.matchData[i] = await getMatchData(summonerRegion, data.matches[i].gameId, summonerAccID);
+                if (recentGamesData.matchData[i].outcome === "WIN") {
+                    totalWins++;
                 }
-                recentGamesData.actualpositionCount = countValuesIn(recentGamesData.actualPosition, defaultPositionObj);
-                recentGamesData.championCount = countValuesIn(recentGamesData.champions, defaultChampionObj);
-                for (var i = 0; i < (Object.keys(recentGamesData.championCount).length); i++) {
-                    var tempName = "";
-                    for (var j = 0; j < Object.keys(championJSON.data).length; j++) {
-                        if ((Object.keys(recentGamesData.championCount)[i]) == (championJSON.data[Object.keys(championJSON.data)[j]].id)) {
-                            tempName = championJSON.data[Object.keys(championJSON.data)[j]].name;
-                        }
-                    }
-                    recentGamesData.championCountUse[i] = {
-                        "id": Object.keys(recentGamesData.championCount)[i],
-                        "count": recentGamesData.championCount[Object.keys(recentGamesData.championCount)[i]],
-                        "name": tempName
-                    }
-                }
-                recentGamesData.winRatio = (totalWins / noOfGames).toFixed(2) * 100;
+                //calculates average
+                itemsInJSONAverage.forEach(function(itemsInJSONAverage) {
+                    recentGamesData.averages[itemsInJSONAverage] += parseFloat(((recentGamesData.matchData[i][itemsInJSONAverage]) / noOfGames));
+                    recentGamesData.averages[itemsInJSONAverage] = parseFloat((recentGamesData.averages[itemsInJSONAverage]).toFixed(2));
+                })
             }
-        })
-        .catch(error => console.log(error));
+            if (validMatchesCount >= noOfGames) {
+                recentGamesData.valid = true;
+                break;
+            }
+        }
+        //more calculations - mode role, mode champion, win ratio, champion count and role count
+        recentGamesData.modePosition = mostCommon(recentGamesData.actualPosition);
+        recentGamesData.modeChampion.info = mostCommon(recentGamesData.champions);
+        for (var i = 0; i < Object.keys(championJSON.data).length; i++) {
+            if ((recentGamesData.modeChampion.info.mode) === (championJSON.data[Object.keys(championJSON.data)[i]].id)) {
+                recentGamesData.modeChampion.name = championJSON.data[Object.keys(championJSON.data)[i]].name;
+                recentGamesData.modeChampion.title = championJSON.data[Object.keys(championJSON.data)[i]].title;
+            }
+        }
+        recentGamesData.actualpositionCount = countValuesIn(recentGamesData.actualPosition, defaultPositionObj);
+        recentGamesData.championCount = countValuesIn(recentGamesData.champions, defaultChampionObj);
+        for (var i = 0; i < (Object.keys(recentGamesData.championCount).length); i++) {
+            var tempName = "";
+            for (var j = 0; j < Object.keys(championJSON.data).length; j++) {
+                if ((Object.keys(recentGamesData.championCount)[i]) == (championJSON.data[Object.keys(championJSON.data)[j]].id)) {
+                    tempName = championJSON.data[Object.keys(championJSON.data)[j]].name;
+                }
+            }
+            recentGamesData.championCountUse[i] = {
+                "id": Object.keys(recentGamesData.championCount)[i],
+                "count": recentGamesData.championCount[Object.keys(recentGamesData.championCount)[i]],
+                "name": tempName
+            }
+        }
+        recentGamesData.winRatio = (totalWins / noOfGames).toFixed(2) * 100;
+    }
+    console.log("recentGamesData.valid is " + recentGamesData.valid);
     return recentGamesData;
 }
 
@@ -334,145 +338,155 @@ async function getMatchData(summonerRegion, matchID, summonerAccID) {
         'trueDamageDealtToChampions', 'totalHeal', 'timeCCingOthers', 'damageDealtToObjectives', 'damageDealtToTurrets', 'turretKills', 'inhibitorKills', 'totalMinionsKilled', 'neutralMinionsKilled',
         'neutralMinionsKilledTeamJungle', 'neutralMinionsKilledEnemyJungle', 'csDiff', 'csPerMin', 'visionWardsBoughtInGame', 'wardsPlaced', 'wardsKilled'
     ];
-    var data = await api.get(summonerRegion, 'match.getMatch', matchID)
-        .then((data) => {
-            //get time data for match
-            matchData.matchLengthTotal = data.gameDuration;
-            matchData.matchMinutes = Math.floor(data.gameDuration / 60);
-            matchData.matchSeconds = data.gameDuration % 60;
-            //loop through participantIdentities to find ID match
-            for (var i = 0; i < Object.keys(data.participantIdentities).length; i++) {
-                if (data.participantIdentities[i].player.accountId === summonerAccID) {
-                    //store the participantId
-                    participantIDExt = data.participantIdentities[i].participantId;
-                    //loop through participants
-                    for (var j = 0; j < Object.keys(data.participants).length; j++) {
-                        //if ID match is found, get data
-                        if (data.participants[j].participantId === participantIDExt) {
-                            //gets summone spells, item data, rune data and champion played
-                            matchData.spell1.id = data.participants[j].spell1Id;
-                            matchData.spell2.id = data.participants[j].spell2Id;
-                            matchData.item0.id = data.participants[j].stats.item0;
-                            matchData.item1.id = data.participants[j].stats.item1;
-                            matchData.item2.id = data.participants[j].stats.item2;
-                            matchData.item3.id = data.participants[j].stats.item3;
-                            matchData.item4.id = data.participants[j].stats.item4;
-                            matchData.item5.id = data.participants[j].stats.item5;
-                            matchData.item6.id = data.participants[j].stats.item6;
-                            matchData.perk0.id = data.participants[j].stats.perk0;
-                            matchData.perk1.id = data.participants[j].stats.perk1;
-                            matchData.perk2.id = data.participants[j].stats.perk2;
-                            matchData.perk3.id = data.participants[j].stats.perk3;
-                            matchData.perk4.id = data.participants[j].stats.perk4;
-                            matchData.perk5.id = data.participants[j].stats.perk5;
-                            matchData.champion.id = data.participants[j].championId;
-                            for (var k = 0; k < Object.keys(championJSON.data).length; k++)
-                                if ((matchData.champion.id) === (championJSON.data[Object.keys(championJSON.data)[k]].id)) {
-                                    matchData.champion.name = championJSON.data[Object.keys(championJSON.data)[k]].name;
-                                }
-                            var itemsArray = [matchData.item0, matchData.item1, matchData.item2, matchData.item3,
-                                matchData.item4, matchData.item5, matchData.item6
-                            ];
-                            var spellsArray = [matchData.spell1, matchData.spell2];
-                            var runesArray = [matchData.perk0, matchData.perk1, matchData.perk2, matchData.perk3, matchData.perk4, matchData.perk5];
-                            for (var k = 0; k < itemsArray.length; k++) {
-                                if (itemsArray[k].id != 0) {
-                                    //console.log("item " + k + " is "+ itemsArray[k].id + " attempting to get match");
-                                    for (var l = 0; l < Object.keys(itemsJSON.data).length; l++) {
-                                        if (itemsArray[k].id == (Object.keys(itemsJSON.data)[l])) {;
-                                            itemsArray[k].name = itemsJSON.data[Object.keys(itemsJSON.data)[l]].name;
-                                        }
+    var gotMatchData;
+    const url = "https://" + summonerRegion + ".api.riotgames.com/lol/match/v3/matches/" + matchID + "?api_key=" + apiImport.key;
+    const request = await fetch(url);
+    if (request.status !== 200) {
+        gotMatchData = false;
+    }
+    const data = await request.json();
+    if (!gotMatchData){
+        //get time data for match
+        matchData.matchLengthTotal = data.gameDuration;
+        matchData.matchMinutes = Math.floor(data.gameDuration / 60);
+        matchData.matchSeconds = data.gameDuration % 60;
+        //loop through participantIdentities to find ID match
+        for (var i = 0; i < Object.keys(data.participantIdentities).length; i++) {
+            if (data.participantIdentities[i].player.accountId === summonerAccID) {
+                //store the participantId
+                participantIDExt = data.participantIdentities[i].participantId;
+                //loop through participants
+                for (var j = 0; j < Object.keys(data.participants).length; j++) {
+                    //if ID match is found, get data
+                    if (data.participants[j].participantId === participantIDExt) {
+                        //gets summone spells, item data, rune data and champion played
+                        matchData.spell1.id = data.participants[j].spell1Id;
+                        matchData.spell2.id = data.participants[j].spell2Id;
+                        matchData.item0.id = data.participants[j].stats.item0;
+                        matchData.item1.id = data.participants[j].stats.item1;
+                        matchData.item2.id = data.participants[j].stats.item2;
+                        matchData.item3.id = data.participants[j].stats.item3;
+                        matchData.item4.id = data.participants[j].stats.item4;
+                        matchData.item5.id = data.participants[j].stats.item5;
+                        matchData.item6.id = data.participants[j].stats.item6;
+                        matchData.perk0.id = data.participants[j].stats.perk0;
+                        matchData.perk1.id = data.participants[j].stats.perk1;
+                        matchData.perk2.id = data.participants[j].stats.perk2;
+                        matchData.perk3.id = data.participants[j].stats.perk3;
+                        matchData.perk4.id = data.participants[j].stats.perk4;
+                        matchData.perk5.id = data.participants[j].stats.perk5;
+                        matchData.champion.id = data.participants[j].championId;
+                        for (var k = 0; k < Object.keys(championJSON.data).length; k++)
+                            if ((matchData.champion.id) === (championJSON.data[Object.keys(championJSON.data)[k]].id)) {
+                                matchData.champion.name = championJSON.data[Object.keys(championJSON.data)[k]].name;
+                            }
+                        var itemsArray = [matchData.item0, matchData.item1, matchData.item2, matchData.item3,
+                            matchData.item4, matchData.item5, matchData.item6
+                        ];
+                        var spellsArray = [matchData.spell1, matchData.spell2];
+                        var runesArray = [matchData.perk0, matchData.perk1, matchData.perk2, matchData.perk3, matchData.perk4, matchData.perk5];
+                        for (var k = 0; k < itemsArray.length; k++) {
+                            if (itemsArray[k].id != 0) {
+                                //console.log("item " + k + " is "+ itemsArray[k].id + " attempting to get match");
+                                for (var l = 0; l < Object.keys(itemsJSON.data).length; l++) {
+                                    if (itemsArray[k].id == (Object.keys(itemsJSON.data)[l])) {;
+                                        itemsArray[k].name = itemsJSON.data[Object.keys(itemsJSON.data)[l]].name;
                                     }
                                 }
                             }
-                            for (var k = 0; k < spellsArray.length; k++) {
-                                for (var l = 0; l < Object.keys(spellsJSON.data).length; l++) {
-                                    if (spellsArray[k].id == spellsJSON.data[Object.keys(spellsJSON.data)[l]].key) {
-                                        spellsArray[k].name = spellsJSON.data[Object.keys(spellsJSON.data)[l]].name;
-                                    }
-                                }
-                            }
-                            for (var k = 0; k < runesArray.length; k++) {
-                                for (var l = 0; l < runesJSON.length; l++) {
-                                    var slots = runesJSON[l].slots;
-                                    for (var m = 0; m < slots.length; m++) {
-                                        var runes = slots[m].runes;
-                                        for (var n = 0; n < runes.length; n++) {
-                                            if (runesArray[k].id == runes[n].id) {
-                                                runesArray[k].name = runes[n].name;
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                            //gets data from matches
-                            itemsInJSONMatch.forEach(function(itemsInJSONMatch) {
-                                matchData[itemsInJSONMatch] = data.participants[j].stats[itemsInJSONMatch];
-                            })
-                            //stop /0 error
-                            var ratioDeaths = data.participants[j].stats.deaths;
-                            if (ratioDeaths === 0) {
-                                ratioDeaths = 1;
-                            }
-                            //calculate kda ratio
-                            matchData.kdaRatio = ((data.participants[j].stats.kills + data.participants[j].stats.assists) / ratioDeaths).toFixed(2);
-                            //outcome
-                            if (data.participants[j].stats.win === true) {
-                                matchData.outcome = "WIN";
-                            } else {
-                                matchData.outcome = "LOSS";
-                            }
-                            //validation for missing data - problem on Riot's end
-                            if (data.participants[j].timeline.csDiffPerMinDeltas) {
-                                matchData.csDiff = (data.participants[j].timeline.csDiffPerMinDeltas["0-10"]).toFixed(2);
-                            } else {
-                                matchData.csDiff = (data.participants[j].timeline.creepsPerMinDeltas["0-10"]).toFixed(2);
-                            }
-                            matchData.creepScore = data.participants[j].stats.totalMinionsKilled + data.participants[j].stats.neutralMinionsKilled;
-                            matchData.csPerMin = ((matchData.creepScore / data.gameDuration) * 60).toFixed(2);
-                            matchData.damagePerMin = ((matchData.totalDamageDealtToChampions / data.gameDuration) * 60).toFixed(2);
-                            matchData.goldPerMin = ((matchData.goldEarned / data.gameDuration) * 60).toFixed(2);
-
                         }
+                        for (var k = 0; k < spellsArray.length; k++) {
+                            for (var l = 0; l < Object.keys(spellsJSON.data).length; l++) {
+                                if (spellsArray[k].id == spellsJSON.data[Object.keys(spellsJSON.data)[l]].key) {
+                                    spellsArray[k].name = spellsJSON.data[Object.keys(spellsJSON.data)[l]].name;
+                                }
+                            }
+                        }
+                        for (var k = 0; k < runesArray.length; k++) {
+                            for (var l = 0; l < runesJSON.length; l++) {
+                                var slots = runesJSON[l].slots;
+                                for (var m = 0; m < slots.length; m++) {
+                                    var runes = slots[m].runes;
+                                    for (var n = 0; n < runes.length; n++) {
+                                        if (runesArray[k].id == runes[n].id) {
+                                            runesArray[k].name = runes[n].name;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        //gets data from matches
+                        itemsInJSONMatch.forEach(function(itemsInJSONMatch) {
+                            matchData[itemsInJSONMatch] = data.participants[j].stats[itemsInJSONMatch];
+                        })
+                        //stop /0 error
+                        var ratioDeaths = data.participants[j].stats.deaths;
+                        if (ratioDeaths === 0) {
+                            ratioDeaths = 1;
+                        }
+                        //calculate kda ratio
+                        matchData.kdaRatio = ((data.participants[j].stats.kills + data.participants[j].stats.assists) / ratioDeaths).toFixed(2);
+                        //outcome
+                        if (data.participants[j].stats.win === true) {
+                            matchData.outcome = "WIN";
+                        } else {
+                            matchData.outcome = "LOSS";
+                        }
+                        //validation for missing data - problem on Riot's end
+                        if (data.participants[j].timeline.csDiffPerMinDeltas) {
+                            matchData.csDiff = (data.participants[j].timeline.csDiffPerMinDeltas["0-10"]).toFixed(2);
+                        } else {
+                            matchData.csDiff = (data.participants[j].timeline.creepsPerMinDeltas["0-10"]).toFixed(2);
+                        }
+                        matchData.creepScore = data.participants[j].stats.totalMinionsKilled + data.participants[j].stats.neutralMinionsKilled;
+                        matchData.csPerMin = ((matchData.creepScore / data.gameDuration) * 60).toFixed(2);
+                        matchData.damagePerMin = ((matchData.totalDamageDealtToChampions / data.gameDuration) * 60).toFixed(2);
+                        matchData.goldPerMin = ((matchData.goldEarned / data.gameDuration) * 60).toFixed(2);
+
                     }
                 }
             }
-        })
-        .catch(error => console.log(error));
+        }
+    }
     return matchData;
 }
 //GET RANKED INFORMATION FOR A PLAYER
 async function getRankedInfo(summonerRegion, summonerID) {
     var rankedData = {};
-    var data = await api.get(summonerRegion, 'league.getAllLeaguePositionsForSummoner', summonerID)
-        .then((data) => {
-            for (var i = 0; i < data.length; i++) {
-                //go through data to find correct queue type. if found, get data
-                if (data[i].queueType === "RANKED_SOLO_5x5") {
-                    rankedData.wins = data[i].wins;
-                    rankedData.losses = data[i].losses;
-                    rankedData.leagueName = data[i].leagueName;
-                    rankedData.rank = data[i].rank;
-                    rankedData.tier = data[i].tier;
-                    rankedData.leaguePoints = data[i].leaguePoints;
-                    rankedData.totalGamesRanked = rankedData.wins + rankedData.losses;
-                    rankedData.winRateRanked = ((rankedData.wins / rankedData.totalGamesRanked) * 100).toFixed(2);
-                }
+    var gotRankedData;
+    const url = "https://" + summonerRegion + ".api.riotgames.com/lol/league/v3/positions/by-summoner/" + summonerID + "?api_key=" + apiImport.key;
+    const request = await fetch(url);
+    if (request.status !== 200) {
+        gotRankedData = false;
+    }
+    const data = await request.json();
+    if (!gotRankedData){
+        for (var i = 0; i < data.length; i++) {
+            //go through data to find correct queue type. if found, get data
+            if (data[i].queueType === "RANKED_SOLO_5x5") {
+                rankedData.wins = data[i].wins;
+                rankedData.losses = data[i].losses;
+                rankedData.leagueName = data[i].leagueName;
+                rankedData.rank = data[i].rank;
+                rankedData.tier = data[i].tier;
+                rankedData.leaguePoints = data[i].leaguePoints;
+                rankedData.totalGamesRanked = rankedData.wins + rankedData.losses;
+                rankedData.winRateRanked = ((rankedData.wins / rankedData.totalGamesRanked) * 100).toFixed(2);
             }
-            //if not found or nothing, return null
-            if (data.length === 0) {
-                rankedData = rankedReset;
-            }
-        })
-        .catch(error => console.log(error));
+        }
+        //if not found or nothing, return null
+        if (data.length === 0) {
+            rankedData = rankedReset;
+        }
+    }
     return rankedData;
 }
 
 async function getLiveGame(summonerRegion, summonerID) {
     const url = "https://" + summonerRegion + ".api.riotgames.com/lol/spectator/v3/active-games/by-summoner/" + summonerID + "?api_key=" + apiImport.key;
-    var inGame = false;
     //team 100 is blue, team 200 is red
     var gameData = {
+        "inGame": null,
         "teamOne": {
             "0": {
                 "teamId": 100,
@@ -920,79 +934,82 @@ async function getLiveGame(summonerRegion, summonerID) {
     };
     const request = await fetch(url);
     if (request.status !== 200) {
-        return "Not in game - do nothing.";
+        gameData.inGame = false;
     }
     const data = await request.json();
-    if (data.gameQueueConfigId === 400 || data.gameQueueConfigId === 420 || data.gameQueueConfigId === 430 || data.gameQueueConfigId === 440) {
-        for (var i = 0; i < ((data.participants).length); i++) {
-            if (i < 5) {
-                gameData.teamOne[i].summonerName = data.participants[i].summonerName;
-                gameData.teamOne[i].summonerId = data.participants[i].summonerId;
-                gameData.teamOne[i].spell1.id = data.participants[i].spell1Id;
-                gameData.teamOne[i].spell2.id = data.participants[i].spell2Id;
-                gameData.teamOne[i].champion.id = data.participants[i].championId;
-                var spellsArray = [gameData.teamOne[i].spell1, gameData.teamOne[i].spell2];
-                for (var k = 0; k < spellsArray.length; k++) {
-                    for (var l = 0; l < Object.keys(spellsJSON.data).length; l++) {
-                        if (spellsArray[k].id == spellsJSON.data[Object.keys(spellsJSON.data)[l]].key) {
-                            spellsArray[k].name = spellsJSON.data[Object.keys(spellsJSON.data)[l]].name;
+    if (!gameData.inGame) {
+        if (data.gameQueueConfigId === 400 || data.gameQueueConfigId === 420 || data.gameQueueConfigId === 430 || data.gameQueueConfigId === 440) {
+            gameData.inGame = true;
+            for (var i = 0; i < ((data.participants).length); i++) {
+                if (i < 5) {
+                    gameData.teamOne[i].summonerName = data.participants[i].summonerName;
+                    gameData.teamOne[i].summonerId = data.participants[i].summonerId;
+                    gameData.teamOne[i].spell1.id = data.participants[i].spell1Id;
+                    gameData.teamOne[i].spell2.id = data.participants[i].spell2Id;
+                    gameData.teamOne[i].champion.id = data.participants[i].championId;
+                    var spellsArray = [gameData.teamOne[i].spell1, gameData.teamOne[i].spell2];
+                    for (var k = 0; k < spellsArray.length; k++) {
+                        for (var l = 0; l < Object.keys(spellsJSON.data).length; l++) {
+                            if (spellsArray[k].id == spellsJSON.data[Object.keys(spellsJSON.data)[l]].key) {
+                                spellsArray[k].name = spellsJSON.data[Object.keys(spellsJSON.data)[l]].name;
+                            }
                         }
                     }
-                }
-                for (var j = 0; j < (data.participants[i].perks.perkIds).length; j++) {
-                    gameData.teamOne[i].perks[j].id = data.participants[i].perks.perkIds[j];
-                    for (var l = 0; l < runesJSON.length; l++) {
-                        var slots = runesJSON[l].slots;
-                        for (var m = 0; m < slots.length; m++) {
-                            var runes = slots[m].runes;
-                            for (var n = 0; n < runes.length; n++) {
-                                if (gameData.teamOne[i].perks[j].id == runes[n].id) {
-                                    gameData.teamOne[i].perks[j].name = runes[n].name;
+                    for (var j = 0; j < (data.participants[i].perks.perkIds).length; j++) {
+                        gameData.teamOne[i].perks[j].id = data.participants[i].perks.perkIds[j];
+                        for (var l = 0; l < runesJSON.length; l++) {
+                            var slots = runesJSON[l].slots;
+                            for (var m = 0; m < slots.length; m++) {
+                                var runes = slots[m].runes;
+                                for (var n = 0; n < runes.length; n++) {
+                                    if (gameData.teamOne[i].perks[j].id == runes[n].id) {
+                                        gameData.teamOne[i].perks[j].name = runes[n].name;
+                                    }
                                 }
                             }
                         }
                     }
-                }
-                for (var j = 0; j < Object.keys(championJSON.data).length; j++) {
-                    if ((gameData.teamOne[i].champion.id) === (championJSON.data[Object.keys(championJSON.data)[j]].id)) {
-                        gameData.teamOne[i].champion.name = championJSON.data[Object.keys(championJSON.data)[j]].name;
-                    }
-                }
-                gameData.teamOne[i].rankedStats = await getRankedInfo(summonerRegion, gameData.teamOne[i].summonerId);
-            } else {
-                gameData.teamTwo[i - 5].summonerName = data.participants[i].summonerName;
-                gameData.teamTwo[i - 5].summonerId = data.participants[i].summonerId;
-                gameData.teamTwo[i - 5].spell1.id = data.participants[i].spell1Id;
-                gameData.teamTwo[i - 5].spell2.id = data.participants[i].spell2Id;
-                gameData.teamTwo[i - 5].champion.id = data.participants[i].championId;
-                var spellsArray = [gameData.teamTwo[i - 5].spell1, gameData.teamTwo[i - 5].spell2];
-                for (var k = 0; k < spellsArray.length; k++) {
-                    for (var l = 0; l < Object.keys(spellsJSON.data).length; l++) {
-                        if (spellsArray[k].id == spellsJSON.data[Object.keys(spellsJSON.data)[l]].key) {
-                            spellsArray[k].name = spellsJSON.data[Object.keys(spellsJSON.data)[l]].name;
+                    for (var j = 0; j < Object.keys(championJSON.data).length; j++) {
+                        if ((gameData.teamOne[i].champion.id) === (championJSON.data[Object.keys(championJSON.data)[j]].id)) {
+                            gameData.teamOne[i].champion.name = championJSON.data[Object.keys(championJSON.data)[j]].name;
                         }
                     }
-                }
-                for (var j = 0; j < (data.participants[i].perks.perkIds).length; j++) {
-                    gameData.teamTwo[i - 5].perks[j].id = data.participants[i].perks.perkIds[j];
-                    for (var l = 0; l < runesJSON.length; l++) {
-                        var slots = runesJSON[l].slots;
-                        for (var m = 0; m < slots.length; m++) {
-                            var runes = slots[m].runes;
-                            for (var n = 0; n < runes.length; n++) {
-                                if (gameData.teamTwo[i - 5].perks[j].id == runes[n].id) {
-                                    gameData.teamTwo[i - 5].perks[j].name = runes[n].name;
+                    gameData.teamOne[i].rankedStats = await getRankedInfo(summonerRegion, gameData.teamOne[i].summonerId);
+                } else {
+                    gameData.teamTwo[i - 5].summonerName = data.participants[i].summonerName;
+                    gameData.teamTwo[i - 5].summonerId = data.participants[i].summonerId;
+                    gameData.teamTwo[i - 5].spell1.id = data.participants[i].spell1Id;
+                    gameData.teamTwo[i - 5].spell2.id = data.participants[i].spell2Id;
+                    gameData.teamTwo[i - 5].champion.id = data.participants[i].championId;
+                    var spellsArray = [gameData.teamTwo[i - 5].spell1, gameData.teamTwo[i - 5].spell2];
+                    for (var k = 0; k < spellsArray.length; k++) {
+                        for (var l = 0; l < Object.keys(spellsJSON.data).length; l++) {
+                            if (spellsArray[k].id == spellsJSON.data[Object.keys(spellsJSON.data)[l]].key) {
+                                spellsArray[k].name = spellsJSON.data[Object.keys(spellsJSON.data)[l]].name;
+                            }
+                        }
+                    }
+                    for (var j = 0; j < (data.participants[i].perks.perkIds).length; j++) {
+                        gameData.teamTwo[i - 5].perks[j].id = data.participants[i].perks.perkIds[j];
+                        for (var l = 0; l < runesJSON.length; l++) {
+                            var slots = runesJSON[l].slots;
+                            for (var m = 0; m < slots.length; m++) {
+                                var runes = slots[m].runes;
+                                for (var n = 0; n < runes.length; n++) {
+                                    if (gameData.teamTwo[i - 5].perks[j].id == runes[n].id) {
+                                        gameData.teamTwo[i - 5].perks[j].name = runes[n].name;
+                                    }
                                 }
                             }
                         }
                     }
-                }
-                for (var j = 0; j < Object.keys(championJSON.data).length; j++) {
-                    if ((gameData.teamTwo[i - 5].champion.id) === (championJSON.data[Object.keys(championJSON.data)[j]].id)) {
-                        gameData.teamTwo[i - 5].champion.name = championJSON.data[Object.keys(championJSON.data)[j]].name;
+                    for (var j = 0; j < Object.keys(championJSON.data).length; j++) {
+                        if ((gameData.teamTwo[i - 5].champion.id) === (championJSON.data[Object.keys(championJSON.data)[j]].id)) {
+                            gameData.teamTwo[i - 5].champion.name = championJSON.data[Object.keys(championJSON.data)[j]].name;
+                        }
                     }
+                    gameData.teamTwo[i - 5].rankedStats = await getRankedInfo(summonerRegion, gameData.teamTwo[i - 5].summonerId);
                 }
-                gameData.teamTwo[i - 5].rankedStats = await getRankedInfo(summonerRegion, gameData.teamTwo[i - 5].summonerId);
             }
         }
     }

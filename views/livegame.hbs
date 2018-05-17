@@ -5,6 +5,7 @@
     <h1 class="mainText">Live Game Lookup</h1>
     <div class="pageContent">
         <div class="mainText">
+            {{#if outputLiveGame.inGame}}
             Live game lookup stuff {{summoner.name}} {{summoner.region}} {{summoner.id}}</br>
             Team One:</br>
             {{#each outputLiveGame.teamOne}}
@@ -18,6 +19,10 @@
             {{this.champion.name}} ({{this.spell1.name}} {{this.spell2.name}})</br>
             </br>
             {{/each}}
+            {{else}}
+            {{summoner.name}} on {{summoner.region}} is not in a Summoner's Rift 5v5 game.
+            {{/if}}
+
         </div>
     </div>
 </div>

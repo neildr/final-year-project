@@ -15,7 +15,7 @@ app.use(sassMiddleware({
     /* Options */
     src: path.join(__dirname, 'public/stylesheets/sass'),
     dest: path.join(__dirname, 'public/stylesheets'),
-    debug: true,
+    debug: false,
     outputStyle: 'compressed',
     prefix:  '/stylesheets'
 }));
