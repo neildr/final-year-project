@@ -93,31 +93,33 @@
         <p class="mainText">
             Live Game Lookup:
         </p>
-        <table class="displayTable">
-            <tr>
-                <th class="region" colspan="1">
-                    <select class="dropdown" name="summRegionLive" required>
-                        <option value="BR">BR</option>
-                        <option value="EUNE">EUNE</option>
-                        <option value="EUW">EUW</option>
-                        <option value="JP">JP</option>
-                        <option value="KR">KR</option>
-                        <option value="LAN">LAN</option>
-                        <option value="LAS">LAS</option>
-                        <option value="NA">NA</option>
-                        <option value="OCE">OCE</option>
-                        <option value="TR">TR</option>
-                        <option value="RU">RU</option>
-                    </select>
-                </th>
-                <th class="searchbox" colspan="3">
-                    <input type="text" placeholder="Enter summoner name here." class="input" name="summNameLive" required>
-                </th>
-                <th class="button" colspan="1">
-                    <button class="buttonGo" type="submit">SEARCH</button>
-                </th>
-            </tr>
-        </table>
+        <form action="/live/submit" method="post">
+            <table class="displayTable">
+                <tr>
+                    <th class="region" colspan="1">
+                        <select class="dropdown" name="summRegionLive" required>
+                            <option value="BR">BR</option>
+                            <option value="EUNE">EUNE</option>
+                            <option value="EUW">EUW</option>
+                            <option value="JP">JP</option>
+                            <option value="KR">KR</option>
+                            <option value="LAN">LAN</option>
+                            <option value="LAS">LAS</option>
+                            <option value="NA">NA</option>
+                            <option value="OCE">OCE</option>
+                            <option value="TR">TR</option>
+                            <option value="RU">RU</option>
+                        </select>
+                    </th>
+                    <th class="searchbox" colspan="3">
+                        <input type="text" placeholder="Enter summoner name here." class="input" name="summNameLive" required>
+                    </th>
+                    <th class="button" colspan="1">
+                        <button class="buttonGo" type="submit">SEARCH</button>
+                    </th>
+                </tr>
+            </table>
+        </form>
         </br>
         </br>
         </br>

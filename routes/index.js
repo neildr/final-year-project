@@ -323,7 +323,30 @@ router.get('/compare/user1=:summOneRegion/:summOneName/user2=:summTwoRegion/:sum
 });
 router.get('/legal', function(req, res, next) {
     res.render('legal', {
+    });
+});
+router.post('/live/submit', function(req, res, next) {
+    //contruct wildcard url
+    res.redirect('/live/' + req.body.summRegionLive + '/' + req.body.summNameLive);
+    console.log(req.body.summRegionLive + " " + req.body.summNameLive);
+});
 
+router.get('/live/:summRegionLive/:summNameLive', async function(req, res, next) {
+    var outputSummoner = {};
+    var validRegion = false;
+    if (region.contains(req.params.summRegionLive)) {
+        var lookupPlatform = platform[region.indexOf(req.params.summRegionLive)];
+        //call function to get data from region/name passed from wildcard url
+        validRegion = true;
+        console.log(lookupPlatform + " " + req.params.summNameLive);
+        var outputSummoner = await functions.getSummonerID(lookupPlatform, req.params.summNameLive);
+        outputSummoner.region = req.params.summRegionLive;
+        functions.getLiveGame(lookupPlatform, outputSummoner.id);
+    }
+    //render page with data
+    res.render('livegame', {
+        summoner: outputSummoner,
+        validRegion
     });
 });
 

@@ -3,8 +3,10 @@ const championJSON = require('./json/champions.json');
 const itemsJSON = require('./json/items.json');
 const spellsJSON = require('./json/summoner.json');
 const runesJSON = require('./json/runesReforged.json');
+const tempLiveGame = require('./json/templivegame.json');
 const apiImport = require('./APIKEY');
 const api = TeemoJS(apiImport.key);
+const fetch = require('node-fetch');
 
 //**********************//
 //      VARIABLES       //
@@ -47,6 +49,7 @@ async function getSummonerID(summonerRegion, summonerName) {
                 summonerData.profileIconId = data.profileIconId;
                 summonerData.summonerLevel = data.summonerLevel;
                 summonerData.exists = true;
+                console.log(summonerRegion + " " + summonerName);
             } else {
                 summonerData.exists = false;
                 summonerData.name = summonerName;
@@ -70,12 +73,12 @@ async function getHighestMastery(summonerRegion, summonerID) {
                         masteryData.championName = championJSON.data[Object.keys(championJSON.data)[i]].name;
                         masteryData.championTitle = championJSON.data[Object.keys(championJSON.data)[i]].title;
                     }
-                    masteryData.valid = true;
+                masteryData.valid = true;
             } else {
                 masteryData.valid = false;
             }
         })
-    .catch(error => console.log(error));
+        .catch(error => console.log(error));
     return masteryData;
 }
 
@@ -195,7 +198,7 @@ async function getRecentGames(summonerRegion, summonerAccID, noOfGames) {
                 //more calculations - mode role, mode champion, win ratio, champion count and role count
                 recentGamesData.modePosition = mostCommon(recentGamesData.actualPosition);
                 recentGamesData.modeChampion.info = mostCommon(recentGamesData.champions);
-                for (var i = 0; i < Object.keys(championJSON.data).length; i++){
+                for (var i = 0; i < Object.keys(championJSON.data).length; i++) {
                     if ((recentGamesData.modeChampion.info.mode) === (championJSON.data[Object.keys(championJSON.data)[i]].id)) {
                         recentGamesData.modeChampion.name = championJSON.data[Object.keys(championJSON.data)[i]].name;
                         recentGamesData.modeChampion.title = championJSON.data[Object.keys(championJSON.data)[i]].title;
@@ -203,9 +206,9 @@ async function getRecentGames(summonerRegion, summonerAccID, noOfGames) {
                 }
                 recentGamesData.actualpositionCount = countValuesIn(recentGamesData.actualPosition, defaultPositionObj);
                 recentGamesData.championCount = countValuesIn(recentGamesData.champions, defaultChampionObj);
-                for(var i = 0; i < (Object.keys(recentGamesData.championCount).length); i++){
+                for (var i = 0; i < (Object.keys(recentGamesData.championCount).length); i++) {
                     var tempName = "";
-                    for (var j = 0; j < Object.keys(championJSON.data).length; j++){
+                    for (var j = 0; j < Object.keys(championJSON.data).length; j++) {
                         if ((Object.keys(recentGamesData.championCount)[i]) == (championJSON.data[Object.keys(championJSON.data)[j]].id)) {
                             tempName = championJSON.data[Object.keys(championJSON.data)[j]].name;
                         }
@@ -239,67 +242,67 @@ async function getMatchData(summonerRegion, matchID, summonerAccID) {
         "goldPerMin": null,
         "spell1": {
             "id": null,
-            "name" : null
+            "name": null
         },
         "spell2": {
             "id": null,
-            "name" : null
+            "name": null
         },
         "champion": {
             "id": null,
-            "name" : null
+            "name": null
         },
         "item0": {
             "id": null,
-            "name" : null
+            "name": null
         },
         "item1": {
             "id": null,
-            "name" : null
+            "name": null
         },
         "item2": {
             "id": null,
-            "name" : null
+            "name": null
         },
         "item3": {
             "id": null,
-            "name" : null
+            "name": null
         },
         "item4": {
             "id": null,
-            "name" : null
+            "name": null
         },
         "item5": {
             "id": null,
-            "name" : null
+            "name": null
         },
         "item6": {
             "id": null,
-            "name" : null
+            "name": null
         },
         "perk0": {
             "id": null,
-            "name" : null
+            "name": null
         },
         "perk1": {
             "id": null,
-            "name" : null
+            "name": null
         },
         "perk2": {
             "id": null,
-            "name" : null
+            "name": null
         },
         "perk3": {
             "id": null,
-            "name" : null
+            "name": null
         },
         "perk4": {
             "id": null,
-            "name" : null
+            "name": null
         },
         "perk5": {
             "id": null,
-            "name" : null
+            "name": null
         },
         "totalDamageDealtToChampions": null,
         "damagePerMin": null,
@@ -327,7 +330,7 @@ async function getMatchData(summonerRegion, matchID, summonerAccID) {
         "matchSeconds": null,
         "outcome": ""
     };
-    var itemsInJSONMatch = ['kills', 'deaths', 'assists', 'kdaRatio', 'visionScore', 'goldEarned','goldPerMin',
+    var itemsInJSONMatch = ['kills', 'deaths', 'assists', 'kdaRatio', 'visionScore', 'goldEarned', 'goldPerMin',
         'totalDamageDealtToChampions', 'magicDamageDealtToChampions', 'physicalDamageDealtToChampions',
         'trueDamageDealtToChampions', 'totalHeal', 'timeCCingOthers', 'damageDealtToObjectives', 'damageDealtToTurrets', 'turretKills', 'inhibitorKills', 'totalMinionsKilled', 'neutralMinionsKilled',
         'neutralMinionsKilledTeamJungle', 'neutralMinionsKilledEnemyJungle', 'csDiff', 'csPerMin', 'visionWardsBoughtInGame', 'wardsPlaced', 'wardsKilled'
@@ -369,14 +372,15 @@ async function getMatchData(summonerRegion, matchID, summonerAccID) {
                                     matchData.champion.name = championJSON.data[Object.keys(championJSON.data)[k]].name;
                                 }
                             var itemsArray = [matchData.item0, matchData.item1, matchData.item2, matchData.item3,
-                                matchData.item4, matchData.item5, matchData.item6];
+                                matchData.item4, matchData.item5, matchData.item6
+                            ];
                             var spellsArray = [matchData.spell1, matchData.spell2];
                             var runesArray = [matchData.perk0, matchData.perk1, matchData.perk2, matchData.perk3, matchData.perk4, matchData.perk5];
-                            for (var k = 0; k < itemsArray.length; k++){
-                                if(itemsArray[k].id != 0){
+                            for (var k = 0; k < itemsArray.length; k++) {
+                                if (itemsArray[k].id != 0) {
                                     //console.log("item " + k + " is "+ itemsArray[k].id + " attempting to get match");
                                     for (var l = 0; l < Object.keys(itemsJSON.data).length; l++) {
-                                        if(itemsArray[k].id == (Object.keys(itemsJSON.data)[l])) {;
+                                        if (itemsArray[k].id == (Object.keys(itemsJSON.data)[l])) {;
                                             itemsArray[k].name = itemsJSON.data[Object.keys(itemsJSON.data)[l]].name;
                                         }
                                     }
@@ -395,7 +399,7 @@ async function getMatchData(summonerRegion, matchID, summonerAccID) {
                                     for (var m = 0; m < slots.length; m++) {
                                         var runes = slots[m].runes;
                                         for (var n = 0; n < runes.length; n++) {
-                                            if (runesArray[k].id == runes[n].id){
+                                            if (runesArray[k].id == runes[n].id) {
                                                 runesArray[k].name = runes[n].name;
                                             }
                                         }
@@ -464,6 +468,520 @@ async function getRankedInfo(summonerRegion, summonerID) {
         .catch(error => console.log(error));
     return rankedData;
 }
+
+async function getLiveGame(summonerRegion, summonerID) {
+    const url = "https://" + summonerRegion + ".api.riotgames.com/lol/spectator/v3/active-games/by-summoner/" + summonerID + "?api_key=" + apiImport.key;
+    var inGame = false;
+    //team 100 is blue, team 200 is red
+    var gameData = {
+        "teamOne": {
+            "0": {
+                "teamId": 100,
+                "spell1": {
+                    "id": null,
+                    "name": null
+                },
+                "spell2": {
+                    "id": null,
+                    "name": null
+                },
+                "champion": {
+                    "id": null,
+                    "name": null
+                },
+                "summonerName": null,
+                "perks": {
+                    "0": {
+                        "id": null,
+                        "name": null
+                    },
+                    "1": {
+                        "id": null,
+                        "name": null
+                    },
+                    "2": {
+                        "id": null,
+                        "name": null
+                    },
+                    "3": {
+                        "id": null,
+                        "name": null
+                    },
+                    "4": {
+                        "id": null,
+                        "name": null
+                    },
+                    "5": {
+                        "id": null,
+                        "name": null
+                    },
+                },
+            },
+            "1": {
+                "teamId": 100,
+                "spell1": {
+                    "id": null,
+                    "name": null
+                },
+                "spell2": {
+                    "id": null,
+                    "name": null
+                },
+                "champion": {
+                    "id": null,
+                    "name": null
+                },
+                "summonerName": null,
+                "perks": {
+                    "0": {
+                        "id": null,
+                        "name": null
+                    },
+                    "1": {
+                        "id": null,
+                        "name": null
+                    },
+                    "2": {
+                        "id": null,
+                        "name": null
+                    },
+                    "3": {
+                        "id": null,
+                        "name": null
+                    },
+                    "4": {
+                        "id": null,
+                        "name": null
+                    },
+                    "5": {
+                        "id": null,
+                        "name": null
+                    },
+                },
+            },
+            "2": {
+                "teamId": 100,
+                "spell1": {
+                    "id": null,
+                    "name": null
+                },
+                "spell2": {
+                    "id": null,
+                    "name": null
+                },
+                "champion": {
+                    "id": null,
+                    "name": null
+                },
+                "summonerName": null,
+                "perks": {
+                    "0": {
+                        "id": null,
+                        "name": null
+                    },
+                    "1": {
+                        "id": null,
+                        "name": null
+                    },
+                    "2": {
+                        "id": null,
+                        "name": null
+                    },
+                    "3": {
+                        "id": null,
+                        "name": null
+                    },
+                    "4": {
+                        "id": null,
+                        "name": null
+                    },
+                    "5": {
+                        "id": null,
+                        "name": null
+                    },
+                },
+            },
+            "3": {
+                "teamId": 100,
+                "spell1": {
+                    "id": null,
+                    "name": null
+                },
+                "spell2": {
+                    "id": null,
+                    "name": null
+                },
+                "champion": {
+                    "id": null,
+                    "name": null
+                },
+                "summonerName": null,
+                "perks": {
+                    "0": {
+                        "id": null,
+                        "name": null
+                    },
+                    "1": {
+                        "id": null,
+                        "name": null
+                    },
+                    "2": {
+                        "id": null,
+                        "name": null
+                    },
+                    "3": {
+                        "id": null,
+                        "name": null
+                    },
+                    "4": {
+                        "id": null,
+                        "name": null
+                    },
+                    "5": {
+                        "id": null,
+                        "name": null
+                    },
+                },
+            },
+            "4": {
+                "teamId": 100,
+                "spell1": {
+                    "id": null,
+                    "name": null
+                },
+                "spell2": {
+                    "id": null,
+                    "name": null
+                },
+                "champion": {
+                    "id": null,
+                    "name": null
+                },
+                "summonerName": null,
+                "perks": {
+                    "0": {
+                        "id": null,
+                        "name": null
+                    },
+                    "1": {
+                        "id": null,
+                        "name": null
+                    },
+                    "2": {
+                        "id": null,
+                        "name": null
+                    },
+                    "3": {
+                        "id": null,
+                        "name": null
+                    },
+                    "4": {
+                        "id": null,
+                        "name": null
+                    },
+                    "5": {
+                        "id": null,
+                        "name": null
+                    },
+                },
+            },
+        },
+        "teamTwo": {
+            "0": {
+                "teamId": 200,
+                "spell1": {
+                    "id": null,
+                    "name": null
+                },
+                "spell2": {
+                    "id": null,
+                    "name": null
+                },
+                "champion": {
+                    "id": null,
+                    "name": null
+                },
+                "summonerName": null,
+                "perks": {
+                    "0": {
+                        "id": null,
+                        "name": null
+                    },
+                    "1": {
+                        "id": null,
+                        "name": null
+                    },
+                    "2": {
+                        "id": null,
+                        "name": null
+                    },
+                    "3": {
+                        "id": null,
+                        "name": null
+                    },
+                    "4": {
+                        "id": null,
+                        "name": null
+                    },
+                    "5": {
+                        "id": null,
+                        "name": null
+                    },
+                },
+            },
+            "1": {
+                "teamId": 200,
+                "spell1": {
+                    "id": null,
+                    "name": null
+                },
+                "spell2": {
+                    "id": null,
+                    "name": null
+                },
+                "champion": {
+                    "id": null,
+                    "name": null
+                },
+                "summonerName": null,
+                "perks": {
+                    "0": {
+                        "id": null,
+                        "name": null
+                    },
+                    "1": {
+                        "id": null,
+                        "name": null
+                    },
+                    "2": {
+                        "id": null,
+                        "name": null
+                    },
+                    "3": {
+                        "id": null,
+                        "name": null
+                    },
+                    "4": {
+                        "id": null,
+                        "name": null
+                    },
+                    "5": {
+                        "id": null,
+                        "name": null
+                    },
+                },
+            },
+            "2": {
+                "teamId": 200,
+                "spell1": {
+                    "id": null,
+                    "name": null
+                },
+                "spell2": {
+                    "id": null,
+                    "name": null
+                },
+                "champion": {
+                    "id": null,
+                    "name": null
+                },
+                "summonerName": null,
+                "perks": {
+                    "0": {
+                        "id": null,
+                        "name": null
+                    },
+                    "1": {
+                        "id": null,
+                        "name": null
+                    },
+                    "2": {
+                        "id": null,
+                        "name": null
+                    },
+                    "3": {
+                        "id": null,
+                        "name": null
+                    },
+                    "4": {
+                        "id": null,
+                        "name": null
+                    },
+                    "5": {
+                        "id": null,
+                        "name": null
+                    },
+                },
+            },
+            "3": {
+                "teamId": 200,
+                "spell1": {
+                    "id": null,
+                    "name": null
+                },
+                "spell2": {
+                    "id": null,
+                    "name": null
+                },
+                "champion": {
+                    "id": null,
+                    "name": null
+                },
+                "summonerName": null,
+                "perks": {
+                    "0": {
+                        "id": null,
+                        "name": null
+                    },
+                    "1": {
+                        "id": null,
+                        "name": null
+                    },
+                    "2": {
+                        "id": null,
+                        "name": null
+                    },
+                    "3": {
+                        "id": null,
+                        "name": null
+                    },
+                    "4": {
+                        "id": null,
+                        "name": null
+                    },
+                    "5": {
+                        "id": null,
+                        "name": null
+                    },
+                },
+            },
+            "4": {
+                "teamId": 200,
+                "spell1": {
+                    "id": null,
+                    "name": null
+                },
+                "spell2": {
+                    "id": null,
+                    "name": null
+                },
+                "champion": {
+                    "id": null,
+                    "name": null
+                },
+                "summonerName": null,
+                "perks": {
+                    "0": {
+                        "id": null,
+                        "name": null
+                    },
+                    "1": {
+                        "id": null,
+                        "name": null
+                    },
+                    "2": {
+                        "id": null,
+                        "name": null
+                    },
+                    "3": {
+                        "id": null,
+                        "name": null
+                    },
+                    "4": {
+                        "id": null,
+                        "name": null
+                    },
+                    "5": {
+                        "id": null,
+                        "name": null
+                    },
+                },
+            },
+        },
+    };
+    const request = await fetch(url);
+    if (request.status !== 200) {
+        return "Not in game - do nothing.";
+    }
+    const data = await request.json();;
+    if (data.gameQueueConfigId === 400 || data.gameQueueConfigId === 420 || data.gameQueueConfigId === 430 || data.gameQueueConfigId === 440) {
+        //console.log(data.participants[0].perks);
+        console.log("---------STUFF----------");
+        for (var i = 0; i < ((data.participants).length); i++) {
+            if (i < 5) {
+                gameData.teamOne[i].summonerName = data.participants[i].summonerName;
+                gameData.teamOne[i].spell1.id = data.participants[i].spell1Id;
+                gameData.teamOne[i].spell2.id = data.participants[i].spell2Id;
+                gameData.teamOne[i].champion.id = data.participants[i].championId;
+                console.log(gameData.teamOne[i].teamId);
+                var spellsArray = [gameData.teamOne[i].spell1, gameData.teamOne[i].spell2];
+                for (var k = 0; k < spellsArray.length; k++) {
+                    for (var l = 0; l < Object.keys(spellsJSON.data).length; l++) {
+                        if (spellsArray[k].id == spellsJSON.data[Object.keys(spellsJSON.data)[l]].key) {
+                            spellsArray[k].name = spellsJSON.data[Object.keys(spellsJSON.data)[l]].name;
+                        }
+                    }
+                }
+                for (var j = 0; j < (data.participants[i].perks.perkIds).length; j++) {
+                    gameData.teamOne[i].perks[j].id = data.participants[i].perks.perkIds[j];
+                        for (var l = 0; l < runesJSON.length; l++) {
+                            var slots = runesJSON[l].slots;
+                            for (var m = 0; m < slots.length; m++) {
+                                var runes = slots[m].runes;
+                                for (var n = 0; n < runes.length; n++) {
+                                    if (gameData.teamOne[i].perks[j].id == runes[n].id) {
+                                        gameData.teamOne[i].perks[j].name = runes[n].name;
+                                    }
+                                }
+                            }
+                        }
+                }
+                for (var j = 0; j < Object.keys(championJSON.data).length; j++){
+                    if ((gameData.teamOne[i].champion.id) === (championJSON.data[Object.keys(championJSON.data)[j]].id)) {
+                        gameData.teamOne[i].champion.name = championJSON.data[Object.keys(championJSON.data)[j]].name;
+                    }
+                }
+            } else {
+                gameData.teamTwo[i-5].summonerName = data.participants[i].summonerName;
+                gameData.teamTwo[i-5].spell1.id = data.participants[i].spell1d;
+                gameData.teamTwo[i-5].spell2.id = data.participants[i].spell2Id;
+                gameData.teamTwo[i-5].champion.id = data.participants[i].championId;
+                var spellsArray = [gameData.teamTwo[i-5].spell1, gameData.teamTwo[i-5].spell2];
+                for (var k = 0; k < spellsArray.length; k++) {
+                    for (var l = 0; l < Object.keys(spellsJSON.data).length; l++) {
+                        if (spellsArray[k].id == spellsJSON.data[Object.keys(spellsJSON.data)[l]].key) {
+                            spellsArray[k].name = spellsJSON.data[Object.keys(spellsJSON.data)[l]].name;
+                        }
+                    }
+                }
+                for (var j = 0; j < (data.participants[i].perks.perkIds).length; j++) {
+                    gameData.teamTwo[i-5].perks[j].id = data.participants[i].perks.perkIds[j];
+                        for (var l = 0; l < runesJSON.length; l++) {
+                            var slots = runesJSON[l].slots;
+                            for (var m = 0; m < slots.length; m++) {
+                                var runes = slots[m].runes;
+                                for (var n = 0; n < runes.length; n++) {
+                                    if (gameData.teamTwo[i-5].perks[j].id == runes[n].id) {
+                                        gameData.teamTwo[i-5].perks[j].name = runes[n].name;
+                                    }
+                                }
+                            }
+                        }
+                }
+                for (var j = 0; j < Object.keys(championJSON.data).length; j++){
+                    if ((gameData.teamTwo[i-5].champion.id) === (championJSON.data[Object.keys(championJSON.data)[j]].id)) {
+                        gameData.teamTwo[i-5].champion.name = championJSON.data[Object.keys(championJSON.data)[j]].name;
+                    }
+                }
+            }
+        }
+        console.log(gameData);
+    }
+}
+
+
+
+
 //ASYNC FUNCTION TO GET DATA
 async function retreiveData(summonerRegion, summonerName) {
     var outputSummoner = await getSummonerID(summonerRegion, summonerName)
@@ -542,10 +1060,12 @@ Array.prototype.contains = function(object) {
         return true;
     }
 }
-//EXPORTSodule.exports.getSummonerID = getSummonerID;
+
+module.exports.getSummonerID = getSummonerID;
 module.exports.getHighestMastery = getHighestMastery;
 module.exports.getRecentGames = getRecentGames;
 module.exports.getMatchData = getMatchData;
+module.exports.getLiveGame = getLiveGame;
 module.exports.getRankedInfo = getRankedInfo;
 module.exports.retreiveData = retreiveData;
 module.exports.retreiveDataCompare = retreiveDataCompare;

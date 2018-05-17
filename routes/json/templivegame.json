@@ -1,0 +1,297 @@
+{
+  "gameId": 2785067034,
+  "mapId": 11,
+  "gameMode": "CLASSIC",
+  "gameType": "MATCHED_GAME",
+  "gameQueueConfigId": 420,
+  "participants": [
+    {
+      "teamId": 100,
+      "spell1Id": 12,
+      "spell2Id": 4,
+      "championId": 223,
+      "profileIconId": 724,
+      "summonerName": "Saiyans",
+      "bot": false,
+      "summonerId": 27861182,
+      "gameCustomizationObjects": [],
+      "perks": {
+        "perkIds": [
+          8437,
+          8473,
+          8444,
+          8242,
+          8304,
+          8410
+        ],
+        "perkStyle": 8400,
+        "perkSubStyle": 8300
+      }
+    },
+    {
+      "teamId": 100,
+      "spell1Id": 11,
+      "spell2Id": 4,
+      "championId": 136,
+      "profileIconId": 3440,
+      "summonerName": "Vchee",
+      "bot": false,
+      "summonerId": 36259319,
+      "gameCustomizationObjects": [],
+      "perks": {
+        "perkIds": [
+          8230,
+          8243,
+          8234,
+          8232,
+          8473,
+          8472
+        ],
+        "perkStyle": 8200,
+        "perkSubStyle": 8400
+      }
+    },
+    {
+      "teamId": 100,
+      "spell1Id": 4,
+      "spell2Id": 14,
+      "championId": 497,
+      "profileIconId": 1427,
+      "summonerName": "homecoming1",
+      "bot": false,
+      "summonerId": 86739406,
+      "gameCustomizationObjects": [],
+      "perks": {
+        "perkIds": [
+          8465,
+          8473,
+          8429,
+          8453,
+          8210,
+          8243
+        ],
+        "perkStyle": 8400,
+        "perkSubStyle": 8200
+      }
+    },
+    {
+      "teamId": 100,
+      "spell1Id": 11,
+      "spell2Id": 4,
+      "championId": 104,
+      "profileIconId": 3226,
+      "summonerName": "Pants are JłZZ",
+      "bot": false,
+      "summonerId": 80979709,
+      "gameCustomizationObjects": [],
+      "perks": {
+        "perkIds": [
+          8021,
+          9111,
+          9104,
+          8014,
+          8234,
+          8236
+        ],
+        "perkStyle": 8000,
+        "perkSubStyle": 8200
+      }
+    },
+    {
+      "teamId": 100,
+      "spell1Id": 7,
+      "spell2Id": 4,
+      "championId": 29,
+      "profileIconId": 3173,
+      "summonerName": "Vuhkeltruukt",
+      "bot": false,
+      "summonerId": 90121918,
+      "gameCustomizationObjects": [],
+      "perks": {
+        "perkIds": [
+          8005,
+          9111,
+          9104,
+          8014,
+          8233,
+          8236
+        ],
+        "perkStyle": 8000,
+        "perkSubStyle": 8200
+      }
+    },
+    {
+      "teamId": 200,
+      "spell1Id": 4,
+      "spell2Id": 7,
+      "championId": 22,
+      "profileIconId": 556,
+      "summonerName": "Imaqtpie",
+      "bot": false,
+      "summonerId": 19887289,
+      "gameCustomizationObjects": [],
+      "perks": {
+        "perkIds": [
+          8021,
+          9111,
+          9104,
+          8017,
+          8236,
+          8234
+        ],
+        "perkStyle": 8000,
+        "perkSubStyle": 8200
+      }
+    },
+    {
+      "teamId": 200,
+      "spell1Id": 4,
+      "spell2Id": 12,
+      "championId": 516,
+      "profileIconId": 3440,
+      "summonerName": "Desired Game",
+      "bot": false,
+      "summonerId": 63668454,
+      "gameCustomizationObjects": [],
+      "perks": {
+        "perkIds": [
+          8437,
+          8473,
+          8429,
+          8453,
+          8243,
+          8210
+        ],
+        "perkStyle": 8400,
+        "perkSubStyle": 8200
+      }
+    },
+    {
+      "teamId": 200,
+      "spell1Id": 4,
+      "spell2Id": 11,
+      "championId": 76,
+      "profileIconId": 2075,
+      "summonerName": "Fugyo",
+      "bot": false,
+      "summonerId": 95109107,
+      "gameCustomizationObjects": [],
+      "perks": {
+        "perkIds": [
+          8112,
+          8143,
+          8138,
+          8105,
+          8234,
+          8232
+        ],
+        "perkStyle": 8100,
+        "perkSubStyle": 8200
+      }
+    },
+    {
+      "teamId": 200,
+      "spell1Id": 14,
+      "spell2Id": 4,
+      "championId": 40,
+      "profileIconId": 3382,
+      "summonerName": "Joju",
+      "bot": false,
+      "summonerId": 27476501,
+      "gameCustomizationObjects": [],
+      "perks": {
+        "perkIds": [
+          8214,
+          8243,
+          8234,
+          8237,
+          8304,
+          8347
+        ],
+        "perkStyle": 8200,
+        "perkSubStyle": 8300
+      }
+    },
+    {
+      "teamId": 200,
+      "spell1Id": 14,
+      "spell2Id": 4,
+      "championId": 238,
+      "profileIconId": 1228,
+      "summonerName": "Thats Not Fervor",
+      "bot": false,
+      "summonerId": 91959940,
+      "gameCustomizationObjects": [],
+      "perks": {
+        "perkIds": [
+          8112,
+          8143,
+          8136,
+          8135,
+          8224,
+          8237
+        ],
+        "perkStyle": 8100,
+        "perkSubStyle": 8200
+      }
+    }
+  ],
+  "observers": {
+    "encryptionKey": "tIpGwGrMimhQwOgE88qXZoDaKJgCpzBL"
+  },
+  "platformId": "NA1",
+  "bannedChampions": [
+    {
+      "championId": 164,
+      "teamId": 100,
+      "pickTurn": 1
+    },
+    {
+      "championId": 28,
+      "teamId": 100,
+      "pickTurn": 2
+    },
+    {
+      "championId": 39,
+      "teamId": 100,
+      "pickTurn": 3
+    },
+    {
+      "championId": 157,
+      "teamId": 100,
+      "pickTurn": 4
+    },
+    {
+      "championId": 41,
+      "teamId": 100,
+      "pickTurn": 5
+    },
+    {
+      "championId": 8,
+      "teamId": 200,
+      "pickTurn": 6
+    },
+    {
+      "championId": 117,
+      "teamId": 200,
+      "pickTurn": 7
+    },
+    {
+      "championId": 81,
+      "teamId": 200,
+      "pickTurn": 8
+    },
+    {
+      "championId": 164,
+      "teamId": 200,
+      "pickTurn": 9
+    },
+    {
+      "championId": 145,
+      "teamId": 200,
+      "pickTurn": 10
+    }
+  ],
+  "gameStartTime": 1526564856467,
+  "gameLength": 1084
+}

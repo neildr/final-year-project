@@ -7,6 +7,7 @@ const bodyParser = require('body-parser');
 const hbs = require('express-handlebars');
 const sassMiddleware = require('node-sass-middleware');
 const session = require('client-sessions');
+const fetch = require('node-fetch');
 
 const app = express();
 
