@@ -37,25 +37,24 @@ var rankedReset = {
 //**********************//
 //      FUNCTIONS       //
 //**********************//
-//GET SUMMONER INFORMATION FROM NAME
 async function getSummonerID(summonerRegion, summonerName) {
     var summonerData = {};
-    var data = await api.get(summonerRegion, 'summoner.getBySummonerName', summonerName)
-        .then((data) => {
-            if (data) {
-                summonerData.id = data.id;
-                summonerData.accountId = data.accountId;
-                summonerData.name = data.name;
-                summonerData.profileIconId = data.profileIconId;
-                summonerData.summonerLevel = data.summonerLevel;
-                summonerData.exists = true;
-                console.log(summonerRegion + " " + summonerName);
-            } else {
-                summonerData.exists = false;
-                summonerData.name = summonerName;
-            }
-        })
-        .catch(error => console.log(error));
+    const url = "https://" + summonerRegion + ".api.riotgames.com/lol/summoner/v3/summoners/by-name/" + summonerName + "?api_key=" + apiImport.key;
+    const request = await fetch(url);
+    if (request.status !== 200) {
+        summonerData.exists = false;
+        summonerData.name = summonerName;
+        return summonerData;
+    }
+    const data = await request.json();
+    if (data){
+        summonerData.id = data.id;
+        summonerData.accountId = data.accountId;
+        summonerData.name = data.name;
+        summonerData.profileIconId = data.profileIconId;
+        summonerData.summonerLevel = data.summonerLevel;
+        summonerData.exists = true;
+    }
     return summonerData;
 }
 //GETS A USERS HIGHEST MASTERY CHAMPION
