@@ -5,7 +5,19 @@
     <h1 class="mainText">Live Game Lookup</h1>
     <div class="pageContent">
         <div class="mainText">
-            Live game lookup stuff {{summoner.name}} {{summoner.region}} {{summoner.id}}
+            Live game lookup stuff {{summoner.name}} {{summoner.region}} {{summoner.id}}</br>
+            Team One:</br>
+            {{#each outputLiveGame.teamOne}}
+            {{this.summonerName}} {{this.rankedStats.tier}} {{this.rankedStats.rank}}</br>
+            {{this.champion.name}} ({{this.spell1.name}} {{this.spell2.name}})</br>
+            </br>
+            {{/each}}
+            Team Two:</br>
+            {{#each outputLiveGame.teamTwo}}
+            {{this.summonerName}} {{this.rankedStats.tier}} {{this.rankedStats.rank}}</br>
+            {{this.champion.name}} ({{this.spell1.name}} {{this.spell2.name}})</br>
+            </br>
+            {{/each}}
         </div>
     </div>
 </div>

@@ -334,6 +334,7 @@ router.post('/live/submit', function(req, res, next) {
 router.get('/live/:summRegionLive/:summNameLive', async function(req, res, next) {
     var outputSummoner = {};
     var validRegion = false;
+    var outputLiveGame = {};
     if (region.contains(req.params.summRegionLive)) {
         var lookupPlatform = platform[region.indexOf(req.params.summRegionLive)];
         //call function to get data from region/name passed from wildcard url
@@ -341,11 +342,12 @@ router.get('/live/:summRegionLive/:summNameLive', async function(req, res, next)
         console.log(lookupPlatform + " " + req.params.summNameLive);
         var outputSummoner = await functions.getSummonerID(lookupPlatform, req.params.summNameLive);
         outputSummoner.region = req.params.summRegionLive;
-        functions.getLiveGame(lookupPlatform, outputSummoner.id);
+        outputLiveGame = await functions.getLiveGame(lookupPlatform, outputSummoner.id);
     }
     //render page with data
     res.render('livegame', {
         summoner: outputSummoner,
+        outputLiveGame,
         validRegion
     });
 });

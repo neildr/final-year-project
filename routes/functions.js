@@ -923,7 +923,7 @@ async function getLiveGame(summonerRegion, summonerID) {
     if (request.status !== 200) {
         return "Not in game - do nothing.";
     }
-    const data = await request.json();;
+    const data = await request.json();
     if (data.gameQueueConfigId === 400 || data.gameQueueConfigId === 420 || data.gameQueueConfigId === 430 || data.gameQueueConfigId === 440) {
         for (var i = 0; i < ((data.participants).length); i++) {
             if (i < 5) {
@@ -960,12 +960,6 @@ async function getLiveGame(summonerRegion, summonerID) {
                     }
                 }
                 gameData.teamOne[i].rankedStats = await getRankedInfo(summonerRegion, gameData.teamOne[i].summonerId);
-                console.log(gameData.teamOne[i].summonerName);
-                console.log(gameData.teamOne[i].champion);
-                console.log(gameData.teamOne[i].spell1);
-                console.log(gameData.teamOne[i].spell2);
-                console.log(gameData.teamOne[i].perks);
-                console.log(gameData.teamOne[i].rankedStats);
             } else {
                 gameData.teamTwo[i - 5].summonerName = data.participants[i].summonerName;
                 gameData.teamTwo[i - 5].summonerId = data.participants[i].summonerId;
@@ -1000,15 +994,10 @@ async function getLiveGame(summonerRegion, summonerID) {
                     }
                 }
                 gameData.teamTwo[i - 5].rankedStats = await getRankedInfo(summonerRegion, gameData.teamTwo[i - 5].summonerId);
-                console.log(gameData.teamTwo[i - 5].summonerName);
-                console.log(gameData.teamTwo[i - 5].champion);
-                console.log(gameData.teamTwo[i - 5].spell1);
-                console.log(gameData.teamTwo[i - 5].spell2);
-                console.log(gameData.teamTwo[i - 5].perks);
-                console.log(gameData.teamTwo[i - 5].rankedStats);
             }
         }
     }
+    return gameData;
 }
 
 //ASYNC FUNCTION TO GET DATA
