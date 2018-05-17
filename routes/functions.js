@@ -489,7 +489,9 @@ async function getLiveGame(summonerRegion, summonerID) {
                     "id": null,
                     "name": null
                 },
+                "rankedStats": null,
                 "summonerName": null,
+                "summonerId": null,
                 "perks": {
                     "0": {
                         "id": null,
@@ -531,7 +533,9 @@ async function getLiveGame(summonerRegion, summonerID) {
                     "id": null,
                     "name": null
                 },
+                "rankedStats": null,
                 "summonerName": null,
+                "summonerId": null,
                 "perks": {
                     "0": {
                         "id": null,
@@ -573,7 +577,9 @@ async function getLiveGame(summonerRegion, summonerID) {
                     "id": null,
                     "name": null
                 },
+                "rankedStats": null,
                 "summonerName": null,
+                "summonerId": null,
                 "perks": {
                     "0": {
                         "id": null,
@@ -615,7 +621,9 @@ async function getLiveGame(summonerRegion, summonerID) {
                     "id": null,
                     "name": null
                 },
+                "rankedStats": null,
                 "summonerName": null,
+                "summonerId": null,
                 "perks": {
                     "0": {
                         "id": null,
@@ -657,7 +665,9 @@ async function getLiveGame(summonerRegion, summonerID) {
                     "id": null,
                     "name": null
                 },
+                "rankedStats": null,
                 "summonerName": null,
+                "summonerId": null,
                 "perks": {
                     "0": {
                         "id": null,
@@ -701,7 +711,9 @@ async function getLiveGame(summonerRegion, summonerID) {
                     "id": null,
                     "name": null
                 },
+                "rankedStats": null,
                 "summonerName": null,
+                "summonerId": null,
                 "perks": {
                     "0": {
                         "id": null,
@@ -743,7 +755,9 @@ async function getLiveGame(summonerRegion, summonerID) {
                     "id": null,
                     "name": null
                 },
+                "rankedStats": null,
                 "summonerName": null,
+                "summonerId": null,
                 "perks": {
                     "0": {
                         "id": null,
@@ -785,7 +799,9 @@ async function getLiveGame(summonerRegion, summonerID) {
                     "id": null,
                     "name": null
                 },
+                "rankedStats": null,
                 "summonerName": null,
+                "summonerId": null,
                 "perks": {
                     "0": {
                         "id": null,
@@ -827,7 +843,9 @@ async function getLiveGame(summonerRegion, summonerID) {
                     "id": null,
                     "name": null
                 },
+                "rankedStats": null,
                 "summonerName": null,
+                "summonerId": null,
                 "perks": {
                     "0": {
                         "id": null,
@@ -869,7 +887,9 @@ async function getLiveGame(summonerRegion, summonerID) {
                     "id": null,
                     "name": null
                 },
+                "rankedStats": null,
                 "summonerName": null,
+                "summonerId": null,
                 "perks": {
                     "0": {
                         "id": null,
@@ -905,15 +925,13 @@ async function getLiveGame(summonerRegion, summonerID) {
     }
     const data = await request.json();;
     if (data.gameQueueConfigId === 400 || data.gameQueueConfigId === 420 || data.gameQueueConfigId === 430 || data.gameQueueConfigId === 440) {
-        //console.log(data.participants[0].perks);
-        console.log("---------STUFF----------");
         for (var i = 0; i < ((data.participants).length); i++) {
             if (i < 5) {
                 gameData.teamOne[i].summonerName = data.participants[i].summonerName;
+                gameData.teamOne[i].summonerId = data.participants[i].summonerId;
                 gameData.teamOne[i].spell1.id = data.participants[i].spell1Id;
                 gameData.teamOne[i].spell2.id = data.participants[i].spell2Id;
                 gameData.teamOne[i].champion.id = data.participants[i].championId;
-                console.log(gameData.teamOne[i].teamId);
                 var spellsArray = [gameData.teamOne[i].spell1, gameData.teamOne[i].spell2];
                 for (var k = 0; k < spellsArray.length; k++) {
                     for (var l = 0; l < Object.keys(spellsJSON.data).length; l++) {
@@ -924,29 +942,37 @@ async function getLiveGame(summonerRegion, summonerID) {
                 }
                 for (var j = 0; j < (data.participants[i].perks.perkIds).length; j++) {
                     gameData.teamOne[i].perks[j].id = data.participants[i].perks.perkIds[j];
-                        for (var l = 0; l < runesJSON.length; l++) {
-                            var slots = runesJSON[l].slots;
-                            for (var m = 0; m < slots.length; m++) {
-                                var runes = slots[m].runes;
-                                for (var n = 0; n < runes.length; n++) {
-                                    if (gameData.teamOne[i].perks[j].id == runes[n].id) {
-                                        gameData.teamOne[i].perks[j].name = runes[n].name;
-                                    }
+                    for (var l = 0; l < runesJSON.length; l++) {
+                        var slots = runesJSON[l].slots;
+                        for (var m = 0; m < slots.length; m++) {
+                            var runes = slots[m].runes;
+                            for (var n = 0; n < runes.length; n++) {
+                                if (gameData.teamOne[i].perks[j].id == runes[n].id) {
+                                    gameData.teamOne[i].perks[j].name = runes[n].name;
                                 }
                             }
                         }
+                    }
                 }
-                for (var j = 0; j < Object.keys(championJSON.data).length; j++){
+                for (var j = 0; j < Object.keys(championJSON.data).length; j++) {
                     if ((gameData.teamOne[i].champion.id) === (championJSON.data[Object.keys(championJSON.data)[j]].id)) {
                         gameData.teamOne[i].champion.name = championJSON.data[Object.keys(championJSON.data)[j]].name;
                     }
                 }
+                gameData.teamOne[i].rankedStats = await getRankedInfo(summonerRegion, gameData.teamOne[i].summonerId);
+                console.log(gameData.teamOne[i].summonerName);
+                console.log(gameData.teamOne[i].champion);
+                console.log(gameData.teamOne[i].spell1);
+                console.log(gameData.teamOne[i].spell2);
+                console.log(gameData.teamOne[i].perks);
+                console.log(gameData.teamOne[i].rankedStats);
             } else {
-                gameData.teamTwo[i-5].summonerName = data.participants[i].summonerName;
-                gameData.teamTwo[i-5].spell1.id = data.participants[i].spell1d;
-                gameData.teamTwo[i-5].spell2.id = data.participants[i].spell2Id;
-                gameData.teamTwo[i-5].champion.id = data.participants[i].championId;
-                var spellsArray = [gameData.teamTwo[i-5].spell1, gameData.teamTwo[i-5].spell2];
+                gameData.teamTwo[i - 5].summonerName = data.participants[i].summonerName;
+                gameData.teamTwo[i - 5].summonerId = data.participants[i].summonerId;
+                gameData.teamTwo[i - 5].spell1.id = data.participants[i].spell1Id;
+                gameData.teamTwo[i - 5].spell2.id = data.participants[i].spell2Id;
+                gameData.teamTwo[i - 5].champion.id = data.participants[i].championId;
+                var spellsArray = [gameData.teamTwo[i - 5].spell1, gameData.teamTwo[i - 5].spell2];
                 for (var k = 0; k < spellsArray.length; k++) {
                     for (var l = 0; l < Object.keys(spellsJSON.data).length; l++) {
                         if (spellsArray[k].id == spellsJSON.data[Object.keys(spellsJSON.data)[l]].key) {
@@ -955,32 +981,35 @@ async function getLiveGame(summonerRegion, summonerID) {
                     }
                 }
                 for (var j = 0; j < (data.participants[i].perks.perkIds).length; j++) {
-                    gameData.teamTwo[i-5].perks[j].id = data.participants[i].perks.perkIds[j];
-                        for (var l = 0; l < runesJSON.length; l++) {
-                            var slots = runesJSON[l].slots;
-                            for (var m = 0; m < slots.length; m++) {
-                                var runes = slots[m].runes;
-                                for (var n = 0; n < runes.length; n++) {
-                                    if (gameData.teamTwo[i-5].perks[j].id == runes[n].id) {
-                                        gameData.teamTwo[i-5].perks[j].name = runes[n].name;
-                                    }
+                    gameData.teamTwo[i - 5].perks[j].id = data.participants[i].perks.perkIds[j];
+                    for (var l = 0; l < runesJSON.length; l++) {
+                        var slots = runesJSON[l].slots;
+                        for (var m = 0; m < slots.length; m++) {
+                            var runes = slots[m].runes;
+                            for (var n = 0; n < runes.length; n++) {
+                                if (gameData.teamTwo[i - 5].perks[j].id == runes[n].id) {
+                                    gameData.teamTwo[i - 5].perks[j].name = runes[n].name;
                                 }
                             }
                         }
-                }
-                for (var j = 0; j < Object.keys(championJSON.data).length; j++){
-                    if ((gameData.teamTwo[i-5].champion.id) === (championJSON.data[Object.keys(championJSON.data)[j]].id)) {
-                        gameData.teamTwo[i-5].champion.name = championJSON.data[Object.keys(championJSON.data)[j]].name;
                     }
                 }
+                for (var j = 0; j < Object.keys(championJSON.data).length; j++) {
+                    if ((gameData.teamTwo[i - 5].champion.id) === (championJSON.data[Object.keys(championJSON.data)[j]].id)) {
+                        gameData.teamTwo[i - 5].champion.name = championJSON.data[Object.keys(championJSON.data)[j]].name;
+                    }
+                }
+                gameData.teamTwo[i - 5].rankedStats = await getRankedInfo(summonerRegion, gameData.teamTwo[i - 5].summonerId);
+                console.log(gameData.teamTwo[i - 5].summonerName);
+                console.log(gameData.teamTwo[i - 5].champion);
+                console.log(gameData.teamTwo[i - 5].spell1);
+                console.log(gameData.teamTwo[i - 5].spell2);
+                console.log(gameData.teamTwo[i - 5].perks);
+                console.log(gameData.teamTwo[i - 5].rankedStats);
             }
         }
-        console.log(gameData);
     }
 }
-
-
-
 
 //ASYNC FUNCTION TO GET DATA
 async function retreiveData(summonerRegion, summonerName) {
