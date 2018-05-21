@@ -328,7 +328,6 @@ router.get('/legal', function(req, res, next) {
 router.post('/live/submit', function(req, res, next) {
     //contruct wildcard url
     res.redirect('/live/' + req.body.summRegionLive + '/' + req.body.summNameLive);
-    console.log(req.body.summRegionLive + " " + req.body.summNameLive);
 });
 
 router.get('/live/:summRegionLive/:summNameLive', async function(req, res, next) {
@@ -347,10 +346,12 @@ router.get('/live/:summRegionLive/:summNameLive', async function(req, res, next)
     }
     //render page with data
     res.render('livegame', {
+        title,
         summoner: outputSummoner,
         outputLiveGame,
         validRegion
     });
 });
+
 
 module.exports = router;

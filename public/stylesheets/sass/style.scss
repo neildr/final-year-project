@@ -29,11 +29,13 @@ body {
     padding: 0;
     z-index: 10;
 }
-img.logo{
+
+img.logo {
     margin: 0 auto;
     display: block;
 }
-.bgImageContainer{
+
+.bgImageContainer {
     box-shadow: 0 0 250px rgba(0, 0, 0, 1) inset;
     background-repeat: no-repeat;
     width: 100%;
@@ -49,11 +51,13 @@ img.logo{
     -o-background-size: cover;
     transform: scale(1.1);
 }
-.bgImageContainer.one{
-    background: linear-gradient( rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url("../../images/teambuilder-wallpaper.jpg");
+
+.bgImageContainer.one {
+    background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url("../../images/teambuilder-wallpaper.jpg");
 }
-.bgImageContainer.false{
-    background: linear-gradient( rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url("../../images/teambuilder-wallpaper.jpg");
+
+.bgImageContainer.false {
+    background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url("../../images/teambuilder-wallpaper.jpg");
 }
 
 .mainText {
@@ -163,7 +167,6 @@ th.searchbox {
     border-style: solid;
 }
 
-
 th.button {
     height: 100%;
 }
@@ -232,6 +235,7 @@ p.title {
     background-color: rgba(150, 150, 150, 0.6);
     border-radius: 5px;
 }
+
 .rowContainerNF {
     width: 100%;
     background-color: rgba(150, 150, 150, 0.6);
@@ -337,7 +341,8 @@ img.masteryImg {
     text-align: right;
     color: #E3DC0B;
 }
-button.distBtn{
+
+button.distBtn {
     width: 50%;
     height: 20px;
     margin-left: 2px;
@@ -354,16 +359,16 @@ button.distBtn{
     z-index: 11;
 }
 
-button.distBtn.active{
+button.distBtn.active {
     background-color: rgb(76, 178, 132);
     color: white;
 }
 
-button.distBtn:hover{
+button.distBtn:hover {
     background-color: rgb(148, 206, 182);
 }
 
-button.distBtn1{
+button.distBtn1 {
     width: 50%;
     height: 20px;
     margin-left: 2px;
@@ -380,16 +385,16 @@ button.distBtn1{
     z-index: 11;
 }
 
-button.distBtn1.active{
+button.distBtn1.active {
     background-color: rgb(76, 178, 132);
     color: white;
 }
 
-button.distBtn1:hover{
+button.distBtn1:hover {
     background-color: rgb(148, 206, 182);
 }
 
-button.graphBtn{
+button.graphBtn {
     width: 24%;
     height: 35px;
     font-family: inherit;
@@ -405,103 +410,42 @@ button.graphBtn{
     box-sizing: border-box;
     margin-right: 5px;
 }
-button.graphBtn.active{
+
+button.graphBtn.active {
     background-color: rgb(76, 178, 132);
     color: white;
 }
 
-button.graphBtn:hover{
+button.graphBtn:hover {
     background-color: rgb(148, 206, 182);
 }
-.displayContent {
-    margin: 0 auto;
-    margin-top: 8px;
-    visibility: hidden;
-    height: 0px;
-    width: 0px;
-    position: absolute;
 
+.displayContent {
+    margin: 8px auto 0;
+    visibility: hidden;
+    height: 0;
+    width: 0;
+    position: absolute;
 }
+
 .displayGraph {
     visibility: hidden;
     position: absolute;
     margin-top: 35px;
-    margin-left: 0px;
+    margin-left: 0;
     width: 100%;
     display: block;
     border-radius: 3px;
-
 }
-svg > g > g:last-child{
+
+svg > g > g:last-child {
     pointer-events: none;
 }
-.pieChart{
+
+.pieChart {
     height: 100px;
     width: 50%;
-    z-index: 10
-}
-dl {
-    margin-top: -1px;
-    margin-left: 10px;
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    height: 100%;
-    position: relative;
-}
-
-dt {
-    align-self: flex-start;
-    width: 100%;
-    display: block;
-    text-align: center;
-    color: white;
-}
-
-.textBarChart {
-    display: flex;
-    align-items: center;
-    position: absolute;
-    left: 0;
-    justify-content: flex-end;
-    color: white;
-    font-style: inherit;
-}
-
-.percentage {
-    line-height: 1;
-    width: 60%;
-    height: 15px;
-    margin-left: 100px;
-    background: repeating-linear-gradient(to right, rgb(220, 220, 220), rgb(220, 220, 220) 1px, rgba(255, 255, 255, 0.5) 1px, rgba(255, 255, 255, 0.5) 10%);
-
-    &:after {
-        content: "";
-        display: block;
-        background-color: #4CB284;
-        width: 0;
-        margin-bottom: 10px;
-        height: 90%;
-        position: relative;
-        top: 50%;
-        transform: translateY(-50%);
-        transition: background-color 0.5s ease;
-    }
-
-    &:focus,
-    &:hover {
-        &:after {
-            background-color: #aaa;
-        }
-    }
-}
-@for $i from 1 through 100 {
-    .percentage-#{$i} {
-        &:after {
-            $value: ($i * 1%);
-            width: $value;
-        }
-    }
+    z-index: 10;
 }
 
 .match-container {
@@ -528,7 +472,6 @@ dt {
 .champion-portrait {
     width: 100px;
     height: 100px;
-    border: 1px solid black;
     margin-right: 10px;
     border-radius: 8px;
 }
@@ -540,6 +483,7 @@ dt {
     margin-left: 10px;
     width: 400px;
     display: flex;
+    border-radius: 5px;
 }
 
 .matchDataSplit {
@@ -564,6 +508,9 @@ dt {
     height: 120px;
     width: 60xp;
     margin-left: 10px;
+}
+.runes-container.margin{
+  margin-right: 35px;
 }
 
 .ss-container {
@@ -596,6 +543,57 @@ dt {
     margin: 1px;
     box-sizing: border-box;
     border-radius: 8px;
+}
+
+.liveGameContainer {
+    width: 100%;
+    display: flex;
+}
+
+.teamContainer {
+    width: 49%;
+    margin: 5px;
+    align-items: center;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+}
+
+.playerContainer {
+    width: 100%;
+    height: 130px;
+    margin: 5px;
+    align-items: center;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+}
+
+.champion-portrait.margin {
+    margin-left: 10px;
+}
+
+
+.playerContainer.teamOne {
+    flex-direction: row;
+    background-color: rgba(11, 187, 212, 0.5);
+}
+
+.playerContainer.teamTwo {
+    flex-direction: row-reverse;
+    background-color: rgba(255, 35, 65, 0.5);
+}
+.game-data {
+    height: 120px;
+    border: 1px solid black;
+    width: 40%;
+    display: flex;
+    margin-right: 10px;
+    flex-direction: column;
+    border-radius: 5px;
+}
+label.checkbox{
+  color: red;
 }
 
 .showMoreText {

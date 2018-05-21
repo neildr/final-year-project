@@ -6,6 +6,10 @@ const tempLiveGame = require('./json/templivegame.json');
 const apiImport = require('./APIKEY');
 const fetch = require('node-fetch');
 
+//server platforms
+var platform = ['BR1', 'EUN1', 'EUW1', 'JP1', 'KR', 'LA1', 'LA2', 'NA1', 'OC1', 'TR1', 'RU'];
+//server regions
+var region = ['BR', 'EUNE', 'EUW', 'JP', 'KR', 'LAN', 'LAS', 'NA', 'OCE', 'TR', 'RU'];
 //**********************//
 //      VARIABLES       //
 //**********************//
@@ -45,7 +49,7 @@ async function getSummonerID(summonerRegion, summonerName) {
         return summonerData;
     }
     const data = await request.json();
-    if (data){
+    if (data) {
         summonerData.id = data.id;
         summonerData.accountId = data.accountId;
         summonerData.name = data.name;
@@ -64,7 +68,7 @@ async function getHighestMastery(summonerRegion, summonerID) {
         masteryData.valid = false;
     }
     const data = await request.json();
-    if (!masteryData.valid){
+    if (!masteryData.valid) {
         if (data.length != 0) {
             masteryData.championId = data[0].championId;
             masteryData.championLevel = data[0].championLevel;
@@ -157,7 +161,7 @@ async function getRecentGames(summonerRegion, summonerAccID, noOfGames) {
         recentGames = false;
     }
     const data = await request.json();
-    if (recentGames){
+    if (recentGames) {
         var validMatchesCount = 0;
         for (i = 0; i < data.matches.length; i++) {
             //validating games
@@ -345,7 +349,7 @@ async function getMatchData(summonerRegion, matchID, summonerAccID) {
         gotMatchData = false;
     }
     const data = await request.json();
-    if (!gotMatchData){
+    if (!gotMatchData) {
         //get time data for match
         matchData.matchLengthTotal = data.gameDuration;
         matchData.matchMinutes = Math.floor(data.gameDuration / 60);
@@ -460,7 +464,7 @@ async function getRankedInfo(summonerRegion, summonerID) {
         gotRankedData = false;
     }
     const data = await request.json();
-    if (!gotRankedData){
+    if (!gotRankedData) {
         for (var i = 0; i < data.length; i++) {
             //go through data to find correct queue type. if found, get data
             if (data[i].queueType === "RANKED_SOLO_5x5") {
@@ -505,6 +509,7 @@ async function getLiveGame(summonerRegion, summonerID) {
                 "rankedStats": null,
                 "summonerName": null,
                 "summonerId": null,
+                "summonerRegion": null,
                 "perks": {
                     "0": {
                         "id": null,
@@ -549,6 +554,7 @@ async function getLiveGame(summonerRegion, summonerID) {
                 "rankedStats": null,
                 "summonerName": null,
                 "summonerId": null,
+                "summonerRegion": null,
                 "perks": {
                     "0": {
                         "id": null,
@@ -593,6 +599,7 @@ async function getLiveGame(summonerRegion, summonerID) {
                 "rankedStats": null,
                 "summonerName": null,
                 "summonerId": null,
+                "summonerRegion": null,
                 "perks": {
                     "0": {
                         "id": null,
@@ -637,6 +644,7 @@ async function getLiveGame(summonerRegion, summonerID) {
                 "rankedStats": null,
                 "summonerName": null,
                 "summonerId": null,
+                "summonerRegion": null,
                 "perks": {
                     "0": {
                         "id": null,
@@ -681,6 +689,7 @@ async function getLiveGame(summonerRegion, summonerID) {
                 "rankedStats": null,
                 "summonerName": null,
                 "summonerId": null,
+                "summonerRegion": null,
                 "perks": {
                     "0": {
                         "id": null,
@@ -727,6 +736,7 @@ async function getLiveGame(summonerRegion, summonerID) {
                 "rankedStats": null,
                 "summonerName": null,
                 "summonerId": null,
+                "summonerRegion": null,
                 "perks": {
                     "0": {
                         "id": null,
@@ -771,6 +781,7 @@ async function getLiveGame(summonerRegion, summonerID) {
                 "rankedStats": null,
                 "summonerName": null,
                 "summonerId": null,
+                "summonerRegion": null,
                 "perks": {
                     "0": {
                         "id": null,
@@ -815,6 +826,7 @@ async function getLiveGame(summonerRegion, summonerID) {
                 "rankedStats": null,
                 "summonerName": null,
                 "summonerId": null,
+                "summonerRegion": null,
                 "perks": {
                     "0": {
                         "id": null,
@@ -859,6 +871,7 @@ async function getLiveGame(summonerRegion, summonerID) {
                 "rankedStats": null,
                 "summonerName": null,
                 "summonerId": null,
+                "summonerRegion": null,
                 "perks": {
                     "0": {
                         "id": null,
@@ -903,6 +916,7 @@ async function getLiveGame(summonerRegion, summonerID) {
                 "rankedStats": null,
                 "summonerName": null,
                 "summonerId": null,
+                "summonerRegion": null,
                 "perks": {
                     "0": {
                         "id": null,
@@ -942,6 +956,9 @@ async function getLiveGame(summonerRegion, summonerID) {
             gameData.inGame = true;
             for (var i = 0; i < ((data.participants).length); i++) {
                 if (i < 5) {
+                    if (platform.contains(summonerRegion)) {
+                        gameData.teamOne[i].summonerRegion = region[platform.indexOf(summonerRegion)];
+                    }
                     gameData.teamOne[i].summonerName = data.participants[i].summonerName;
                     gameData.teamOne[i].summonerId = data.participants[i].summonerId;
                     gameData.teamOne[i].spell1.id = data.participants[i].spell1Id;
@@ -976,6 +993,9 @@ async function getLiveGame(summonerRegion, summonerID) {
                     }
                     gameData.teamOne[i].rankedStats = await getRankedInfo(summonerRegion, gameData.teamOne[i].summonerId);
                 } else {
+                    if (platform.contains(summonerRegion)) {
+                        gameData.teamTwo[i - 5].summonerRegion = region[platform.indexOf(summonerRegion)];
+                    }
                     gameData.teamTwo[i - 5].summonerName = data.participants[i].summonerName;
                     gameData.teamTwo[i - 5].summonerId = data.participants[i].summonerId;
                     gameData.teamTwo[i - 5].spell1.id = data.participants[i].spell1Id;

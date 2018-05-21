@@ -1,28 +1,124 @@
 <div class="bgImageContainer one">
 </div>
-<a href="/"><image class="logo" src="/../../images/logo.png" alt="LOLSTATS.GG HOME" title="LOLSTATS.GG HOME"/></a>
+<a href="/">
+    <image class="logo" src="/../../images/logo.png" alt="LOLSTATS.GG HOME" title="LOLSTATS.GG HOME" />
+</a>
 <div class="bodyContainer">
-    <h1 class="mainText">Live Game Lookup</h1>
+    <h1 class="mainText">Live Game Lookup: {{summoner.name}} on {{summoner.region}}</h1>
     <div class="pageContent">
-        <div class="mainText">
-            {{#if outputLiveGame.inGame}}
-            Live game lookup stuff {{summoner.name}} {{summoner.region}} {{summoner.id}}</br>
-            Team One:</br>
-            {{#each outputLiveGame.teamOne}}
-            {{this.summonerName}} {{this.rankedStats.tier}} {{this.rankedStats.rank}}</br>
-            {{this.champion.name}} ({{this.spell1.name}} {{this.spell2.name}})</br>
-            </br>
-            {{/each}}
-            Team Two:</br>
-            {{#each outputLiveGame.teamTwo}}
-            {{this.summonerName}} {{this.rankedStats.tier}} {{this.rankedStats.rank}}</br>
-            {{this.champion.name}} ({{this.spell1.name}} {{this.spell2.name}})</br>
-            </br>
-            {{/each}}
-            {{else}}
-            {{summoner.name}} on {{summoner.region}} is not in a Summoner's Rift 5v5 game.
-            {{/if}}
-
-        </div>
+        {{#if outputLiveGame.inGame}}
+            <div class="liveGameContainer">
+                <div class="teamContainer">
+                    {{#each outputLiveGame.teamOne}}
+                        <div class="playerContainer teamOne">
+                            <div class="champion-portrait margin">
+                                <img class="wrapperImage rounded" src="http://stelar7.no/cdragon/latest/champion-icons/{{this.champion.id}}.png" alt="{{this.champion.name}}" title="{{this.champion.name}}" />
+                            </div>
+                            <div class="ss-container">
+                                <div class="spell"><img class="wrapperImage rounded" src="http://stelar7.no/cdragon/latest/summoner-spells/{{this.spell1.id}}.png" alt="{{this.spell1.name}}" title="{{this.spell1.name}}"></div>
+                                <div class="spell"><img class="wrapperImage rounded" src="http://stelar7.no/cdragon/latest/summoner-spells/{{this.spell2.id}}.png" alt="{{this.spell2.name}}" title="{{this.spell2.name}}"></div>
+                            </div>
+                            {{#if this.rankedStats.tier}}
+                                <div class="champion-portrait margin">
+                                    <img class="wrapperImage" src="/../../images/ranked/{{this.rankedStats.tier}}_{{this.rankedStats.rank}}.png" alt="{{this.rankedStats.tier}} {{this.rankedStats.rank}}" title="{{this.rankedStats.tier}} {{this.rankedStats.rank}}" />
+                                </div>
+                            {{else}}
+                                <div class="champion-portrait margin">
+                                    <img class="wrapperImage" src="/../../images/ranked/unranked.png" />
+                                </div>
+                            {{/if}}
+                            <div class="runes-container margin">
+                                <div class="rune"><img class="wrapperImage" src="http://stelar7.no/cdragon/latest/perks/{{this.perks.3.id}}.png" alt="{{this.perks.3.name}}" title="{{this.perks.3.name}}" /></div>
+                                <div class="rune"><img class="wrapperImage" src="http://stelar7.no/cdragon/latest/perks/{{this.perks.2.id}}.png" alt="{{this.perks.2.name}}" title="{{this.perks.2.name}}" /></div>
+                                <div class="rune"><img class="wrapperImage" src="http://stelar7.no/cdragon/latest/perks/{{this.perks.1.id}}.png" alt="{{this.perks.1.name}}" title="{{this.perks.1.name}}" /></div>
+                                <div class="rune"><img class="wrapperImage" src="http://stelar7.no/cdragon/latest/perks/{{this.perks.0.id}}.png" alt="{{this.perks.0.name}}" title="{{this.perks.0.name}}" /></div>
+                                <div class="rune"><img class="wrapperImage" src="http://stelar7.no/cdragon/latest/perks/{{this.perks.5.id}}.png" alt="{{this.perks.5.name}}" title="{{this.perks.5.name}}" /></div>
+                                <div class="rune"><img class="wrapperImage" src="http://stelar7.no/cdragon/latest/perks/{{this.perks.4.id}}.png" alt="{{this.perks.4.name}}" title="{{this.perks.4.name}}" /></div>
+                            </div>
+                            <div class="game-data">
+                                <div class="mainText" style="padding: 5px;">{{this.summonerName}}</div>
+                                <div class="mainText">{{this.rankedStats.tier}} {{this.rankedStats.rank}}</div>
+                                <div class="mainText" style="padding: 5px;"><a class="urlStyle" href="/lookup/{{this.summonerRegion}}/{{this.summonerName}}">VIEW PROFILE</a></div>
+                                <div class="mainText">Compare thingy</div>
+                            </div>
+                        </div>
+                    {{/each}}
+                </div>
+                <div class="teamContainer">
+                    {{#each outputLiveGame.teamTwo}}
+                        <div class="playerContainer teamTwo">
+                            <div class="champion-portrait margin">
+                                <img class="wrapperImage rounded" src="http://stelar7.no/cdragon/latest/champion-icons/{{this.champion.id}}.png" alt="{{this.champion.name}}" title="{{this.champion.name}}" />
+                            </div>
+                            <div class="ss-container">
+                                <div class="spell"><img class="wrapperImage rounded" src="http://stelar7.no/cdragon/latest/summoner-spells/{{this.spell1.id}}.png" alt="{{this.spell1.name}}" title="{{this.spell1.name}}"></div>
+                                <div class="spell"><img class="wrapperImage rounded" src="http://stelar7.no/cdragon/latest/summoner-spells/{{this.spell2.id}}.png" alt="{{this.spell2.name}}" title="{{this.spell2.name}}"></div>
+                            </div>
+                            {{#if this.rankedStats.tier}}
+                                <div class="champion-portrait margin">
+                                    <img class="wrapperImage" src="/../../images/ranked/{{this.rankedStats.tier}}_{{this.rankedStats.rank}}.png" alt="{{this.rankedStats.tier}} {{this.rankedStats.rank}}" title="{{this.rankedStats.tier}} {{this.rankedStats.rank}}" />
+                                </div>
+                            {{else}}
+                                <div class="champion-portrait margin">
+                                    <img class="wrapperImage" src="/../../images/ranked/unranked.png" />
+                                </div>
+                            {{/if}}
+                            <div class="runes-container margin">
+                                <div class="rune"><img class="wrapperImage" src="http://stelar7.no/cdragon/latest/perks/{{this.perks.3.id}}.png" alt="{{this.perks.3.name}}" title="{{this.perks.3.name}}" /></div>
+                                <div class="rune"><img class="wrapperImage" src="http://stelar7.no/cdragon/latest/perks/{{this.perks.2.id}}.png" alt="{{this.perks.2.name}}" title="{{this.perks.2.name}}" /></div>
+                                <div class="rune"><img class="wrapperImage" src="http://stelar7.no/cdragon/latest/perks/{{this.perks.1.id}}.png" alt="{{this.perks.1.name}}" title="{{this.perks.1.name}}" /></div>
+                                <div class="rune"><img class="wrapperImage" src="http://stelar7.no/cdragon/latest/perks/{{this.perks.0.id}}.png" alt="{{this.perks.0.name}}" title="{{this.perks.0.name}}" /></div>
+                                <div class="rune"><img class="wrapperImage" src="http://stelar7.no/cdragon/latest/perks/{{this.perks.5.id}}.png" alt="{{this.perks.5.name}}" title="{{this.perks.5.name}}" /></div>
+                                <div class="rune"><img class="wrapperImage" src="http://stelar7.no/cdragon/latest/perks/{{this.perks.4.id}}.png" alt="{{this.perks.4.name}}" title="{{this.perks.4.name}}" /></div>
+                            </div>
+                            <div class="game-data">
+                                <div class="mainText" style="padding: 5px;">{{this.summonerName}}</div>
+                                <div class="mainText">{{this.rankedStats.tier}} {{this.rankedStats.rank}}</div>
+                                <div class="mainText" style="padding: 5px;"><a class="urlStyle" href="/lookup/{{this.summonerRegion}}/{{this.summonerName}}">VIEW PROFILE</a></div>
+                                <div class="mainText">Compare thingy</div>
+                            </div>
+                        </div>
+                    {{/each}}
+                </div>
+            </div>
+            <!-- <form action="/legal" method="post">
+                <input type="text" placeholder="Enter summoner name here." class="input" name="testfield" required>
+                <button class="buttonGo" type="submit">SEARCH</button>
+            </form> -->
+            <form action="/test/submit" method="post">
+                <table class="displayTable">
+                    <tr>
+                        <th class="region" colspan="1">
+                            <select class="dropdown" name="summRegionLive" required>
+                                <option value="BR">BR</option>
+                                <option value="EUNE">EUNE</option>
+                                <option value="EUW">EUW</option>
+                                <option value="JP">JP</option>
+                                <option value="KR">KR</option>
+                                <option value="LAN">LAN</option>
+                                <option value="LAS">LAS</option>
+                                <option value="NA">NA</option>
+                                <option value="OCE">OCE</option>
+                                <option value="TR">TR</option>
+                                <option value="RU">RU</option>
+                            </select>
+                        </th>
+                        <th class="searchbox" colspan="3">
+                            <input type="text" placeholder="Enter summoner name here." class="input" name="summNameLive" required>
+                        </th>
+                        <th class="button" colspan="1">
+                            <button class="buttonGo" type="submit">SEARCH</button>
+                        </th>
+                    </tr>
+                </table>
+            </form>
+        {{else}}
+            <h3 class="mainText">{{summoner.name}} on {{summoner.region}} is not in a Summoner's Rift 5v5 game.</h3>
+        {{/if}}
+    </div>
+    </br>
+    </br>
+    <div class="mainText">
+        <a class="urlStyle" href="/legal">LOLSTATS.GG - Legal Information</a>
     </div>
 </div>

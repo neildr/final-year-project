@@ -6,7 +6,6 @@ const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const hbs = require('express-handlebars');
 const sassMiddleware = require('node-sass-middleware');
-const session = require('client-sessions');
 const fetch = require('node-fetch');
 
 const app = express();
@@ -20,15 +19,10 @@ app.use(sassMiddleware({
     prefix:  '/stylesheets'
 }));
 
-app.use(session({
-  cookieName: 'session',
-  secret: 'BD4D9237CC871D4913221AF97792067962029427A6391089E47F86A32EA3F900',
-  duration: 30 * 60 * 1000,
-  activeDuration: 5 * 60 * 1000,
-}));
 
 //file paths to js files
 var index = require('./routes/index');
+var livegame = require('./routes/livegame');
 
 // view engine setup
 app.engine('hbs', hbs({extname: 'hbs', defaultLayout: 'layout', layoutsDir: __dirname + '/views/layouts/'}));
@@ -45,6 +39,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 //using routes
 app.use('/', index);
+//different file for preprocessing of similar redirect/function for live game compare
+app.use('/', livegame);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
