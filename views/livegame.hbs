@@ -16,8 +16,8 @@
                                 <img class="wrapperImage rounded" src="http://stelar7.no/cdragon/latest/champion-icons/{{this.champion.id}}.png" alt="{{this.champion.name}}" title="{{this.champion.name}}" />
                             </div>
                             <div class="ss-container">
-                                <div class="spell"><img class="wrapperImage rounded" src="http://stelar7.no/cdragon/latest/summoner-spells/{{this.spell1.id}}.png" alt="{{this.spell1.name}}" title="{{this.spell1.name}}"></div>
-                                <div class="spell"><img class="wrapperImage rounded" src="http://stelar7.no/cdragon/latest/summoner-spells/{{this.spell2.id}}.png" alt="{{this.spell2.name}}" title="{{this.spell2.name}}"></div>
+                                <div class="spell live"><img class="wrapperImage rounded" src="http://stelar7.no/cdragon/latest/summoner-spells/{{this.spell1.id}}.png" alt="{{this.spell1.name}}" title="{{this.spell1.name}}"></div>
+                                <div class="spell live"><img class="wrapperImage rounded" src="http://stelar7.no/cdragon/latest/summoner-spells/{{this.spell2.id}}.png" alt="{{this.spell2.name}}" title="{{this.spell2.name}}"></div>
                             </div>
                             {{#if this.rankedStats.tier}}
                                 <div class="champion-portrait margin">
@@ -52,8 +52,8 @@
                                 <img class="wrapperImage rounded" src="http://stelar7.no/cdragon/latest/champion-icons/{{this.champion.id}}.png" alt="{{this.champion.name}}" title="{{this.champion.name}}" />
                             </div>
                             <div class="ss-container">
-                                <div class="spell"><img class="wrapperImage rounded" src="http://stelar7.no/cdragon/latest/summoner-spells/{{this.spell1.id}}.png" alt="{{this.spell1.name}}" title="{{this.spell1.name}}"></div>
-                                <div class="spell"><img class="wrapperImage rounded" src="http://stelar7.no/cdragon/latest/summoner-spells/{{this.spell2.id}}.png" alt="{{this.spell2.name}}" title="{{this.spell2.name}}"></div>
+                                <div class="spell live"><img class="wrapperImage rounded" src="http://stelar7.no/cdragon/latest/summoner-spells/{{this.spell1.id}}.png" alt="{{this.spell1.name}}" title="{{this.spell1.name}}"></div>
+                                <div class="spell live"><img class="wrapperImage rounded" src="http://stelar7.no/cdragon/latest/summoner-spells/{{this.spell2.id}}.png" alt="{{this.spell2.name}}" title="{{this.spell2.name}}"></div>
                             </div>
                             {{#if this.rankedStats.tier}}
                                 <div class="champion-portrait margin">
@@ -83,7 +83,7 @@
                 </div>
             </div>
             <input type="text" style="display: none" name="summRegion" value={{summoner.region}}>
-            <button class="buttonGo" onclick="compareFormSubmit()">SEARCH</button>
+            <button class="buttonGo" onclick="compareFormSubmit()">COMPARE</button>
         </form>
         {{else}}
             <h3 class="mainText">{{summoner.name}} on {{summoner.region}} is not in a Summoner's Rift 5v5 game.</h3>

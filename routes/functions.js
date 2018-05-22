@@ -2,7 +2,6 @@ const championJSON = require('./json/champions.json');
 const itemsJSON = require('./json/items.json');
 const spellsJSON = require('./json/summoner.json');
 const runesJSON = require('./json/runesReforged.json');
-const tempLiveGame = require('./json/templivegame.json');
 const apiImport = require('./APIKEY');
 const fetch = require('node-fetch');
 
@@ -229,7 +228,6 @@ async function getRecentGames(summonerRegion, summonerAccID, noOfGames) {
         }
         recentGamesData.winRatio = (totalWins / noOfGames).toFixed(2) * 100;
     }
-    console.log("recentGamesData.valid is " + recentGamesData.valid);
     return recentGamesData;
 }
 
@@ -356,7 +354,7 @@ async function getMatchData(summonerRegion, matchID, summonerAccID) {
         matchData.matchSeconds = data.gameDuration % 60;
         //loop through participantIdentities to find ID match
         for (var i = 0; i < Object.keys(data.participantIdentities).length; i++) {
-            if (data.participantIdentities[i].player.accountId === summonerAccID) {
+            if (data.participantIdentities[i].player.currentAccountId === summonerAccID) {
                 //store the participantId
                 participantIDExt = data.participantIdentities[i].participantId;
                 //loop through participants
@@ -390,8 +388,7 @@ async function getMatchData(summonerRegion, matchID, summonerAccID) {
                         var spellsArray = [matchData.spell1, matchData.spell2];
                         var runesArray = [matchData.perk0, matchData.perk1, matchData.perk2, matchData.perk3, matchData.perk4, matchData.perk5];
                         for (var k = 0; k < itemsArray.length; k++) {
-                            if (itemsArray[k].id != 0) {
-                                //console.log("item " + k + " is "+ itemsArray[k].id + " attempting to get match");
+                            if (itemsArray[k].id != 0) {;
                                 for (var l = 0; l < Object.keys(itemsJSON.data).length; l++) {
                                     if (itemsArray[k].id == (Object.keys(itemsJSON.data)[l])) {;
                                         itemsArray[k].name = itemsJSON.data[Object.keys(itemsJSON.data)[l]].name;

@@ -352,40 +352,22 @@ router.get('/live/:summRegionLive/:summNameLive', async function(req, res, next)
 });
 
 router.post('/test/submit', function(req, res, next) {
-    //contruct wildcard url
-    var valid = "";
-    if (req.body.team1Box0 != null){
-        valid += req.body.team1Box0 + " ";
-    }
-    if (req.body.team1Box1 != null){
-        valid += req.body.team1Box1 + " ";
-    }
-    if (req.body.team1Box2 != null){
-        valid += req.body.team1Box2 + " ";
-    }
-    if (req.body.team1Box3 != null){
-        valid += req.body.team1Box3 + " ";
-    }
-    if (req.body.team1Box4 != null){
-        valid += req.body.team1Box4 + " ";
-    }
-    if (req.body.team2Box0 != null){
-        valid += req.body.team2Box0 + " ";
-    }
-    if (req.body.team2Box1 != null){
-        valid += req.body.team2Box1 + " ";
-    }
-    if (req.body.team2Box2 != null){
-        valid += req.body.team2Box2 + " ";
-    }
-    if (req.body.team2Box3 != null){
-        valid += req.body.team2Box3 + " ";
-    }
-    if (req.body.team42Box4 != null){
-        valid += req.body.team2Box4 + " ";
-    }
-    console.log(valid + " " + req.body.summRegion);
-    res.redirect('/live/' + req.body.summRegionLive + '/' + req.body.summNameLive);
+    var summOne = null;
+    var summTwo = null;
+    //array of checkboxes passed through form - check if null
+    var checkboxes = [req.body.team1Box0,req.body.team1Box1,req.body.team1Box2,req.body.team1Box3,req.body.team1Box4,
+                    req.body.team2Box0,req.body.team2Box1,req.body.team2Box2,req.body.team2Box3,req.body.team2Box4];
+    checkboxes.forEach(function(checkboxes) {
+        if (checkboxes != null) {
+            if (summOne === null){
+                summOne = checkboxes;
+            } else {
+                summTwo = checkboxes;
+            }
+        }
+    });
+    console.log(summOne + " " + summTwo + " " + req.body.summRegion);
+    res.redirect('/compare/user1=' + req.body.summRegion + '/' + summOne + '/user2=' + req.body.summRegion + '/' + summTwo);
 });
 
 

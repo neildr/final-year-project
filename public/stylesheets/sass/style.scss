@@ -519,6 +519,7 @@ svg > g > g:last-child {
     flex-direction: column;
     height: 105px;
     width: 50xp;
+    justify-content: center;
 }
 
 .item {
@@ -544,7 +545,10 @@ svg > g > g:last-child {
     box-sizing: border-box;
     border-radius: 8px;
 }
-
+.spell.live {
+    width: 40px;
+    height: 40px;
+}
 .liveGameContainer {
     width: 100%;
     display: flex;
@@ -567,10 +571,15 @@ svg > g > g:last-child {
     box-sizing: border-box;
     display: flex;
     justify-content: center;
+    border-radius: 5px;
 }
 
 .champion-portrait.margin {
-    margin-left: 10px;
+    width: 90px;
+    height: 90px;
+    margin-right: 5px;
+    border-radius: 8px;
+    margin-left: 5px;
 }
 
 
@@ -588,7 +597,7 @@ svg > g > g:last-child {
     border: 1px solid black;
     width: 40%;
     display: flex;
-    margin-right: 10px;
+    margin: 5px;
     flex-direction: column;
     border-radius: 5px;
 }

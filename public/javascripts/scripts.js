@@ -2,7 +2,7 @@ $("div.clickable").click(function() {
     $(this).next().slideToggle();
 });
 //change the pie chart thats gets shown
-function changePie(dist, old) {
+function changeDist(dist, old) {
     var displayContent;
     var distBtn;
     //hide old displayContent
@@ -77,7 +77,7 @@ if (defaultGraph != null) {
 var count = 0;
 //limits checkboxes to 2
 $('input.checkboxC').on('change', function(evt) {
-    if ($(this).siblings(':checked').length >= 2) {
+    if ($('input.checkboxC:checked').length > 2) {
         this.checked = false;
     } else {
         count++;
@@ -85,7 +85,7 @@ $('input.checkboxC').on('change', function(evt) {
 });
 //submits if 2 checkboxes are checked
 function compareFormSubmit() {
-    if (count === 2) {
+    if (count >= 2) {
         document.compareForm.submit();
     } else {
         alert("Please select 2 players to compare");
