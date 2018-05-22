@@ -22,7 +22,7 @@ app.use(sassMiddleware({
 
 //file paths to js files
 var index = require('./routes/index');
-var livegame = require('./routes/livegame');
+
 
 // view engine setup
 app.engine('hbs', hbs({extname: 'hbs', defaultLayout: 'layout', layoutsDir: __dirname + '/views/layouts/'}));
@@ -39,8 +39,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 //using routes
 app.use('/', index);
-//different file for preprocessing of similar redirect/function for live game compare
-app.use('/', livegame);
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

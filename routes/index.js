@@ -51,7 +51,6 @@ router.get('/lookup/:summRegion/:summName', async function(req, res, next) {
             outputRanked = data.outputRanked;
             outputMatches = data.outputMatches;
             outputMastery = data.outputMastery;
-            console.log(outputMastery.valid);
             outputSummoner.region = req.params.summRegion;
             title = data.outputSummoner.name + " on " + req.params.summRegion + " - LOLSTATS.GG";
         } else {
@@ -338,7 +337,6 @@ router.get('/live/:summRegionLive/:summNameLive', async function(req, res, next)
         var lookupPlatform = platform[region.indexOf(req.params.summRegionLive)];
         //call function to get data from region/name passed from wildcard url
         validRegion = true;
-        console.log(lookupPlatform + " " + req.params.summNameLive);
         var outputSummoner = await functions.getSummonerID(lookupPlatform, req.params.summNameLive);
         outputSummoner.region = req.params.summRegionLive;
         outputLiveGame = await functions.getLiveGame(lookupPlatform, outputSummoner.id);
@@ -352,6 +350,44 @@ router.get('/live/:summRegionLive/:summNameLive', async function(req, res, next)
         validRegion
     });
 });
+
+router.post('/test/submit', function(req, res, next) {
+    //contruct wildcard url
+    var valid = "";
+    if (req.body.team1Box0 != null){
+        valid += req.body.team1Box0 + " ";
+    }
+    if (req.body.team1Box1 != null){
+        valid += req.body.team1Box1 + " ";
+    }
+    if (req.body.team1Box2 != null){
+        valid += req.body.team1Box2 + " ";
+    }
+    if (req.body.team1Box3 != null){
+        valid += req.body.team1Box3 + " ";
+    }
+    if (req.body.team1Box4 != null){
+        valid += req.body.team1Box4 + " ";
+    }
+    if (req.body.team2Box0 != null){
+        valid += req.body.team2Box0 + " ";
+    }
+    if (req.body.team2Box1 != null){
+        valid += req.body.team2Box1 + " ";
+    }
+    if (req.body.team2Box2 != null){
+        valid += req.body.team2Box2 + " ";
+    }
+    if (req.body.team2Box3 != null){
+        valid += req.body.team2Box3 + " ";
+    }
+    if (req.body.team42Box4 != null){
+        valid += req.body.team2Box4 + " ";
+    }
+    console.log(valid + " " + req.body.summRegion);
+    res.redirect('/live/' + req.body.summRegionLive + '/' + req.body.summNameLive);
+});
+
 
 
 module.exports = router;

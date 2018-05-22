@@ -7,6 +7,7 @@
     <h1 class="mainText">Live Game Lookup: {{summoner.name}} on {{summoner.region}}</h1>
     <div class="pageContent">
         {{#if outputLiveGame.inGame}}
+        <form name="compareForm" action="/test/submit" method="post">
             <div class="liveGameContainer">
                 <div class="teamContainer">
                     {{#each outputLiveGame.teamOne}}
@@ -39,7 +40,7 @@
                                 <div class="mainText" style="padding: 5px;">{{this.summonerName}}</div>
                                 <div class="mainText">{{this.rankedStats.tier}} {{this.rankedStats.rank}}</div>
                                 <div class="mainText" style="padding: 5px;"><a class="urlStyle" href="/lookup/{{this.summonerRegion}}/{{this.summonerName}}">VIEW PROFILE</a></div>
-                                <div class="mainText">Compare thingy</div>
+                                <div class="mainText"><label ><input class="checkboxC" type="checkbox" name="team1Box{{@index}}" value="{{this.summonerName}}">Compare</label></div>
                             </div>
                         </div>
                     {{/each}}
@@ -75,43 +76,15 @@
                                 <div class="mainText" style="padding: 5px;">{{this.summonerName}}</div>
                                 <div class="mainText">{{this.rankedStats.tier}} {{this.rankedStats.rank}}</div>
                                 <div class="mainText" style="padding: 5px;"><a class="urlStyle" href="/lookup/{{this.summonerRegion}}/{{this.summonerName}}">VIEW PROFILE</a></div>
-                                <div class="mainText">Compare thingy</div>
+                                <div class="mainText"><label ><input class="checkboxC" type="checkbox" name="team2Box{{@index}}" value="{{this.summonerName}}">Compare</label></div>
                             </div>
                         </div>
                     {{/each}}
                 </div>
             </div>
-            <!-- <form action="/legal" method="post">
-                <input type="text" placeholder="Enter summoner name here." class="input" name="testfield" required>
-                <button class="buttonGo" type="submit">SEARCH</button>
-            </form> -->
-            <form action="/test/submit" method="post">
-                <table class="displayTable">
-                    <tr>
-                        <th class="region" colspan="1">
-                            <select class="dropdown" name="summRegionLive" required>
-                                <option value="BR">BR</option>
-                                <option value="EUNE">EUNE</option>
-                                <option value="EUW">EUW</option>
-                                <option value="JP">JP</option>
-                                <option value="KR">KR</option>
-                                <option value="LAN">LAN</option>
-                                <option value="LAS">LAS</option>
-                                <option value="NA">NA</option>
-                                <option value="OCE">OCE</option>
-                                <option value="TR">TR</option>
-                                <option value="RU">RU</option>
-                            </select>
-                        </th>
-                        <th class="searchbox" colspan="3">
-                            <input type="text" placeholder="Enter summoner name here." class="input" name="summNameLive" required>
-                        </th>
-                        <th class="button" colspan="1">
-                            <button class="buttonGo" type="submit">SEARCH</button>
-                        </th>
-                    </tr>
-                </table>
-            </form>
+            <input type="text" style="display: none" name="summRegion" value={{summoner.region}}>
+            <button class="buttonGo" onclick="compareFormSubmit()">SEARCH</button>
+        </form>
         {{else}}
             <h3 class="mainText">{{summoner.name}} on {{summoner.region}} is not in a Summoner's Rift 5v5 game.</h3>
         {{/if}}

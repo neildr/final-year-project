@@ -1,8 +1,8 @@
 $("div.clickable").click(function() {
     $(this).next().slideToggle();
 });
-
-function changeDist(dist, old) {
+//change the pie chart thats gets shown
+function changePie(dist, old) {
     var displayContent;
     var distBtn;
     //hide old displayContent
@@ -10,12 +10,14 @@ function changeDist(dist, old) {
     //show new content
     document.getElementById(dist).style.visibility = "visible";
 }
-function changeGraph(graph){
+
+//change graph thats gets shown
+function changeGraph(graph) {
     var showGraph = document.getElementById(graph);
     showGraph.style.visibility = "visible";
     var allGraphs = document.getElementsByClassName("displayGraph");
-    for (var i = 0; i < allGraphs.length; i++){
-        if (allGraphs[i].id != graph){
+    for (var i = 0; i < allGraphs.length; i++) {
+        if (allGraphs[i].id != graph) {
             allGraphs[i].style.visibility = "hidden";
         }
     }
@@ -33,6 +35,7 @@ $(".distBtn1").click(function() {
     }
 });
 
+//more button styling
 $(".graphBtn").click(function() {
     if (!$(this).hasClass("active")) {
         if ($("button#graphBtn").hasClass("active")) {
@@ -55,7 +58,7 @@ $(".graphBtn").click(function() {
     }
 });
 
-//initialises buttons
+//initialises buttons and displayed graphs
 var defaultDist = document.getElementById("defaultDist");
 if (defaultDist != null) {
     defaultDist.click();
@@ -67,4 +70,24 @@ if (defaultDist1 != null) {
 var defaultGraph = document.getElementById("graphBtn");
 if (defaultGraph != null) {
     defaultGraph.click();
+}
+
+//compare form on live game
+
+var count = 0;
+//limits checkboxes to 2
+$('input.checkboxC').on('change', function(evt) {
+    if ($(this).siblings(':checked').length >= 2) {
+        this.checked = false;
+    } else {
+        count++;
+    }
+});
+//submits if 2 checkboxes are checked
+function compareFormSubmit() {
+    if (count === 2) {
+        document.compareForm.submit();
+    } else {
+        alert("Please select 2 players to compare");
+    }
 }
