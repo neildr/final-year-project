@@ -3,6 +3,8 @@
 <script type="text/javascript">
 google.charts.load('current', {'packages':['corechart']});
 {{#if matches1.valid}}
+//again, handlebars is limited
+
 //champs
 var dataC1 = [
   ['Champion', 'Times played'],
@@ -103,6 +105,17 @@ drawRoles(dataR2, "pieR2");
         ['Match 10',{{matches1.matchData.9.kdaRatio}},{{averages.kdaRatio.summOne}},{{matches2.matchData.9.kdaRatio}},{{averages.kdaRatio.summTwo}}]
     ];
     drawKD(dataKD, "KDChart");
+
+    $(window).on('resizeEnd', function() {
+        drawChamps(dataC1, "pieC1");
+        drawRoles(dataR1, "pieR1");
+        drawChamps(dataC2, "pieC2");
+        drawRoles(dataR2, "pieR2");
+        drawDamage(dataDamage, "damageChart");
+        drawGold(dataGold, "goldChart");
+        drawCS(dataCS, "CSChart");
+        drawKD(dataKD, "KDChart");
+    });
     {{/if}}
 {{/if}}
 </script>
@@ -307,10 +320,37 @@ drawRoles(dataR2, "pieR2");
                                     </br>
                                     </br>
                                     </br>
-                                    <div class="mainText">
-                                        {{#each averages}}
-                                            {{this.statName}}: {{this.summOne}} / {{this.summTwo}} / {{this.delta}}</br>
-                                        {{/each}}
+                                        <div class="averagesCompareContainer">
+                                            <div class="titleRow">
+                                                <div class="compareTitle">
+                                                    Stat
+                                                </div>
+                                                <div class="compareTitle even">
+                                                    {{summoner1.name}}
+                                                </div>
+                                                <div class="compareTitle">
+                                                    {{summoner2.name}}
+                                                </div>
+                                                <div class="compareTitle even">
+                                                    Difference
+                                                </div>
+                                            </div>
+                                            {{#each averages}}
+                                            <div class="statRow">
+                                                <div class="averageStatDisplay stat">
+                                                    {{this.statName}}
+                                                </div>
+                                                <div class="averageStatDisplay even">
+                                                    {{this.summOne}}
+                                                </div>
+                                                <div class="averageStatDisplay">
+                                                    {{this.summTwo}}
+                                                </div>
+                                                <div class="averageStatDelta" name="{{this.statName}}">
+                                                    {{this.delta}}
+                                                </div>
+                                            </div>
+                                            {{/each}}
                                 {{else}}
                                     <h2 class="mainText">{{summoner2.name}} has not played enough games on Summoner's Rift recently to get match data</h2>
                                 {{/if}}
@@ -318,7 +358,6 @@ drawRoles(dataR2, "pieR2");
                                 <h2 class="mainText">{{summoner1.name}} has not played enough games on Summoner's Rift recently to get match data</h2>
                             {{/if}}
                         {{/if}}
-                        </div>
                     </div>
                 </br>
                 </br>

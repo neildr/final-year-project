@@ -2,6 +2,7 @@
 <script type="text/javascript" src="/../../javascripts/graphs.js"></script>
 <script type="text/javascript">
 google.charts.load('current', {'packages':['corechart']});
+//limitations of handlebars :(
 {{#if matches.valid}}
   var dataC = [
     ['Champion', 'Times played'],
@@ -9,6 +10,8 @@ google.charts.load('current', {'packages':['corechart']});
     ['{{this.name}}', {{this.count}}],
     {{/each}}
 ];
+drawChamps(dataC, "pieC");
+
  var dataR = [
     ['Roles Played', 'Times played'],
     ['TOP', {{matches.actualpositionCount.TOP}}],
@@ -17,6 +20,7 @@ google.charts.load('current', {'packages':['corechart']});
     ['ADC', {{matches.actualpositionCount.ADC}}],
     ['SUPPORT', {{matches.actualpositionCount.SUPPORT}}],
 ];
+drawRoles(dataR, "pieR");
 
 var dataDamage = [
     ['Match', '{{summoner.name}}',"{{summoner.name}}'s average"],
@@ -31,8 +35,8 @@ var dataDamage = [
     ['Match 9',{{matches.matchData.8.damagePerMin}},{{matches.averages.damagePerMin}}],
     ['Match 10',{{matches.matchData.9.damagePerMin}},{{matches.averages.damagePerMin}}]
 ];
-
 drawDamage(dataDamage, "damageChart");
+
 var dataGold = [
     ['Match', '{{summoner.name}}',"{{summoner.name}}'s average"],
     ['Match 1',{{matches.matchData.0.goldPerMin}},{{matches.averages.goldPerMin}}],
@@ -46,8 +50,8 @@ var dataGold = [
     ['Match 9',{{matches.matchData.8.goldPerMin}},{{matches.averages.goldPerMin}}],
     ['Match 10',{{matches.matchData.9.goldPerMin}},{{matches.averages.goldPerMin}}]
 ];
-
 drawGold(dataGold, "goldChart");
+
 var dataCS = [
     ['Match', '{{summoner.name}}',"{{summoner.name}}'s average"],
     ['Match 1',{{matches.matchData.0.csPerMin}},{{matches.averages.csPerMin}}],
@@ -62,6 +66,7 @@ var dataCS = [
     ['Match 10',{{matches.matchData.9.csPerMin}},{{matches.averages.csPerMin}}]
 ];
 drawCS(dataCS, "CSChart");
+
 var dataKD = [
     ['Match', '{{summoner.name}}',"{{summoner.name}}'s average"],
     ['Match 1',{{matches.matchData.0.kdaRatio}},{{matches.averages.kdaRatio}}],
@@ -76,9 +81,15 @@ var dataKD = [
     ['Match 10',{{matches.matchData.9.kdaRatio}},{{matches.averages.kdaRatio}}]
 ];
 drawKD(dataKD, "KDChart");
-drawChamps(dataC, "pieC");
-drawRoles(dataR, "pieR");
-{{else}}
+
+$(window).on('resizeEnd', function() {
+    drawDamage(dataDamage, "damageChart");
+    drawGold(dataGold, "goldChart");
+    drawCS(dataCS, "CSChart");
+    drawKD(dataKD, "KDChart");
+    drawChamps(dataC, "pieC");
+    drawRoles(dataR, "pieR");
+});
 {{/if}}
 </script>
 <div class="bgImageContainer {{mastery.valid}}">
@@ -157,7 +168,7 @@ drawRoles(dataR, "pieR");
                                 <img class="wrapperImage rounded" src="http://stelar7.no/cdragon/latest/champion-icons/{{matches.modeChampion.info.mode}}.png" />
                                 <div class="summaryInfo">
                                     <div class="mainText underline">Most Played Champion</div>
-                                    <div class="mainText">{{matches.modeChampion.name}}, {{mastery.championTitle}}</div>
+                                    <div class="mainText">{{matches.modeChampion.name}}, {{matches.modeChampion.title}}</div>
                                     <div class="mainText">Games played: {{matches.modeChampion.info.count}}</div>
                                 </div>
                             </div>
@@ -325,8 +336,6 @@ drawRoles(dataR, "pieR");
                                 </div>
                             </div>
                         </div>
-                        </br>
-                        </br>
                         </br>
                         </br>
                         </br>

@@ -1,8 +1,12 @@
+//**********************//
+//  index.js - routing  //
+//**********************//
+
 const express = require('express');
 const router = express.Router();
 
-//all functions in this file
-const functions = require('./functions.js');
+//all processing in this file
+const processing = require('./processing.js');
 
 //**********************//
 //      VARIABLES       //
@@ -44,7 +48,7 @@ router.get('/lookup/:summRegion/:summName', async function(req, res, next) {
         var lookupPlatform = platform[region.indexOf(req.params.summRegion)];
         //call function to get data from region/name passed from wildcard url
         validRegion = true;
-        const data = await functions.retreiveData(lookupPlatform, req.params.summName);
+        const data = await processing.retreiveData(lookupPlatform, req.params.summName);
         //pass data to variables
         outputSummoner = data.outputSummoner;
         if (outputSummoner.exists) {
@@ -74,12 +78,14 @@ router.get('/lookup/:summRegion/:summName', async function(req, res, next) {
 router.get('/lookup/', function(req, res, next) {
     res.redirect('/');
 });
-//GET DATA FROM FORM AND REDIRECT
+
+//GET DATA FROM FORM AND REDIRECT TO COMPARE
 router.post('/compare/submit', function(req, res, next) {
     //contruct wildcard url
     res.redirect('/compare/user1=' + req.body.summOneRegion + '/' + req.body.summOneName + '/user2=' + req.body.summTwoRegion + '/' + req.body.summTwoName);
 });
 
+//COMPARE DISPLAY PAGE AND PROCESSING
 router.get('/compare/user1=:summOneRegion/:summOneName/user2=:summTwoRegion/:summTwoName', async function(req, res, next) {
     //variables
     var outputSummoner1 = {};
@@ -98,6 +104,7 @@ router.get('/compare/user1=:summOneRegion/:summOneName/user2=:summTwoRegion/:sum
         'trueDamageDealtToChampions', 'totalHeal', 'timeCCingOthers', 'damageDealtToObjectives', 'damageDealtToTurrets', 'turretKills', 'inhibitorKills', 'creepScore', 'neutralMinionsKilled',
         'neutralMinionsKilledTeamJungle', 'neutralMinionsKilledEnemyJungle', 'csDiff', 'csPerMin', 'visionWardsBoughtInGame', 'wardsPlaced', 'wardsKilled'
     ];
+    var itemsInJSONHide = [];
     var outputAverages = {
         "kills": {
             "statName": "Kills",
@@ -270,7 +277,7 @@ router.get('/compare/user1=:summOneRegion/:summOneName/user2=:summTwoRegion/:sum
         if (region.contains(req.params.summTwoRegion)) {
             validRegion2 = true;
             var lookupPlatform2 = platform[region.indexOf(req.params.summTwoRegion)];
-            const compareData = await functions.retreiveDataCompare(lookupPlatform1, req.params.summOneName, lookupPlatform2, req.params.summTwoName);
+            const compareData = await processing.retreiveDataCompare(lookupPlatform1, req.params.summOneName, lookupPlatform2, req.params.summTwoName);
             //pass data to variables
             outputSummoner1 = compareData.outputSummoner1;
             outputMastery1 = compareData.outputMastery1;
@@ -320,15 +327,21 @@ router.get('/compare/user1=:summOneRegion/:summOneName/user2=:summTwoRegion/:sum
         noValidMatches
     });
 });
+
+
 router.get('/legal', function(req, res, next) {
     res.render('legal', {
     });
 });
+
+//LIVE GAME LOOKUP DISPLAY
 router.post('/live/submit', function(req, res, next) {
     //contruct wildcard url
     res.redirect('/live/' + req.body.summRegionLive + '/' + req.body.summNameLive);
 });
 
+
+//LIVE GAME LOOKUP DISPLAY AND PROCESSING
 router.get('/live/:summRegionLive/:summNameLive', async function(req, res, next) {
     var outputSummoner = {};
     var validRegion = false;
@@ -337,9 +350,9 @@ router.get('/live/:summRegionLive/:summNameLive', async function(req, res, next)
         var lookupPlatform = platform[region.indexOf(req.params.summRegionLive)];
         //call function to get data from region/name passed from wildcard url
         validRegion = true;
-        var outputSummoner = await functions.getSummonerID(lookupPlatform, req.params.summNameLive);
+        var outputSummoner = await processing.getSummonerID(lookupPlatform, req.params.summNameLive);
         outputSummoner.region = req.params.summRegionLive;
-        outputLiveGame = await functions.getLiveGame(lookupPlatform, outputSummoner.id);
+        outputLiveGame = await processing.getLiveGame(lookupPlatform, outputSummoner.id);
         var title = outputSummoner.name + " Live Game Lookup - LOLSTATS.GG";
     }
     //render page with data
@@ -351,7 +364,9 @@ router.get('/live/:summRegionLive/:summNameLive', async function(req, res, next)
     });
 });
 
-router.post('/test/submit', function(req, res, next) {
+
+//COMPARE LIVE GAME FORM PROCESSING AND REDIRECT
+router.post('/livecompare/submit', function(req, res, next) {
     var summOne = null;
     var summTwo = null;
     //array of checkboxes passed through form - check if null

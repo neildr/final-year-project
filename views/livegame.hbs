@@ -7,7 +7,7 @@
     <h1 class="mainText">Live Game Lookup: {{summoner.name}} on {{summoner.region}}</h1>
     <div class="pageContent">
         {{#if outputLiveGame.inGame}}
-        <form name="compareForm" action="/test/submit" method="post">
+        <form name="compareForm" action="/livecompare/submit" method="post">
             <div class="liveGameContainer">
                 <div class="teamContainer">
                     {{#each outputLiveGame.teamOne}}
@@ -38,7 +38,11 @@
                             </div>
                             <div class="game-data">
                                 <div class="mainText" style="padding: 5px;">{{this.summonerName}}</div>
+                                {{#if this.rankedStats.tier}}
                                 <div class="mainText">{{this.rankedStats.tier}} {{this.rankedStats.rank}}</div>
+                                {{else}}
+                                <div class="mainText">UNRANKED</div>
+                                {{/if}}
                                 <div class="mainText" style="padding: 5px;"><a class="urlStyle" href="/lookup/{{this.summonerRegion}}/{{this.summonerName}}">VIEW PROFILE</a></div>
                                 <div class="mainText"><label ><input class="checkboxC" type="checkbox" name="team1Box{{@index}}" value="{{this.summonerName}}">Compare</label></div>
                             </div>

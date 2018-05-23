@@ -73,15 +73,20 @@ if (defaultGraph != null) {
 }
 
 //compare form on live game
-
+//count of players selected, should be <2
 var count = 0;
 //limits checkboxes to 2
 $('input.checkboxC').on('change', function(evt) {
-    if ($('input.checkboxC:checked').length > 2) {
-        this.checked = false;
+    if ($(this).prop('checked')==false) {
+        count--;
     } else {
-        count++;
+        if ($('input.checkboxC:checked').length > 2) {
+            this.checked = false;
+        } else {
+            count++;
+        }
     }
+    alert(count);
 });
 //submits if 2 checkboxes are checked
 function compareFormSubmit() {
@@ -91,3 +96,32 @@ function compareFormSubmit() {
         alert("Please select 2 players to compare");
     }
 }
+//changes colour of delta on compare page
+$("document").ready(function() {
+  $("div.averageStatDelta").each(function() {
+    if ($(this).attr("name") === "Deaths") {
+      if ($(this).text() < 0) {
+          $(this).addClass("green");
+       } else {
+          $(this).addClass("red");
+       }
+    } else {
+      if ($(this).text() < 0) {
+        $(this).addClass("red");
+      } else {
+        $(this).addClass("green");
+      }
+    }
+  });
+});
+
+
+//allows resizing of charts - delay to stop web page calling script on every mouse movement
+$(window).resize(function() {
+    if(this.resizeTimeOut) {
+        clearTimeout(this.resizeTimeOut);
+    }
+    this.resizeTimeOut = setTimeout(function() {
+        $(this).trigger('resizeEnd');
+    }, 100);
+});
