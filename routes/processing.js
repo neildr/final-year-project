@@ -1076,8 +1076,10 @@ async function retreiveDataCompare(summoner1Region, summoner1Name, summoner2Regi
 }
 //FUNCTION FOR COUNTING VALUES IN AN ARRAY
 function countValuesIn(array, defaultObject) {
+    //assigns defaultObject to a new object (if defaultObject exists)
     var occurrences = Object.assign({}, defaultObject || {});
-    for (var i = 0, j = array.length; i < j; i++) {
+    for (var i = 0, i < array.length; i++) {
+        //sets index of the occurrence array to index of array to it to either 0 or adds +1 to it
         occurrences[array[i]] = (occurrences[array[i]] || 0) + 1;
     }
     return occurrences;
