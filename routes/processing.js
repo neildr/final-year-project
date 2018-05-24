@@ -171,6 +171,7 @@ async function getRecentGames(summonerRegion, summonerAccID, noOfGames) {
                 recentGamesData.lanes[i] = data.matches[i].lane;
                 recentGamesData.queues[i] = data.matches[i].queue;
                 recentGamesData.champions[i] = data.matches[i].champion;
+                console.log(recentGamesData.champions[i]);
                 recentGamesData.timestamps[i] = data.matches[i].timestamp;
                 //calculating actual position - can have errors on Riot's end
                 if (recentGamesData.roles[i] === "SOLO" || recentGamesData.roles[i] === "DUO" || recentGamesData.roles[i] === "NONE") {
@@ -188,6 +189,7 @@ async function getRecentGames(summonerRegion, summonerAccID, noOfGames) {
                 }
                 //gets the game data from each match
                 recentGamesData.matchData[i] = await getMatchData(summonerRegion, data.matches[i].gameId, summonerAccID);
+                //console.log(recentGamesData.matchData[i]);
                 if (recentGamesData.matchData[i].outcome === "WIN") {
                     totalWins++;
                 }
@@ -436,14 +438,15 @@ async function getMatchData(summonerRegion, matchID, summonerAccID) {
                         //validation for missing data - problem on Riot's end
                         if (data.participants[j].timeline.csDiffPerMinDeltas) {
                             matchData.csDiff = (data.participants[j].timeline.csDiffPerMinDeltas["0-10"]).toFixed(2);
-                        } else {
+                        } else if (data.participants[j].timeline.creepsPerMinDeltas) {
                             matchData.csDiff = (data.participants[j].timeline.creepsPerMinDeltas["0-10"]).toFixed(2);
+                        } else {
+                            matchData.csDiff = 0;
                         }
                         matchData.creepScore = data.participants[j].stats.totalMinionsKilled + data.participants[j].stats.neutralMinionsKilled;
                         matchData.csPerMin = ((matchData.creepScore / data.gameDuration) * 60).toFixed(2);
                         matchData.damagePerMin = ((matchData.totalDamageDealtToChampions / data.gameDuration) * 60).toFixed(2);
                         matchData.goldPerMin = ((matchData.goldEarned / data.gameDuration) * 60).toFixed(2);
-
                     }
                 }
             }
@@ -1078,7 +1081,7 @@ async function retreiveDataCompare(summoner1Region, summoner1Name, summoner2Regi
 function countValuesIn(array, defaultObject) {
     //assigns defaultObject to a new object (if defaultObject exists)
     var occurrences = Object.assign({}, defaultObject || {});
-    for (var i = 0, i < array.length; i++) {
+    for (var i = 0; i < array.length; i++) {
         //sets index of the occurrence array to index of array to it to either 0 or adds +1 to it
         occurrences[array[i]] = (occurrences[array[i]] || 0) + 1;
     }

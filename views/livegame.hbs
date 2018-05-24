@@ -1,5 +1,10 @@
 <div class="bgImageContainer one">
 </div>
+<div class="loadingDiv" id="loadingDiv">
+    <div id="loadingdot">
+        Loading<span>•</span><span>•</span><span>•</span>
+    </div>
+</div>
 <a href="/">
     <image class="logo" src="/../../images/logo.png" alt="LOLSTATS.GG HOME" title="LOLSTATS.GG HOME" />
 </a>
@@ -43,7 +48,7 @@
                                 {{else}}
                                 <div class="mainText">UNRANKED</div>
                                 {{/if}}
-                                <div class="mainText" style="padding: 5px;"><a class="urlStyle" href="/lookup/{{this.summonerRegion}}/{{this.summonerName}}">VIEW PROFILE</a></div>
+                                <div class="mainText" style="padding: 5px;" onclick="loadDim()"><a class="urlStyle" href="/lookup/{{this.summonerRegion}}/{{this.summonerName}}">VIEW PROFILE</a></div>
                                 <div class="mainText"><label ><input class="checkboxC" type="checkbox" name="team1Box{{@index}}" value="{{this.summonerName}}">Compare</label></div>
                             </div>
                         </div>
@@ -79,7 +84,7 @@
                             <div class="game-data">
                                 <div class="mainText" style="padding: 5px;">{{this.summonerName}}</div>
                                 <div class="mainText">{{this.rankedStats.tier}} {{this.rankedStats.rank}}</div>
-                                <div class="mainText" style="padding: 5px;"><a class="urlStyle" href="/lookup/{{this.summonerRegion}}/{{this.summonerName}}">VIEW PROFILE</a></div>
+                                <div class="mainText" style="padding: 5px;" onclick="loadDim()"><a class="urlStyle" href="/lookup/{{this.summonerRegion}}/{{this.summonerName}}">VIEW PROFILE</a></div>
                                 <div class="mainText"><label ><input class="checkboxC" type="checkbox" name="team2Box{{@index}}" value="{{this.summonerName}}">Compare</label></div>
                             </div>
                         </div>

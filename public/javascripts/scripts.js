@@ -1,6 +1,3 @@
-$("div.clickable").click(function() {
-    $(this).next().slideToggle();
-});
 //change the pie chart thats gets shown
 function changeDist(dist, old) {
     var displayContent;
@@ -71,13 +68,20 @@ var defaultGraph = document.getElementById("graphBtn");
 if (defaultGraph != null) {
     defaultGraph.click();
 }
+$("form").submit(function() {
+    loadDim();
+});
+
+function loadDim() {
+    document.getElementById("loadingDiv").style.display = "flex";
+}
 
 //compare form on live game
 //count of players selected, should be <2
 var count = 0;
 //limits checkboxes to 2
 $('input.checkboxC').on('change', function(evt) {
-    if ($(this).prop('checked')==false) {
+    if ($(this).prop('checked') == false) {
         count--;
     } else {
         if ($('input.checkboxC:checked').length > 2) {
@@ -86,39 +90,39 @@ $('input.checkboxC').on('change', function(evt) {
             count++;
         }
     }
-    alert(count);
 });
 //submits if 2 checkboxes are checked
 function compareFormSubmit() {
     if (count >= 2) {
         document.compareForm.submit();
+        loadDim()
     } else {
         alert("Please select 2 players to compare");
     }
 }
+$('input:checkbox:checked').prop('checked', false);
 //changes colour of delta on compare page
 $("document").ready(function() {
-  $("div.averageStatDelta").each(function() {
-    if ($(this).attr("name") === "Deaths") {
-      if ($(this).text() < 0) {
-          $(this).addClass("green");
-       } else {
-          $(this).addClass("red");
-       }
-    } else {
-      if ($(this).text() < 0) {
-        $(this).addClass("red");
-      } else {
-        $(this).addClass("green");
-      }
-    }
-  });
+    $("div.averageStatDelta").each(function() {
+        if ($(this).attr("name") === "Deaths") {
+            if ($(this).text() < 0) {
+                $(this).addClass("green");
+            } else {
+                $(this).addClass("red");
+            }
+        } else {
+            if ($(this).text() < 0) {
+                $(this).addClass("red");
+            } else {
+                $(this).addClass("green");
+            }
+        }
+    });
 });
-
 
 //allows resizing of charts - delay to stop web page calling script on every mouse movement
 $(window).resize(function() {
-    if(this.resizeTimeOut) {
+    if (this.resizeTimeOut) {
         clearTimeout(this.resizeTimeOut);
     }
     this.resizeTimeOut = setTimeout(function() {

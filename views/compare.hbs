@@ -121,6 +121,11 @@ drawRoles(dataR2, "pieR2");
 </script>
 <div class="bgImageContainer one">
 </div>
+<div class="loadingDiv" id="loadingDiv">
+    <div id="loadingdot">
+        Loading<span>•</span><span>•</span><span>•</span>
+    </div>
+</div>
 <a href="/"><image class="logo" src="/../../images/logo.png" alt="LOLSTATS.GG HOME" title="LOLSTATS.GG HOME"/></a>
 {{#if validRegion1}}
     {{#if validRegion2}}
@@ -139,7 +144,7 @@ drawRoles(dataR2, "pieR2");
                                         <div class="mainText">{{summoner1.name}}</div>
                                         <div class="mainText">{{summoner1.region}}</div>
                                         <div class="mainText">Level: {{summoner1.summonerLevel}}</div>
-                                        <div class="mainText"><a class="urlStyle" href="/lookup/{{summoner1.region}}/{{summoner1.name}}">VIEW PROFILE</a></div>
+                                        <div class="mainText"  onclick="loadDim()"><a class="urlStyle" href="/lookup/{{summoner1.region}}/{{summoner1.name}}">VIEW PROFILE</a></div>
                                     </div>
                                 </div>
                                 <div class="summaryRow center">
@@ -212,7 +217,7 @@ drawRoles(dataR2, "pieR2");
                                         <div class="mainText">{{summoner2.name}}</div>
                                         <div class="mainText">{{summoner2.region}}</div>
                                         <div class="mainText">Level: {{summoner2.summonerLevel}}</div>
-                                        <div class="mainText"><a class="urlStyle" href="/lookup/{{summoner2.region}}/{{summoner2.name}}">VIEW PROFILE</a></div>
+                                        <div class="mainText" onclick="loadDim()"><a class="urlStyle" href="/lookup/{{summoner2.region}}/{{summoner2.name}}">VIEW PROFILE</a></div>
                                     </div>
                                 </div>
                                 <div class="summaryRow center">
@@ -351,6 +356,7 @@ drawRoles(dataR2, "pieR2");
                                                 </div>
                                             </div>
                                             {{/each}}
+                                            </div>
                                 {{else}}
                                     <h2 class="mainText">{{summoner2.name}} has not played enough games on Summoner's Rift recently to get match data</h2>
                                 {{/if}}

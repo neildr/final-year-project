@@ -104,7 +104,6 @@ router.get('/compare/user1=:summOneRegion/:summOneName/user2=:summTwoRegion/:sum
         'trueDamageDealtToChampions', 'totalHeal', 'timeCCingOthers', 'damageDealtToObjectives', 'damageDealtToTurrets', 'turretKills', 'inhibitorKills', 'creepScore', 'neutralMinionsKilled',
         'neutralMinionsKilledTeamJungle', 'neutralMinionsKilledEnemyJungle', 'csDiff', 'csPerMin', 'visionWardsBoughtInGame', 'wardsPlaced', 'wardsKilled'
     ];
-    var itemsInJSONHide = [];
     var outputAverages = {
         "kills": {
             "statName": "Kills",
@@ -136,6 +135,24 @@ router.get('/compare/user1=:summOneRegion/:summOneName/user2=:summTwoRegion/:sum
             "summTwo": 0,
             "delta": 0
         },
+        "visionWardsBoughtInGame": {
+            "statName": "Vision Wards Bought",
+            "summOne": 0,
+            "summTwo": 0,
+            "delta": 0
+        },
+        "wardsPlaced": {
+            "statName": "Wards Placed",
+            "summOne": 0,
+            "summTwo": 0,
+            "delta": 0
+        },
+        "wardsKilled": {
+            "statName": "Wards Killed",
+            "summOne": 0,
+            "summTwo": 0,
+            "delta": 0
+        },
         "goldEarned": {
             "statName": "Gold Earned",
             "summOne": 0,
@@ -144,6 +161,24 @@ router.get('/compare/user1=:summOneRegion/:summOneName/user2=:summTwoRegion/:sum
         },
         "goldPerMin": {
             "statName": "Gold/min",
+            "summOne": 0,
+            "summTwo": 0,
+            "delta": 0
+        },
+        "creepScore": {
+            "statName": "Creep Score",
+            "summOne": 0,
+            "summTwo": 0,
+            "delta": 0
+        },
+        "csDiff": {
+            "statName": "CS Difference in first 10 minutes",
+            "summOne": 0,
+            "summTwo": 0,
+            "delta": 0
+        },
+        "csPerMin": {
+            "statName": "CS/Min",
             "summOne": 0,
             "summTwo": 0,
             "delta": 0
@@ -228,42 +263,6 @@ router.get('/compare/user1=:summOneRegion/:summOneName/user2=:summTwoRegion/:sum
         },
         "neutralMinionsKilledEnemyJungle": {
             "statName": "Neutral Minions Killed in Enemy Jungle",
-            "summOne": 0,
-            "summTwo": 0,
-            "delta": 0
-        },
-        "creepScore": {
-            "statName": "Creep Score",
-            "summOne": 0,
-            "summTwo": 0,
-            "delta": 0
-        },
-        "csDiff": {
-            "statName": "CS Difference in first 10 minutes",
-            "summOne": 0,
-            "summTwo": 0,
-            "delta": 0
-        },
-        "csPerMin": {
-            "statName": "CS/Min",
-            "summOne": 0,
-            "summTwo": 0,
-            "delta": 0
-        },
-        "visionWardsBoughtInGame": {
-            "statName": "Vision Wards Bought",
-            "summOne": 0,
-            "summTwo": 0,
-            "delta": 0
-        },
-        "wardsPlaced": {
-            "statName": "Wards Placed",
-            "summOne": 0,
-            "summTwo": 0,
-            "delta": 0
-        },
-        "wardsKilled": {
-            "statName": "Wards Killed",
             "summOne": 0,
             "summTwo": 0,
             "delta": 0
