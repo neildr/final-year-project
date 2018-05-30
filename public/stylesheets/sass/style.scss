@@ -54,9 +54,17 @@ img.logo {
 .bgImageContainer.one {
     background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url("../../images/teambuilder-wallpaper.jpg");
 }
-
 .bgImageContainer.false {
     background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url("../../images/teambuilder-wallpaper.jpg");
+}
+.bgImageContainer.two {
+    background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url("../../images/riven_v_shyvana_1920x1080.jpg");
+}
+.bgImageContainer.three {
+    background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url("../../images/team_graves_2.jpg");
+}
+.bgImageContainer.four {
+    background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url("../../images/akali_vs_baron_3.jpg");
 }
 .loadingDiv {
     background-color: rgba(0,0,0,0.35);

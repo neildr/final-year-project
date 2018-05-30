@@ -1,6 +1,6 @@
 {
     "type": "summoner",
-    "version": "8.9.1",
+    "version": "8.11.1",
     "data": {
         "SummonerBarrier": {
             "id": "SummonerBarrier",
@@ -332,7 +332,7 @@
             }],
             "key": "6",
             "summonerLevel": 1,
-            "modes": ["CLASSIC", "ODIN", "TUTORIAL", "ARAM", "ASCENSION", "FIRSTBLOOD", "ASSASSINATE", "URF", "ARSR", "DOOMBOTSTEEMO", "STARGUARDIAN", "PROJECT", "ONEFORALL"],
+            "modes": ["CLASSIC", "ODIN", "TUTORIAL", "ARAM", "ASCENSION", "FIRSTBLOOD", "ASSASSINATE", "URF", "ARSR", "DOOMBOTSTEEMO", "STARGUARDIAN", "PROJECT", "ONEFORALL", "TUTORIAL_MODULE_1", "TUTORIAL_MODULE_2", "TUTORIAL_MODULE_3"],
             "costType": "No Cost",
             "maxammo": "-1",
             "range": [200],
@@ -378,7 +378,7 @@
             }],
             "key": "7",
             "summonerLevel": 1,
-            "modes": ["CLASSIC", "ODIN", "TUTORIAL", "ARAM", "ASCENSION", "FIRSTBLOOD", "ASSASSINATE", "URF", "ARSR", "DOOMBOTSTEEMO", "STARGUARDIAN", "PROJECT", "ONEFORALL"],
+            "modes": ["CLASSIC", "ODIN", "TUTORIAL", "ARAM", "ASCENSION", "FIRSTBLOOD", "ASSASSINATE", "URF", "ARSR", "DOOMBOTSTEEMO", "STARGUARDIAN", "PROJECT", "ONEFORALL", "TUTORIAL_MODULE_1", "TUTORIAL_MODULE_2", "TUTORIAL_MODULE_3"],
             "costType": "No Cost",
             "maxammo": "-1",
             "range": [850],

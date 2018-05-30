@@ -171,7 +171,6 @@ async function getRecentGames(summonerRegion, summonerAccID, noOfGames) {
                 recentGamesData.lanes[i] = data.matches[i].lane;
                 recentGamesData.queues[i] = data.matches[i].queue;
                 recentGamesData.champions[i] = data.matches[i].champion;
-                console.log(recentGamesData.champions[i]);
                 recentGamesData.timestamps[i] = data.matches[i].timestamp;
                 //calculating actual position - can have errors on Riot's end
                 if (recentGamesData.roles[i] === "SOLO" || recentGamesData.roles[i] === "DUO" || recentGamesData.roles[i] === "NONE") {
@@ -189,7 +188,6 @@ async function getRecentGames(summonerRegion, summonerAccID, noOfGames) {
                 }
                 //gets the game data from each match
                 recentGamesData.matchData[i] = await getMatchData(summonerRegion, data.matches[i].gameId, summonerAccID);
-                //console.log(recentGamesData.matchData[i]);
                 if (recentGamesData.matchData[i].outcome === "WIN") {
                     totalWins++;
                 }
