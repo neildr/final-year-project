@@ -353,6 +353,10 @@ router.get('/live/:summRegionLive/:summNameLive', async function(req, res, next)
         outputSummoner.region = req.params.summRegionLive;
         outputLiveGame = await processing.getLiveGame(lookupPlatform, outputSummoner.id);
         var title = outputSummoner.name + " Live Game Lookup - LOLSTATS.GG";
+    } else {
+        outputSummoner.region = req.params.summRegionLive;
+        outputSummoner.name = req.params.summNameLive;
+
     }
     //render page with data
     res.render('livegame', {

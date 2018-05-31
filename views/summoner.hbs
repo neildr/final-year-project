@@ -408,7 +408,7 @@ $(window).on('resizeEnd', function() {
 </div>
 <div>
     {{else}}
-        <h1 class="mainText">Summoner {{summoner.name}} does not exist on {{summoner.region}}</h1>
+        <h2 class="mainText">Summoner {{summoner.name}} does not exist on {{summoner.region}}</h1>
         </br>
         </br>
         <div class="mainText">
@@ -416,7 +416,7 @@ $(window).on('resizeEnd', function() {
         </div>
         {{/if}}
         {{else}}
-            <h1 class="mainText">Invalid Region</h1>
+            <h2 class="mainText">Invalid Region "{{summoner.region}}"</h1>
             </br>
             </br>
             <div class="mainText">

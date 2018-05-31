@@ -372,22 +372,16 @@ drawRoles(dataR2, "pieR2");
                 </div>
                 </div>
             {{else}}
-                <div class="mainText">
-                    {{summoner2.name}} does not exist on server {{summoner2.region}}
-                </div>
+                <h2 class="mainText">{{summoner2.name}} does not exist on server {{summoner2.region}}</h2>
             {{/if}}
         {{else}}
             <div class="mainText">
-                {{summoner1.name}} does not exist on server {{summoner1.region}}
+                <h2 class="mainText">{{summoner1.name}} does not exist on server {{summoner1.region}}</h2>
             </div>
         {{/if}}
     {{else}}
-        <div class="mainText">
-            Invalid region "{{summoner2.region}}" for {{summoner2.name}}
-        </div>
+        <h2 class="mainText">Invalid region "{{summoner2.region}}"</h2>
     {{/if}}
 {{else}}
-    <div class="mainText">
-        Invalid region "{{summoner1.region}}" for {{summoner1.name}}
-    </div>
+    <h2 class="mainText">Invalid region "{{summoner1.region}}"</h2>
 {{/if}}
