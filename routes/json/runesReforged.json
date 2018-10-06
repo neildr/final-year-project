@@ -10,7 +10,7 @@
             "icon": "perk-images/Styles/Domination/Electrocute/Electrocute.png",
             "name": "Electrocute",
             "shortDesc": "Hitting a champion with 3 <b>separate</b> attacks or abilities in 3s deals bonus <lol-uikit-tooltipped-keyword key='LinkTooltip_Description_AdaptiveDmg'>adaptive damage</lol-uikit-tooltipped-keyword>.",
-            "longDesc": "Hitting a champion with 3 <b>separate</b> attacks or abilities within 3s deals bonus <lol-uikit-tooltipped-keyword key='LinkTooltip_Description_AdaptiveDmg'><font color='#48C4B7'>adaptive damage</font></lol-uikit-tooltipped-keyword>.<br><br>Damage: 50 - 220 (+0.5 bonus AD, +0.3 AP) damage.<br><br>Cooldown: 50 - 25s<br><br><hr></hr><i>'We called them the Thunderlords, for to speak of their lightning was to invite disaster.'</i>"
+            "longDesc": "Hitting a champion with 3 <b>separate</b> attacks or abilities within 3s deals bonus <lol-uikit-tooltipped-keyword key='LinkTooltip_Description_AdaptiveDmg'><font color='#48C4B7'>adaptive damage</font></lol-uikit-tooltipped-keyword>.<br><br>Damage: 30 - 180 (+0.4 bonus AD, +0.25 AP) damage.<br><br>Cooldown: 25 - 20s<br><br><hr></hr><i>'We called them the Thunderlords, for to speak of their lightning was to invite disaster.'</i>"
         }, {
             "id": 8124,
             "key": "Predator",
@@ -31,7 +31,7 @@
             "icon": "perk-images/Styles/Domination/HailOfBlades/HailOfBlades.png",
             "name": "Hail of Blades",
             "shortDesc": "Gain a large amount of Attack Speed for the first 3 attacks made against enemy champions.",
-            "longDesc": "Gain 50-100% Attack Speed for the first 3 attacks made against enemy champions.<br><br>No more than 1.5s can elapse between attacks or this effect will end.<br><br>Hail of Blades allows you to temporarily exceed the attack speed limit.<br><br>Cooldown: 5s out of combat."
+            "longDesc": "Gain 75-125% Attack Speed for the first 3 attacks made against enemy champions.<br><br>No more than 2s can elapse between attacks or this effect will end.<br><br>Hail of Blades allows you to temporarily exceed the attack speed limit.<br><br>Cooldown: 4s out of combat."
         }]
     }, {
         "runes": [{
@@ -40,7 +40,7 @@
             "icon": "perk-images/Styles/Domination/CheapShot/CheapShot.png",
             "name": "Cheap Shot",
             "shortDesc": "Deal bonus true damage to enemy champions with <lol-uikit-tooltipped-keyword key='LinkTooltip_Description_ImpairAct'>impaired movement or actions</lol-uikit-tooltipped-keyword>. ",
-            "longDesc": "Damaging champions with <b>impaired movement or actions</b> deals 15 - 40 bonus true damage (based on level).<br><br>Cooldown: 4s<br><rules>Activates on damage occurring after the impairment.</rules>"
+            "longDesc": "Damaging champions with <b>impaired movement or actions</b> deals 8 - 40 bonus true damage (based on level).<br><br>Cooldown: 4s<br><rules>Activates on damage occurring after the impairment.</rules>"
         }, {
             "id": 8139,
             "key": "TasteOfBlood",
@@ -54,7 +54,7 @@
             "icon": "perk-images/Styles/Domination/SuddenImpact/SuddenImpact.png",
             "name": "Sudden Impact",
             "shortDesc": "Gain a burst of Lethality and Magic Penetration after using a dash, leap, blink, teleport, or when leaving stealth.",
-            "longDesc": "After exiting stealth or using a dash, leap, blink, or teleport, dealing any damage to a champion grants you 10 Lethality and 8 Magic Penetration for 5s.<br><br>Cooldown: 4s"
+            "longDesc": "After exiting stealth or using a dash, leap, blink, or teleport, dealing any damage to a champion grants you 7 Lethality and 6 Magic Penetration for 5s.<br><br>Cooldown: 4s"
         }]
     }, {
         "runes": [{
@@ -62,15 +62,15 @@
             "key": "ZombieWard",
             "icon": "perk-images/Styles/Domination/ZombieWard/ZombieWard.png",
             "name": "Zombie Ward",
-            "shortDesc": "After killing a ward, a friendly Zombie Ward is raised in its place. When your wards expire, they also reanimate as Zombie Wards.",
-            "longDesc": "After killing a ward, a friendly Zombie Ward is raised in its place. Additionally, when your wards expire, they reanimate as Zombie Wards.<br><br>Zombie Wards are visible, last for 30 - 120s and don't count towards your ward limit."
+            "shortDesc": "<lol-uikit-tooltipped-keyword key='LinkTooltip_Description_Takedown'>Takedowns</lol-uikit-tooltipped-keyword> on enemy Wards cause friendly Zombie Wards to sprout from their corpses. In addition, damaging a Champion after destroying a Ward inflicts bonus magic damage.",
+            "longDesc": "<lol-uikit-tooltipped-keyword key='LinkTooltip_Description_Takedown'>Takedowns</lol-uikit-tooltipped-keyword> on enemy Wards cause friendly Zombie Wards to sprout from their corpses. In addition, damaging a Champion after destroying a Ward inflicts <scaleLevel>30 - 90</scaleLevel> bonus magic damage (based on level).<br><br>Zombie Wards are visible, last for 120s and do not count towards your ward limit."
         }, {
             "id": 8120,
             "key": "GhostPoro",
             "icon": "perk-images/Styles/Domination/GhostPoro/GhostPoro.png",
             "name": "Ghost Poro",
-            "shortDesc": "When you enter brush, a poro appears. It will stay behind to give you vision.",
-            "longDesc": "Enter a brush to summon a poro after a brief channel. The poro will stay behind to give you vision until you summon a new one.<br><br>If an enemy enters brush with a poro in it, they scare it away, putting Ghost Poro on a 3s cooldown.<br><br>Poro channel is interrupted if you take damage."
+            "shortDesc": "Entering brush swaps your current Trinket for a Ghost Poro. The Ghost Poro can be placed in brush and grants vision until discovered. <br><br>While either you or your poro is in <lol-uikit-tooltipped-keyword key='LinkTooltip_Description_EnemyTerritory'>enemy territory</lol-uikit-tooltipped-keyword>, gain <lol-uikit-tooltipped-keyword key='LinkTooltip_Description_Adaptive'>adaptive</lol-uikit-tooltipped-keyword> force.",
+            "longDesc": "Entering brush temporarily swaps your Trinket for a Ghost Poro, which grants vision for 300s when placed in brush. Nearby enemy champions scare the Ghost Poro away.<br><br>While either you or your Ghost Poro is in <lol-uikit-tooltipped-keyword key='LinkTooltip_Description_EnemyTerritory'>enemy territory</lol-uikit-tooltipped-keyword>, gain 5-20 <lol-uikit-tooltipped-keyword key='LinkTooltip_Description_Adaptive'>adaptive</lol-uikit-tooltipped-keyword> force (based on level).<br><br>Cooldown: 60s if Poro is scared away."
         }, {
             "id": 8138,
             "key": "EyeballCollection",
@@ -86,28 +86,28 @@
             "icon": "perk-images/Styles/Domination/RavenousHunter/RavenousHunter.png",
             "name": "Ravenous Hunter",
             "shortDesc": "<b>Unique</b> <lol-uikit-tooltipped-keyword key='LinkTooltip_Description_Takedown'>takedowns</lol-uikit-tooltipped-keyword> grant permanent healing from ability damage. ",
-            "longDesc": "Heal for a percentage of the damage dealt by your abilities.<br>Healing: 2.5% + 2.5% per <i>Bounty Hunter</i> stack. <br><br>Earn a <i>Bounty Hunter</i> stack the first time you get a takedown on each enemy champion.<br><rules><br>Healing reduced to one third for Area of Effect abilities.</rules><br>"
+            "longDesc": "Heal for a percentage of the damage dealt by your abilities.<br>Healing: 2.5% + 2.5% per <i>Bounty Hunter</i> stack. <br><br><i>Bounty Hunter</i> stacks are earned the first time you get a takedown on each enemy champion.<br><rules><br>Healing reduced to one third for Area of Effect abilities.</rules>"
         }, {
             "id": 8134,
             "key": "IngeniousHunter",
             "icon": "perk-images/Styles/Domination/IngeniousHunter/IngeniousHunter.png",
             "name": "Ingenious Hunter",
             "shortDesc": "<b>Unique</b> <lol-uikit-tooltipped-keyword key='LinkTooltip_Description_Takedown'>takedowns</lol-uikit-tooltipped-keyword> grant permanent Active Item <lol-uikit-tooltipped-keyword key='LinkTooltip_Description_CDR'>CDR</lol-uikit-tooltipped-keyword> (includes Trinkets).",
-            "longDesc": "Gain 15% <b>Active Item CDR</b> plus an additional 5% per <i>Bounty Hunter</i> stack (includes Trinkets).<br><br>Earn a <i>Bounty Hunter</i> stack the first time you get a takedown on each enemy champion."
+            "longDesc": "Gain 15% <b>Active Item CDR</b> plus an additional 5% per <i>Bounty Hunter</i> stack (includes Trinkets).<br><br><i>Bounty Hunter</i> stacks are earned the first time you get a takedown on each enemy champion."
         }, {
             "id": 8105,
             "key": "RelentlessHunter",
             "icon": "perk-images/Styles/Domination/RelentlessHunter/RelentlessHunter.png",
             "name": "Relentless Hunter",
             "shortDesc": "<b>Unique</b> <lol-uikit-tooltipped-keyword key='LinkTooltip_Description_Takedown'>takedowns</lol-uikit-tooltipped-keyword> grant permanent <b>out of combat <lol-uikit-tooltipped-keyword key='LinkTooltip_Description_MS'>MS</lol-uikit-tooltipped-keyword></b>. ",
-            "longDesc": "Gain 8 <b>out of combat Movement Speed</b> plus 8 per <i>Bounty Hunter</i> stack.<br><br>Earn a <i>Bounty Hunter</i> stack the first time you get a takedown on each enemy champion."
+            "longDesc": "Gain 8 <b>out of combat Movement Speed</b> plus 8 per <i>Bounty Hunter</i> stack.<br><br><i>Bounty Hunter</i> stacks are earned the first time you get a takedown on each enemy champion."
         }, {
             "id": 8106,
             "key": "UltimateHunter",
             "icon": "perk-images/Styles/Domination/UltimateHunter/UltimateHunter.png",
             "name": "Ultimate Hunter",
             "shortDesc": "<b>Unique</b> <lol-uikit-tooltipped-keyword key='LinkTooltip_Description_Takedown'>takedowns</lol-uikit-tooltipped-keyword> grant permanent cooldown reduction on your Ultimate. ",
-            "longDesc": "Your ultimate gains 5% <b>reduced cooldown,</b> plus an additional 2% per <i>Bounty Hunter</i> stack.<br><br>Earn a <i>Bounty Hunter</i> stack the first time you get a takedown on each enemy champion."
+            "longDesc": "Your ultimate gains 5% <b>reduced cooldown,</b> plus an additional 2% per <i>Bounty Hunter</i> stack.<br><br><i>Bounty Hunter</i> stacks are earned the first time you get a takedown on each enemy champion."
         }]
     }]
 }, {
@@ -136,7 +136,7 @@
             "icon": "perk-images/Styles/Inspiration/UnsealedSpellbook/UnsealedSpellbook.png",
             "name": "Unsealed Spellbook",
             "shortDesc": "Swap Summoner Spells while out of combat. Swapping to unique Summoner Spells will increase the rate at which you can make future swaps.",
-            "longDesc": "Swap one of your equipped Summoner Spells to a new, single use Summoner Spell. Each unique Summoner Spell you swap to permanently decreases your swap cooldown by 15s (initial swap cooldown is at 4 mins). <br><br>Your first swap becomes available at 6 mins. <br><rules><br>Summoner Spells can only be swapped while out of combat. <br>After using a swapped Summoner Spell you must swap 3 more times before the first can be selected again. </rules>"
+            "longDesc": "Swap one of your equipped Summoner Spells to a new, single use Summoner Spell. Each unique Summoner Spell you swap to permanently decreases your swap cooldown by 20s (initial swap cooldown is at 4 mins). <br><br>Your first swap becomes available at 6 mins. <br><rules><br>Summoner Spells can only be swapped while out of combat. <br>After using a swapped Summoner Spell you must swap 3 more times before the first can be selected again. </rules>"
         }]
     }, {
         "runes": [{
@@ -159,7 +159,7 @@
             "icon": "perk-images/Styles/Inspiration/PerfectTiming/PerfectTiming.png",
             "name": "Perfect Timing",
             "shortDesc": "Gain a free Stopwatch. Stopwatch has a one time use <lol-uikit-tooltipped-keyword key='LinkTooltip_Description_Stasis'>Stasis</lol-uikit-tooltipped-keyword> effect.",
-            "longDesc": "Start the game with a Commencing Stopwatch that transforms into a Stopwatch after 8 min. Stopwatch has a one time use Stasis effect.<br><br>Reduces the cooldown of Zhonya's Hourglass, Guardian Angel, and Gargoyle Stoneplate by 15%."
+            "longDesc": "Start the game with a Commencing Stopwatch that transforms into a Stopwatch after 10 min. Stopwatch has a one time use Stasis effect.<br><br>Reduces the cooldown of Zhonya's Hourglass, Guardian Angel, and Gargoyle Stoneplate by 15%."
         }]
     }, {
         "runes": [{
@@ -224,7 +224,7 @@
         }, {
             "id": 8008,
             "key": "LethalTempo",
-            "icon": "perk-images/Styles/Precision/FlowofBattle/FlowofBattleTemp.png",
+            "icon": "perk-images/Styles/Precision/LethalTempo/LethalTempoTemp.png",
             "name": "Lethal Tempo",
             "shortDesc": "1.5s after damaging a champion gain a large amount of Attack Speed. Lethal Tempo allows you to temporarily exceed the attack speed limit.",
             "longDesc": "1.5s after damaging a champion gain 40 - 110% Attack Speed (based on level) for 3s. Attacking a champion extends the effect to 6s.<br><br>Cooldown: 6s<br><br>Lethal Tempo allows you to temporarily exceed the attack speed limit."
@@ -241,7 +241,7 @@
             "icon": "perk-images/Styles/Precision/Conqueror/Conqueror.png",
             "name": "Conqueror",
             "shortDesc": "After 4 seconds in combat, your first attack against an enemy champion grants you AD and converts some of your damage to true damage.",
-            "longDesc": "After 4 seconds in combat, your first attack against an enemy champion grants you 10 - 35 AD, based on level, for 3 seconds and converts 20% of your damage to champions to true damage.<br><br><rules>Melee Only: Damaging enemy champions refreshes this buff.</rules>"
+            "longDesc": "After 4 seconds in combat, your first attack against an enemy champion grants you 6 - 35 AD, based on level, for 3 seconds and converts 20% of your damage to champions to true damage.<br><br><rules>Melee Only: Damaging enemy champions refreshes this buff.</rules>"
         }]
     }, {
         "runes": [{
@@ -254,14 +254,14 @@
         }, {
             "id": 9111,
             "key": "Triumph",
-            "icon": "perk-images/Styles/Precision/DangerousGame.png",
+            "icon": "perk-images/Styles/Precision/Triumph.png",
             "name": "Triumph",
             "shortDesc": "<lol-uikit-tooltipped-keyword key='LinkTooltip_Description_Takedown'>Takedowns</lol-uikit-tooltipped-keyword> restore 12% of your missing health and grant an additional 20 gold. ",
             "longDesc": "Takedowns restore 12% of your missing health and grant an additional 20 gold. <br><br><hr></hr><br><i>'The most dangerous game brings the greatest glory.' <br>—Noxian Reckoner</i>"
         }, {
             "id": 8009,
             "key": "PresenceOfMind",
-            "icon": "perk-images/Styles/Precision/LastResort/LastResortIcon.png",
+            "icon": "perk-images/Styles/Precision/PresenceOfMind/PresenceOfMind.png",
             "name": "Presence of Mind",
             "shortDesc": "Takedowns restore 20% of your maximum mana and refund 10% of your ultimate's cooldown.",
             "longDesc": "Takedowns restore 20% of your maximum mana and refund 10% of your ultimate's cooldown."
@@ -270,21 +270,21 @@
         "runes": [{
             "id": 9104,
             "key": "LegendAlacrity",
-            "icon": "perk-images/Styles/Precision/Legend_Heroism.png",
+            "icon": "perk-images/Styles/Precision/LegendAlacrity/LegendAlacrity.png",
             "name": "Legend: Alacrity",
             "shortDesc": "<lol-uikit-tooltipped-keyword key='LinkTooltip_Description_Takedown'>Takedowns</lol-uikit-tooltipped-keyword> on enemies grant permanent <b>Attack Speed</b>. ",
             "longDesc": "Gain 3% attack speed plus an additional 1.5% for every <i>Legend</i> stack (max 10 stacks).<br><br>Earn progress toward <i>Legend</i> stacks for every champion takedown, epic monster takedown, large monster kill, and minion kill."
         }, {
             "id": 9105,
             "key": "LegendTenacity",
-            "icon": "perk-images/Styles/Precision/Legend_Tenacity.png",
+            "icon": "perk-images/Styles/Precision/LegendTenacity/LegendTenacity.png",
             "name": "Legend: Tenacity",
             "shortDesc": "<lol-uikit-tooltipped-keyword key='LinkTooltip_Description_Takedown'>Takedowns</lol-uikit-tooltipped-keyword> on enemies grant permanent <b>Tenacity</b>. ",
             "longDesc": "Gain 5% tenacity plus an additional 2.5% for every <i>Legend</i> stack (max 10 stacks).<br><br>Earn progress toward <i>Legend</i> stacks for every champion takedown, epic monster takedown, large monster kill, and minion kill."
         }, {
             "id": 9103,
             "key": "LegendBloodline",
-            "icon": "perk-images/Styles/Precision/Legend_Infamy.png",
+            "icon": "perk-images/Styles/Precision/LegendBloodline/LegendBloodline.png",
             "name": "Legend: Bloodline",
             "shortDesc": "<lol-uikit-tooltipped-keyword key='LinkTooltip_Description_Takedown'>Takedowns</lol-uikit-tooltipped-keyword> on enemies grant permanent<b> Lifesteal</b>. ",
             "longDesc": "Gain 0.8% life steal for every <i>Legend</i> stack (max 10 stacks).<br><br>Earn progress toward <i>Legend</i> stacks for every champion takedown, epic monster takedown, large monster kill, and minion kill."
@@ -423,7 +423,7 @@
             "icon": "perk-images/Styles/Sorcery/SummonAery/SummonAery.png",
             "name": "Summon Aery",
             "shortDesc": "Your attacks and abilities send Aery to a target, damaging enemies or shielding allies.",
-            "longDesc": "Your attacks and abilities send Aery to a target, damaging enemy champions or shielding allies.<br><br>Damage: 15 - 40 based on level (+<scaleAP>0.1 AP</scaleAP> and +<scaleAD>0.15 bonus AD</scaleAD>)<br>Shield: 30 - 80 based on level (+<scaleAP>0.25 AP</scaleAP> and +<scaleAD>0.4 bonus AD</scaleAD>) <br><br>Aery cannot be sent out again until she returns to you."
+            "longDesc": "Your attacks and abilities send Aery to a target, damaging enemy champions or shielding allies.<br><br>Damage: 10 - 40 based on level (+<scaleAP>0.1 AP</scaleAP> and +<scaleAD>0.15 bonus AD</scaleAD>)<br>Shield: 35 - 80 based on level (+<scaleAP>0.25 AP</scaleAP> and +<scaleAD>0.4 bonus AD</scaleAD>) <br><br>Aery cannot be sent out again until she returns to you."
         }, {
             "id": 8229,
             "key": "ArcaneComet",
@@ -475,8 +475,8 @@
             "key": "Celerity",
             "icon": "perk-images/Styles/Sorcery/Celerity/CelerityTemp.png",
             "name": "Celerity",
-            "shortDesc": "Gain 3% extra <lol-uikit-tooltipped-keyword key='LinkTooltip_Description_MS'>MS</lol-uikit-tooltipped-keyword>. Gain extra AP or AD, <lol-uikit-tooltipped-keyword key='LinkTooltip_Description_Adaptive'>adaptive</lol-uikit-tooltipped-keyword> based on your bonus MS. ",
-            "longDesc": "Gain 3% increased Movement Speed.<br>Your Bonus Movement Speed is converted to Attack Damage or Ability Power, <font color='#48C4B7'>adaptive</font> at a rate of 4.8% Attack Damage or 8% Ability Power."
+            "shortDesc": "Gain 1.5% extra <lol-uikit-tooltipped-keyword key='LinkTooltip_Description_MS'>MS</lol-uikit-tooltipped-keyword>. Gain extra AP or AD, <lol-uikit-tooltipped-keyword key='LinkTooltip_Description_Adaptive'>adaptive</lol-uikit-tooltipped-keyword> based on your bonus MS. ",
+            "longDesc": "Gain 1.5% increased Movement Speed.<br>Your Bonus Movement Speed is converted to Attack Damage or Ability Power, <font color='#48C4B7'>adaptive</font> at a rate of 6% Attack Damage or 10% Ability Power."
         }, {
             "id": 8233,
             "key": "AbsoluteFocus",
@@ -491,8 +491,8 @@
             "key": "Scorch",
             "icon": "perk-images/Styles/Sorcery/Scorch/Scorch.png",
             "name": "Scorch",
-            "shortDesc": "Your first ability hit every 20s burns champions.",
-            "longDesc": "Your next ability hit sets champions on fire dealing 20 - 60 bonus magic damage based on level after 1s.<br><br>Cooldown: 20s"
+            "shortDesc": "Your first ability hit every 10s burns champions.",
+            "longDesc": "Your next ability hit sets champions on fire dealing 10 - 30 bonus magic damage based on level after 1s.<br><br>Cooldown: 10s"
         }, {
             "id": 8232,
             "key": "Waterwalking",

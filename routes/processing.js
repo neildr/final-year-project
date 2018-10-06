@@ -73,11 +73,12 @@ async function getHighestMastery(summonerRegion, summonerID) {
             masteryData.championLevel = data[0].championLevel;
             masteryData.championPoints = data[0].championPoints;
             //loop through champions.JSON to find an ID match
-            for (var i = 0; i < Object.keys(championJSON.data).length; i++)
-                if ((masteryData.championId) === (championJSON.data[Object.keys(championJSON.data)[i]].id)) {
+            for (var i = 0; i < Object.keys(championJSON.data).length; i++) {
+                if ((masteryData.championId) == (championJSON.data[Object.keys(championJSON.data)[i]].key)) {
                     masteryData.championName = championJSON.data[Object.keys(championJSON.data)[i]].name;
                     masteryData.championTitle = championJSON.data[Object.keys(championJSON.data)[i]].title;
                 }
+            }
             masteryData.valid = true;
         }
     }
@@ -165,37 +166,37 @@ async function getRecentGames(summonerRegion, summonerAccID, noOfGames) {
         for (i = 0; i < data.matches.length; i++) {
             //validating games
             if ((data.matches[i].queue === 400 || data.matches[i].queue === 420 || data.matches[i].queue === 430 || data.matches[i].queue === 440) && data.matches[i].timestamp > 1510272000000) {
-                validMatchesCount++;
-                recentGamesData.ids[i] = data.matches[i].gameId;
-                recentGamesData.roles[i] = data.matches[i].role;
-                recentGamesData.lanes[i] = data.matches[i].lane;
-                recentGamesData.queues[i] = data.matches[i].queue;
-                recentGamesData.champions[i] = data.matches[i].champion;
-                recentGamesData.timestamps[i] = data.matches[i].timestamp;
+                recentGamesData.ids[validMatchesCount] = data.matches[i].gameId;
+                recentGamesData.roles[validMatchesCount] = data.matches[i].role;
+                recentGamesData.lanes[validMatchesCount] = data.matches[i].lane;
+                recentGamesData.queues[validMatchesCount] = data.matches[i].queue;
+                recentGamesData.champions[validMatchesCount] = data.matches[i].champion;
+                recentGamesData.timestamps[validMatchesCount] = data.matches[i].timestamp;
                 //calculating actual position - can have errors on Riot's end
-                if (recentGamesData.roles[i] === "SOLO" || recentGamesData.roles[i] === "DUO" || recentGamesData.roles[i] === "NONE") {
-                    if (recentGamesData.lanes[i] === "TOP") {
-                        recentGamesData.actualPosition[i] = "TOP";
-                    } else if (recentGamesData.lanes[i] === "MID") {
-                        recentGamesData.actualPosition[i] = "MID";
-                    } else if (recentGamesData.lanes[i] === "JUNGLE") {
-                        recentGamesData.actualPosition[i] = "JUNGLE";
+                if (recentGamesData.roles[validMatchesCount] === "SOLO" || recentGamesData.roles[i] === "DUO" || recentGamesData.roles[i] === "NONE") {
+                    if (recentGamesData.lanes[validMatchesCount] === "TOP") {
+                        recentGamesData.actualPosition[validMatchesCount] = "TOP";
+                    } else if (recentGamesData.lanes[validMatchesCount] === "MID") {
+                        recentGamesData.actualPosition[validMatchesCount] = "MID";
+                    } else if (recentGamesData.lanes[validMatchesCount] === "JUNGLE") {
+                        recentGamesData.actualPosition[validMatchesCount] = "JUNGLE";
                     }
-                } else if (recentGamesData.roles[i] === "DUO_CARRY") {
-                    recentGamesData.actualPosition[i] = "ADC";
-                } else if (recentGamesData.roles[i] === "DUO_SUPPORT") {
-                    recentGamesData.actualPosition[i] = "SUPPORT";
+                } else if (recentGamesData.roles[validMatchesCount] === "DUO_CARRY") {
+                    recentGamesData.actualPosition[validMatchesCount] = "ADC";
+                } else if (recentGamesData.roles[validMatchesCount] === "DUO_SUPPORT") {
+                    recentGamesData.actualPosition[validMatchesCount] = "SUPPORT";
                 }
                 //gets the game data from each match
-                recentGamesData.matchData[i] = await getMatchData(summonerRegion, data.matches[i].gameId, summonerAccID);
-                if (recentGamesData.matchData[i].outcome === "WIN") {
+                recentGamesData.matchData[validMatchesCount] = await getMatchData(summonerRegion, data.matches[i].gameId, summonerAccID);
+                if (recentGamesData.matchData[validMatchesCount].outcome === "WIN") {
                     totalWins++;
                 }
                 //calculates average
                 itemsInJSONAverage.forEach(function(itemsInJSONAverage) {
-                    recentGamesData.averages[itemsInJSONAverage] += parseFloat(((recentGamesData.matchData[i][itemsInJSONAverage]) / noOfGames));
+                    recentGamesData.averages[itemsInJSONAverage] += parseFloat(((recentGamesData.matchData[validMatchesCount][itemsInJSONAverage]) / noOfGames));
                     recentGamesData.averages[itemsInJSONAverage] = parseFloat((recentGamesData.averages[itemsInJSONAverage]).toFixed(2));
                 })
+                validMatchesCount++;
             }
             if (validMatchesCount >= noOfGames) {
                 recentGamesData.valid = true;
@@ -206,7 +207,7 @@ async function getRecentGames(summonerRegion, summonerAccID, noOfGames) {
         recentGamesData.modePosition = mostCommon(recentGamesData.actualPosition);
         recentGamesData.modeChampion.info = mostCommon(recentGamesData.champions);
         for (var i = 0; i < Object.keys(championJSON.data).length; i++) {
-            if ((recentGamesData.modeChampion.info.mode) === (championJSON.data[Object.keys(championJSON.data)[i]].id)) {
+            if ((recentGamesData.modeChampion.info.mode) == (championJSON.data[Object.keys(championJSON.data)[i]].key)) {
                 recentGamesData.modeChampion.name = championJSON.data[Object.keys(championJSON.data)[i]].name;
                 recentGamesData.modeChampion.title = championJSON.data[Object.keys(championJSON.data)[i]].title;
             }
@@ -379,7 +380,7 @@ async function getMatchData(summonerRegion, matchID, summonerAccID) {
                         matchData.perk5.id = data.participants[j].stats.perk5;
                         matchData.champion.id = data.participants[j].championId;
                         for (var k = 0; k < Object.keys(championJSON.data).length; k++)
-                            if ((matchData.champion.id) === (championJSON.data[Object.keys(championJSON.data)[k]].id)) {
+                            if ((matchData.champion.id) == (championJSON.data[Object.keys(championJSON.data)[k]].key)) {
                                 matchData.champion.name = championJSON.data[Object.keys(championJSON.data)[k]].name;
                             }
                         var itemsArray = [matchData.item0, matchData.item1, matchData.item2, matchData.item3,
